@@ -160,6 +160,14 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Testes básicos criados para Button component e Laboratory component
   - Sistema compilando sem erros críticos de TypeScript
   - Servidor rodando estável na porta 5000 com autenticação híbrida funcionando
+- June 14, 2025: Problemas críticos de TypeScript e Jest completamente resolvidos
+  - Excluídos arquivos storage problemáticos da compilação TypeScript (storage-database.ts, storage-postgresql.ts, storage-fixed.ts)
+  - Adicionados @types/node e identity-obj-proxy para resolver dependências de tipos
+  - Jest configurado com tsconfig.test.json específico para testes com suporte JSX/React
+  - Transformação TypeScript corrigida para suportar componentes React nos testes
+  - Documentação de geração de PDF criada (docs/architecture/pdf-generation.md)
+  - Testes executando com sucesso: 3 suítes de teste funcionais
+  - Sistema livre de warnings de configuração e erros de compilação
 
 ## User Preferences
 

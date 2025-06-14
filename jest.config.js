@@ -28,8 +28,7 @@ export default {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
   transform: {
     '^.+\\.(ts|tsx)$': ['ts-jest', {
-      tsconfig: 'tsconfig.json',
-      isolatedModules: true
+      tsconfig: 'tsconfig.test.json'
     }]
   },
   testTimeout: 15000,
