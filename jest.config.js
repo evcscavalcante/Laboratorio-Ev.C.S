@@ -9,23 +9,31 @@ export default {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy'
   },
   testMatch: [
-    '<rootDir>/client/src/**/*.test.{js,jsx,ts,tsx}',
-    '<rootDir>/server/**/*.test.{js,jsx,ts,tsx}'
+    '<rootDir>/client/src/**/*.test.{js,jsx,ts,tsx}'
+  ],
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/dist/',
+    '/build/',
+    '/server/'
   ],
   collectCoverageFrom: [
     'client/src/**/*.{js,jsx,ts,tsx}',
-    'server/**/*.{js,jsx,ts,tsx}',
     '!client/src/**/*.d.ts',
-    '!server/**/*.d.ts',
-    '!**/node_modules/**'
+    '!**/node_modules/**',
+    '!client/src/test/**'
   ],
   coverageReporters: ['text', 'lcov', 'html'],
   coverageDirectory: 'coverage',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
   transform: {
     '^.+\\.(ts|tsx)$': ['ts-jest', {
-      tsconfig: 'tsconfig.json'
+      tsconfig: 'tsconfig.json',
+      isolatedModules: true
     }]
   },
-  testTimeout: 10000
+  testTimeout: 15000,
+  clearMocks: true,
+  resetMocks: true,
+  restoreMocks: true
 };

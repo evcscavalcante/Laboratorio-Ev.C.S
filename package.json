@@ -78,6 +78,7 @@
     "firebase-tools": "^14.7.0",
     "framer-motion": "^11.13.1",
     "html2canvas": "^1.4.1",
+    "identity-obj-proxy": "^3.0.0",
     "input-otp": "^1.4.2",
     "jest": "^30.0.0",
     "jest-axe": "^10.0.0",
