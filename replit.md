@@ -168,6 +168,14 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Documentação de geração de PDF criada (docs/architecture/pdf-generation.md)
   - Testes executando com sucesso: 3 suítes de teste funcionais
   - Sistema livre de warnings de configuração e erros de compilação
+- June 14, 2025: Página de laboratório reformulada com interface baseada em cards
+  - Removidas todas as calculadoras da página de laboratório conforme solicitação
+  - Implementada interface com cards clicáveis para cada tipo de ensaio
+  - Cards mostram contador dinâmico de ensaios salvos por tipo
+  - Sistema de filtragem: clique no card mostra apenas ensaios daquele tipo
+  - Botão "Voltar" para retornar à visualização inicial dos cards
+  - Calculadoras agora existem apenas nas seções específicas (Ensaios, Solos)
+  - Interface mais limpa e organizada focada na visualização de ensaios salvos
 
 ## User Preferences
 

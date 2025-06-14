@@ -1,23 +1,14 @@
 import { useState, useEffect } from "react";
-import { FlaskRound, Save, PanelLeftOpen, PanelLeftClose, BarChart3, FileText } from "lucide-react";
+import { FlaskRound, PanelLeftOpen, PanelLeftClose, BarChart3, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Link, useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
-import DensityInSitu from "@/components/laboratory/density-in-situ";
-import DensityReal from "@/components/laboratory/density-real";
-import DensityMaxMin from "@/components/laboratory/density-max-min";
-import SimpleTestsSidebar from "@/components/dashboard/simple-tests-sidebar";
 
 export default function Laboratory() {
   const [currentDateTime, setCurrentDateTime] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [location, setLocation] = useLocation();
-  
-  // Parse URL parameters from hash
-  const [testId, setTestId] = useState<number | undefined>();
-  const [mode, setMode] = useState<'view' | 'edit' | 'new'>('new');
+  const [selectedTestType, setSelectedTestType] = useState<string | null>(null);
 
   // Buscar ensaios dos três tipos usando endpoints temporários
   const { data: densityInSituTests = [] } = useQuery({
@@ -71,43 +62,42 @@ export default function Laboratory() {
       route: '/solos/densidade-max-min'
     }))
   ];
-  
-  useEffect(() => {
-    const hash = window.location.hash;
-    if (hash.includes('?')) {
-      const params = new URLSearchParams(hash.split('?')[1]);
-      const id = params.get('id');
-      const urlMode = params.get('mode');
-      
-      if (id) setTestId(parseInt(id));
-      if (urlMode === 'view' || urlMode === 'edit') setMode(urlMode);
-    } else {
-      setTestId(undefined);
-      setMode('new');
-    }
-  }, [location]);
-  
-  // Set initial tab based on URL hash or parameters
-  const [activeTab, setActiveTab] = useState(() => {
-    const hash = window.location.hash.substring(1).split('?')[0];
-    if (hash && ['density-in-situ', 'density-real', 'density-max-min'].includes(hash)) {
-      return hash;
-    }
-    return 'density-in-situ';
-  });
 
-  // Listen for hash changes
-  useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash.substring(1);
-      if (hash && ['density-in-situ', 'density-real', 'density-max-min'].includes(hash)) {
-        setActiveTab(hash);
-      }
-    };
+  // Filtrar ensaios pelo tipo selecionado
+  const filteredTests = selectedTestType 
+    ? allTests.filter(test => test.type === selectedTestType)
+    : allTests;
 
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
-  }, []);
+  // Tipos de ensaios disponíveis
+  const testTypes = [
+    {
+      type: 'density-in-situ',
+      icon: '⚖️',
+      name: 'Densidade In Situ',
+      description: 'Método do cilindro de cravação conforme NBR 6457',
+      count: allTests.filter(t => t.type === 'density-in-situ').length,
+      route: '/solos/densidade-in-situ',
+      color: 'blue'
+    },
+    {
+      type: 'real-density',
+      icon: '⚛️',
+      name: 'Densidade Real',
+      description: 'Densidade real dos grãos de solo conforme NBR 6508',
+      count: allTests.filter(t => t.type === 'real-density').length,
+      route: '/solos/densidade-real',
+      color: 'green'
+    },
+    {
+      type: 'max-min-density',
+      icon: '↕️',
+      name: 'Densidade Máx/Mín',
+      description: 'Índices de vazios máximo e mínimo conforme NBR 12004',
+      count: allTests.filter(t => t.type === 'max-min-density').length,
+      route: '/solos/densidade-max-min',
+      color: 'purple'
+    }
+  ];
 
   useEffect(() => {
     const updateDateTime = () => {
@@ -126,40 +116,6 @@ export default function Laboratory() {
     const interval = setInterval(updateDateTime, 60000);
     return () => clearInterval(interval);
   }, []);
-
-  const handleSelectTest = (testId: number, testType: string) => {
-    const tabMap: { [key: string]: string } = {
-      'density-in-situ': 'density-in-situ',
-      'real-density': 'density-real',
-      'max-min-density': 'density-max-min'
-    };
-    
-    const tab = tabMap[testType];
-    if (tab) {
-      setActiveTab(tab);
-      setTestId(testId);
-      setMode('view');
-      setSidebarOpen(false);
-      window.location.hash = `${tab}?id=${testId}&mode=view`;
-    }
-  };
-
-  const handleEditTest = (testId: number, testType: string) => {
-    const tabMap: { [key: string]: string } = {
-      'density-in-situ': 'density-in-situ',
-      'real-density': 'density-real',
-      'max-min-density': 'density-max-min'
-    };
-    
-    const tab = tabMap[testType];
-    if (tab) {
-      setActiveTab(tab);
-      setTestId(testId);
-      setMode('edit');
-      setSidebarOpen(false);
-      window.location.hash = `${tab}?id=${testId}&mode=edit`;
-    }
-  };
 
   return (
     <div className="flex min-h-screen bg-gray-50 font-sans">
@@ -275,24 +231,8 @@ export default function Laboratory() {
                   {sidebarOpen ? <PanelLeftClose size={16} /> : <PanelLeftOpen size={16} />}
                   {sidebarOpen ? 'Fechar Lista' : 'Ver Ensaios Salvos'}
                   <div className="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                    3
+                    {allTests.length}
                   </div>
-                </Button>
-                <Button 
-                  variant="outline"
-                  onClick={() => {
-                    setTestId(undefined);
-                    setMode('new');
-                    window.location.hash = activeTab;
-                  }}
-                  className="mr-2"
-                >
-                  <FileText className="mr-2" size={16} />
-                  Novo Ensaio
-                </Button>
-                <Button className="bg-blue-600 hover:bg-blue-700">
-                  <Save className="mr-2" size={16} />
-                  Salvar Dados
                 </Button>
               </div>
             </div>
@@ -301,78 +241,127 @@ export default function Laboratory() {
 
         {/* Main Content */}
         <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Botão para ensaios salvos - mais visível */}
-          <div className="mb-6 flex justify-between items-center">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900">Ensaios de Laboratório</h2>
-              <p className="text-gray-600">Gerencie e execute ensaios geotécnicos</p>
+          {!selectedTestType ? (
+            /* Visualização inicial - Cards dos tipos de ensaios */
+            <div className="text-center py-16">
+              <FlaskRound size={64} className="mx-auto text-gray-400 mb-4" />
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                Laboratório de Ensaios Geotécnicos
+              </h2>
+              <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
+                Selecione um tipo de ensaio para visualizar os ensaios salvos ou criar novos ensaios.
+              </p>
+              
+              {/* Cards de tipos de ensaios */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                {testTypes.map((testType) => (
+                  <div 
+                    key={testType.type}
+                    onClick={() => setSelectedTestType(testType.type)}
+                    className="bg-white p-6 rounded-lg shadow-sm border hover:shadow-md transition-shadow cursor-pointer hover:border-blue-300"
+                  >
+                    <div className="text-3xl mb-3">{testType.icon}</div>
+                    <h3 className="font-semibold mb-2">{testType.name}</h3>
+                    <p className="text-sm text-gray-600 mb-4">
+                      {testType.description}
+                    </p>
+                    <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium mb-4 ${
+                      testType.color === 'blue' ? 'bg-blue-100 text-blue-800' :
+                      testType.color === 'green' ? 'bg-green-100 text-green-800' :
+                      'bg-purple-100 text-purple-800'
+                    }`}>
+                      {testType.count} ensaios salvos
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      Clique para visualizar ensaios
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="flex gap-3">
-              <Button 
-                variant="outline"
-                onClick={() => setSidebarOpen(!sidebarOpen)}
-                className="flex items-center gap-2"
-              >
-                <FileText size={16} />
-                {sidebarOpen ? 'Fechar Lista' : 'Ensaios Salvos (3)'}
-              </Button>
-              <Button 
-                variant="outline"
-                onClick={() => {
-                  setTestId(undefined);
-                  setMode('new');
-                  window.location.hash = activeTab;
-                }}
-              >
-                <span className="mr-2">+</span>
-                Novo Ensaio
-              </Button>
+          ) : (
+            /* Visualização filtrada - Lista de ensaios do tipo selecionado */
+            <div className="py-8">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setSelectedTestType(null)}
+                    className="flex items-center gap-2"
+                  >
+                    ← Voltar
+                  </Button>
+                  <div className="flex items-center gap-2">
+                    <span className="text-2xl">
+                      {testTypes.find(t => t.type === selectedTestType)?.icon}
+                    </span>
+                    <h2 className="text-xl font-bold">
+                      {testTypes.find(t => t.type === selectedTestType)?.name}
+                    </h2>
+                  </div>
+                </div>
+                <Button 
+                  onClick={() => setLocation(testTypes.find(t => t.type === selectedTestType)?.route || '')}
+                  className="flex items-center gap-2"
+                >
+                  <span>+</span>
+                  Novo Ensaio
+                </Button>
+              </div>
+
+              {filteredTests.length === 0 ? (
+                <div className="text-center py-16 bg-white rounded-lg border">
+                  <FileText size={48} className="mx-auto mb-4 text-gray-400" />
+                  <h3 className="text-lg font-semibold mb-2">Nenhum ensaio encontrado</h3>
+                  <p className="text-gray-600 mb-6">
+                    Ainda não há ensaios salvos deste tipo.
+                  </p>
+                  <Button 
+                    onClick={() => setLocation(testTypes.find(t => t.type === selectedTestType)?.route || '')}
+                    className="flex items-center gap-2"
+                  >
+                    <span>+</span>
+                    Criar Primeiro Ensaio
+                  </Button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {filteredTests.map((test: any) => (
+                    <div 
+                      key={`${test.type}-${test.id}`}
+                      onClick={() => setLocation(`${test.route}?load=${test.id}`)}
+                      className="bg-white p-4 rounded-lg border hover:border-blue-300 hover:shadow-md transition-all cursor-pointer"
+                    >
+                      <div className="flex items-start gap-3">
+                        <span className="text-2xl">{test.icon}</span>
+                        <div className="flex-1">
+                          <div className="font-semibold mb-1">
+                            {test.registrationNumber || test.testNumber || `Ensaio_${test.id}`}
+                          </div>
+                          <div className="text-sm text-gray-500 mb-2">
+                            ID: {test.id}
+                          </div>
+                          {test.client && (
+                            <div className="text-sm text-gray-600 mb-2">
+                              Cliente: {test.client}
+                            </div>
+                          )}
+                          {test.date && (
+                            <div className="text-xs text-gray-400">
+                              Data: {new Date(test.date).toLocaleDateString('pt-BR')}
+                            </div>
+                          )}
+                          <div className="mt-3 text-xs text-blue-600">
+                            Clique para abrir na calculadora →
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
-          </div>
-          
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-3 bg-white border sticky top-0 z-10">
-              <TabsTrigger 
-                value="density-in-situ" 
-                className="py-4 px-2 data-[state=active]:border-b-2 data-[state=active]:border-blue-600 data-[state=active]:text-blue-600"
-              >
-                <span className="mr-2">⚖️</span>Densidade In Situ - Cilindro de Cravação
-              </TabsTrigger>
-              <TabsTrigger 
-                value="density-real"
-                className="py-4 px-2 data-[state=active]:border-b-2 data-[state=active]:border-blue-600 data-[state=active]:text-blue-600"
-              >
-                <span className="mr-2">⚛️</span>Densidade Real dos Grãos
-              </TabsTrigger>
-              <TabsTrigger 
-                value="density-max-min"
-                className="py-4 px-2 data-[state=active]:border-b-2 data-[state=active]:border-blue-600 data-[state=active]:text-blue-600"
-              >
-                <span className="mr-2">↕️</span>Densidade Máx/Mín
-              </TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="density-in-situ">
-              <DensityInSitu 
-                testId={testId}
-                mode={mode}
-              />
-            </TabsContent>
-
-            <TabsContent value="density-real">
-              <DensityReal 
-                testId={testId}
-                mode={mode}
-              />
-            </TabsContent>
-
-            <TabsContent value="density-max-min">
-              <DensityMaxMin 
-                testId={testId}
-                mode={mode}
-              />
-            </TabsContent>
-          </Tabs>
+          )}
         </main>
       </div>
     </div>
