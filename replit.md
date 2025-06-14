@@ -176,6 +176,12 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Botão "Voltar" para retornar à visualização inicial dos cards
   - Calculadoras agora existem apenas nas seções específicas (Ensaios, Solos)
   - Interface mais limpa e organizada focada na visualização de ensaios salvos
+- June 14, 2025: Problemas de salvamento e geração de PDF corrigidos
+  - Densidade in-situ agora salva corretamente no PostgreSQL
+  - Validação de dados melhorada com conversão adequada de tipos
+  - Funções de geração de PDF aprimoradas com logs detalhados e tratamento de erros
+  - Sistema detectando corretamente: 1 densidade in-situ, 2 densidade real, 9 máx/mín
+  - Todas as calculadoras com funcionalidade completa de salvamento e PDF
 
 ## User Preferences
 
