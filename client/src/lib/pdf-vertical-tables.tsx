@@ -1393,6 +1393,10 @@ export const RealDensityVerticalDocument: React.FC<{ data: any; calculations: an
 // Função para gerar PDF de Densidade In Situ
 export async function generateDensityInSituVerticalPDF(data: any, calculations: any): Promise<void> {
   try {
+    console.log('🔄 Iniciando geração de PDF para densidade in-situ');
+    console.log('📊 Dados recebidos:', data);
+    console.log('🧮 Cálculos recebidos:', calculations);
+    
     const pdfDocument = <DensityInSituVerticalDocument data={data} calculations={calculations} />;
     const asPdf = pdf(pdfDocument);
     const blob = await asPdf.toBlob();
@@ -1405,8 +1409,11 @@ export async function generateDensityInSituVerticalPDF(data: any, calculations: 
     link.click();
     globalThis.document.body.removeChild(link);
     URL.revokeObjectURL(url);
+    
+    console.log('✅ PDF gerado e baixado com sucesso');
   } catch (error) {
-    console.error('Erro ao gerar PDF:', error);
+    console.error('❌ Erro ao gerar PDF:', error);
+    alert(`Erro ao gerar PDF: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
     throw error;
   }
 }
@@ -1414,6 +1421,10 @@ export async function generateDensityInSituVerticalPDF(data: any, calculations: 
 // Função para gerar PDF de Densidade Máxima e Mínima
 export async function generateMaxMinDensityVerticalPDF(data: any, calculations: any): Promise<void> {
   try {
+    console.log('🔄 Iniciando geração de PDF para densidade máx/mín');
+    console.log('📊 Dados recebidos:', data);
+    console.log('🧮 Cálculos recebidos:', calculations);
+    
     const pdfDocument = <MaxMinDensityVerticalDocument data={data} calculations={calculations} />;
     const asPdf = pdf(pdfDocument);
     const blob = await asPdf.toBlob();
@@ -1426,8 +1437,11 @@ export async function generateMaxMinDensityVerticalPDF(data: any, calculations: 
     link.click();
     globalThis.document.body.removeChild(link);
     URL.revokeObjectURL(url);
+    
+    console.log('✅ PDF gerado e baixado com sucesso');
   } catch (error) {
-    console.error('Erro ao gerar PDF:', error);
+    console.error('❌ Erro ao gerar PDF:', error);
+    alert(`Erro ao gerar PDF: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
     throw error;
   }
 }
@@ -1435,6 +1449,10 @@ export async function generateMaxMinDensityVerticalPDF(data: any, calculations: 
 // Função para gerar PDF de Densidade Real
 export async function generateRealDensityVerticalPDF(data: any, calculations: any): Promise<void> {
   try {
+    console.log('🔄 Iniciando geração de PDF para densidade real');
+    console.log('📊 Dados recebidos:', data);
+    console.log('🧮 Cálculos recebidos:', calculations);
+    
     const pdfDocument = <RealDensityVerticalDocument data={data} calculations={calculations} />;
     const asPdf = pdf(pdfDocument);
     const blob = await asPdf.toBlob();
@@ -1447,8 +1465,11 @@ export async function generateRealDensityVerticalPDF(data: any, calculations: an
     link.click();
     globalThis.document.body.removeChild(link);
     URL.revokeObjectURL(url);
+    
+    console.log('✅ PDF gerado e baixado com sucesso');
   } catch (error) {
-    console.error('Erro ao gerar PDF:', error);
+    console.error('❌ Erro ao gerar PDF:', error);
+    alert(`Erro ao gerar PDF: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
     throw error;
   }
 }

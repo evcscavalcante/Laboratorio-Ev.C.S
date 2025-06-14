@@ -297,40 +297,80 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
     }
 
     const testData = {
-      registrationNumber: data.registrationNumber,
-      date: data.date,
-      time: data.time,
-      operator: data.operator,
-      technicalResponsible: data.technicalResponsible,
-      verifier: data.verifier,
-      material: data.material,
-      origin: data.origin,
-      coordinates: data.coordinates,
-      quadrant: data.quadrant,
-      layer: data.layer,
-      balanceId: data.balanceId,
-      ovenId: data.ovenId,
-      realDensityRef: data.realDensityRef,
-      maxMinDensityRef: data.maxMinDensityRef,
+      registrationNumber: data.registrationNumber || '',
+      date: data.date || new Date().toISOString().split('T')[0],
+      time: data.time || new Date().toTimeString().slice(0, 5),
+      operator: data.operator || '',
+      technicalResponsible: data.technicalResponsible || '',
+      verifier: data.verifier || '',
+      material: data.material || '',
+      origin: data.origin || '',
+      coordinates: data.coordinates || '',
+      quadrant: data.quadrant || '',
+      layer: data.layer || '',
+      balanceId: data.balanceId || '',
+      ovenId: data.ovenId || '',
+      realDensityRef: data.realDensityRef || '',
+      maxMinDensityRef: data.maxMinDensityRef || '',
       determinations: {
-        det1: data.det1,
-        det2: data.det2
+        det1: {
+          cylinderNumber: data.det1.cylinderNumber || '',
+          moldeSolo: Number(data.det1.moldeSolo) || 0,
+          molde: Number(data.det1.molde) || 0,
+          volume: Number(data.det1.volume) || 0
+        },
+        det2: {
+          cylinderNumber: data.det2.cylinderNumber || '',
+          moldeSolo: Number(data.det2.moldeSolo) || 0,
+          molde: Number(data.det2.molde) || 0,
+          volume: Number(data.det2.volume) || 0
+        }
       },
       moistureTop: {
-        det1: data.moistureTop1,
-        det2: data.moistureTop2,
-        det3: data.moistureTop3
+        det1: {
+          capsule: data.moistureTop1.capsule || '',
+          wetTare: Number(data.moistureTop1.wetTare) || 0,
+          dryTare: Number(data.moistureTop1.dryTare) || 0,
+          tare: Number(data.moistureTop1.tare) || 0
+        },
+        det2: {
+          capsule: data.moistureTop2.capsule || '',
+          wetTare: Number(data.moistureTop2.wetTare) || 0,
+          dryTare: Number(data.moistureTop2.dryTare) || 0,
+          tare: Number(data.moistureTop2.tare) || 0
+        },
+        det3: {
+          capsule: data.moistureTop3.capsule || '',
+          wetTare: Number(data.moistureTop3.wetTare) || 0,
+          dryTare: Number(data.moistureTop3.dryTare) || 0,
+          tare: Number(data.moistureTop3.tare) || 0
+        }
       },
       moistureBase: {
-        det1: data.moistureBase1,
-        det2: data.moistureBase2,
-        det3: data.moistureBase3
+        det1: {
+          capsule: data.moistureBase1.capsule || '',
+          wetTare: Number(data.moistureBase1.wetTare) || 0,
+          dryTare: Number(data.moistureBase1.dryTare) || 0,
+          tare: Number(data.moistureBase1.tare) || 0
+        },
+        det2: {
+          capsule: data.moistureBase2.capsule || '',
+          wetTare: Number(data.moistureBase2.wetTare) || 0,
+          dryTare: Number(data.moistureBase2.dryTare) || 0,
+          tare: Number(data.moistureBase2.tare) || 0
+        },
+        det3: {
+          capsule: data.moistureBase3.capsule || '',
+          wetTare: Number(data.moistureBase3.wetTare) || 0,
+          dryTare: Number(data.moistureBase3.dryTare) || 0,
+          tare: Number(data.moistureBase3.tare) || 0
+        }
       },
       results: {
-        gammaDTop: calculations.det1.gammaNatDry || 0,
-        gammaDBase: calculations.det2.gammaNatDry || 0,
+        gammaDTop: Number(calculations.det1.gammaNatDry) || 0,
+        gammaDBase: Number(calculations.det2.gammaNatDry) || 0,
         voidIndex: 0,
-        relativeCompactness: calculations.results.relativeCompactness || 0,
+        relativeCompactness: Number(calculations.results.relativeCompactness) || 0,
         voidIndexTop: 0,
         voidIndexBase: 0,
         relativeCompactnessTop: 0,
@@ -339,7 +379,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
       }
     };
 
-    console.log("🔄 Preparando para salvar ensaio:", testData);
+    console.log("🔄 Preparando para salvar ensaio de densidade in-situ:", testData);
     saveTestMutation.mutate(testData);
   };
 
