@@ -129,6 +129,15 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Mantida funcionalidade de clique direto para abrir na calculadora correspondente
   - Busca e filtros funcionais para localizar ensaios específicos
   - Sidebar aberta por padrão para acesso direto aos botões e ensaios
+- June 14, 2025: Sistema de gerenciamento dinâmico completo e correções técnicas
+  - Lista dinâmica busca ensaios reais do PostgreSQL via React Query
+  - Contador dinâmico mostra quantidade real de ensaios (3 detectados: 1 densidade real, 2 máx/mín)
+  - Cada ensaio clicável abre na calculadora correspondente com parâmetros de carregamento
+  - Sistema totalmente escalável para centenas de ensaios e dezenas de tipos
+  - Configuração Jest corrigida (moduleNameMapper estava incorreto)
+  - Dependências TypeScript atualizadas para versões compatíveis
+  - Arquivo de setup de testes criado com mocks necessários
+  - Testes executam sem erros de configuração
 
 ## User Preferences
 
