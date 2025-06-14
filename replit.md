@@ -145,6 +145,13 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Problemas de sintaxe Drizzle ORM corrigidos
   - Campos não definidos nas tabelas identificados e corrigidos
   - Sistema livre de erros de compilação e funcionando estável
+- June 14, 2025: Interface limpa - componente "Status do Ensaio" removido
+  - Card "Status do Ensaio" removido de todos os ensaios conforme solicitação
+  - Componente StatusIndicator removido do density-real.tsx
+  - Componente StatusIndicator removido do density-max-min.tsx
+  - Componente StatusIndicator removido do density-in-situ.tsx
+  - Interface simplificada mantendo funcionalidade completa
+  - Sistema operacional na porta 5000 com PostgreSQL carregando 3 ensaios detectados
 
 ## User Preferences
 

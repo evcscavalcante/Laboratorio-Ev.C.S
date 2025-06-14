@@ -351,7 +351,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
           <CardTitle className="flex items-center">
             <Info className="mr-2 text-blue-600" size={20} />
             Ensaio de Densidade In Situ - Método do Cilindro de Cravação
-            <StatusIndicator status="active" className="ml-auto" />
+
           </CardTitle>
         </CardHeader>
         <CardContent>

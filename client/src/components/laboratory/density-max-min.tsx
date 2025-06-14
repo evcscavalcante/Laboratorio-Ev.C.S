@@ -549,7 +549,7 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
       </div>
 
       {/* Status */}
-      <StatusIndicator status={calculations.results.status} description="Avaliação da consistência das determinações" />
+
 
       {/* General Information */}
       <Card>
