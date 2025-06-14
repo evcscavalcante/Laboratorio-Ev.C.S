@@ -1,17 +1,19 @@
-import { db } from "./db";
-import { users, densityInSituTests, realDensityTests, maxMinDensityTests } from "@shared/schema";
-import { eq } from "drizzle-orm";
-import bcrypt from "bcrypt";
-import {
+import { 
+  densityInSituTests,
+  realDensityTests,
+  maxMinDensityTests,
+  users,
   type DensityInSituTest,
-  type InsertDensityInSituTest,
   type RealDensityTest,
-  type InsertRealDensityTest,
   type MaxMinDensityTest,
+  type InsertDensityInSituTest,
+  type InsertRealDensityTest,
   type InsertMaxMinDensityTest,
   type User,
   type InsertUser
 } from "@shared/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
 export interface IStorage {
   // User operations for Authentication
@@ -19,7 +21,7 @@ export interface IStorage {
   getUsers(): Promise<User[]>;
   getUserByUsername(username: string): Promise<User | undefined>;
   upsertUser(user: InsertUser): Promise<User>;
-  createUser(user: any): Promise<User>;
+  createUser(user: InsertUser): Promise<User>;
 
   // Density In Situ
   createDensityInSituTest(test: InsertDensityInSituTest): Promise<DensityInSituTest>;
@@ -43,11 +45,11 @@ export interface IStorage {
   deleteMaxMinDensityTest(id: number): Promise<boolean>;
 }
 
-export class PostgreSQLStorage implements IStorage {
+export class DatabaseStorage implements IStorage {
   // User Management Methods
   async getUser(id: string): Promise<User | undefined> {
     try {
-      const [user] = await db.select().from(users).where(eq(users.id, id));
+      const [user] = await db.select().from(users).where(eq(users.id, parseInt(id)));
       return user || undefined;
     } catch (error) {
       console.error('Error getting user:', error);
@@ -74,27 +76,9 @@ export class PostgreSQLStorage implements IStorage {
     }
   }
 
-  async createUser(userData: any): Promise<User> {
+  async createUser(userData: InsertUser): Promise<User> {
     try {
-      const [user] = await db.insert(users).values({
-        id: userData.id,
-        username: userData.username,
-        name: userData.name,
-        email: userData.email,
-        password: userData.password,
-        role: userData.role,
-        organizationId: userData.organizationId,
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        profileImageUrl: userData.profileImageUrl,
-        isActive: userData.isActive,
-        active: userData.active,
-        permissions: userData.permissions,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        lastLogin: null
-      }).returning();
-      
+      const [user] = await db.insert(users).values(userData).returning();
       return user;
     } catch (error) {
       console.error('Error creating user:', error);
@@ -104,23 +88,18 @@ export class PostgreSQLStorage implements IStorage {
 
   async upsertUser(userData: InsertUser): Promise<User> {
     try {
-      // Try to get existing user
-      const existingUser = userData.id ? await this.getUser(userData.id) : null;
-      
+      // Try to find existing user by firebase_uid
+      const existingUser = userData.firebase_uid 
+        ? (await db.select().from(users).where(eq(users.firebase_uid, userData.firebase_uid)))[0]
+        : undefined;
+
       if (existingUser) {
         // Update existing user
         const [updatedUser] = await db
           .update(users)
-          .set({
-            username: userData.username || existingUser.username,
-            name: userData.name || existingUser.name,
-            email: userData.email || existingUser.email,
-            role: userData.role || existingUser.role,
-            updatedAt: new Date()
-          })
-          .where(eq(users.id, userData.id!))
+          .set(userData)
+          .where(eq(users.id, existingUser.id))
           .returning();
-          
         return updatedUser;
       } else {
         // Create new user
@@ -132,11 +111,11 @@ export class PostgreSQLStorage implements IStorage {
     }
   }
 
-  // Density In Situ Methods
-  async createDensityInSituTest(insertTest: InsertDensityInSituTest): Promise<DensityInSituTest> {
+  // Density In Situ Tests
+  async createDensityInSituTest(test: InsertDensityInSituTest): Promise<DensityInSituTest> {
     try {
-      const [test] = await db.insert(densityInSituTests).values(insertTest).returning();
-      return test;
+      const [newTest] = await db.insert(densityInSituTests).values(test).returning();
+      return newTest;
     } catch (error) {
       console.error('Error creating density in situ test:', error);
       throw error;
@@ -178,19 +157,19 @@ export class PostgreSQLStorage implements IStorage {
 
   async deleteDensityInSituTest(id: number): Promise<boolean> {
     try {
-      await db.delete(densityInSituTests).where(eq(densityInSituTests.id, id));
-      return true;
+      const result = await db.delete(densityInSituTests).where(eq(densityInSituTests.id, id));
+      return (result.rowCount ?? 0) > 0;
     } catch (error) {
       console.error('Error deleting density in situ test:', error);
       return false;
     }
   }
 
-  // Real Density Methods
-  async createRealDensityTest(insertTest: InsertRealDensityTest): Promise<RealDensityTest> {
+  // Real Density Tests
+  async createRealDensityTest(test: InsertRealDensityTest): Promise<RealDensityTest> {
     try {
-      const [test] = await db.insert(realDensityTests).values(insertTest).returning();
-      return test;
+      const [newTest] = await db.insert(realDensityTests).values(test).returning();
+      return newTest;
     } catch (error) {
       console.error('Error creating real density test:', error);
       throw error;
@@ -232,19 +211,19 @@ export class PostgreSQLStorage implements IStorage {
 
   async deleteRealDensityTest(id: number): Promise<boolean> {
     try {
-      await db.delete(realDensityTests).where(eq(realDensityTests.id, id));
-      return true;
+      const result = await db.delete(realDensityTests).where(eq(realDensityTests.id, id));
+      return (result.rowCount ?? 0) > 0;
     } catch (error) {
       console.error('Error deleting real density test:', error);
       return false;
     }
   }
 
-  // Max Min Density Methods
-  async createMaxMinDensityTest(insertTest: InsertMaxMinDensityTest): Promise<MaxMinDensityTest> {
+  // Max Min Density Tests
+  async createMaxMinDensityTest(test: InsertMaxMinDensityTest): Promise<MaxMinDensityTest> {
     try {
-      const [test] = await db.insert(maxMinDensityTests).values(insertTest).returning();
-      return test;
+      const [newTest] = await db.insert(maxMinDensityTests).values(test).returning();
+      return newTest;
     } catch (error) {
       console.error('Error creating max min density test:', error);
       throw error;
@@ -286,8 +265,8 @@ export class PostgreSQLStorage implements IStorage {
 
   async deleteMaxMinDensityTest(id: number): Promise<boolean> {
     try {
-      await db.delete(maxMinDensityTests).where(eq(maxMinDensityTests.id, id));
-      return true;
+      const result = await db.delete(maxMinDensityTests).where(eq(maxMinDensityTests.id, id));
+      return (result.rowCount ?? 0) > 0;
     } catch (error) {
       console.error('Error deleting max min density test:', error);
       return false;
@@ -295,4 +274,4 @@ export class PostgreSQLStorage implements IStorage {
   }
 }
 
-export const storage = new PostgreSQLStorage();
+export const storage = new DatabaseStorage();
