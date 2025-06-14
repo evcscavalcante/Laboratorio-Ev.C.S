@@ -180,8 +180,14 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Densidade in-situ agora salva corretamente no PostgreSQL
   - Validação de dados melhorada com conversão adequada de tipos
   - Funções de geração de PDF aprimoradas com logs detalhados e tratamento de erros
-  - Sistema detectando corretamente: 1 densidade in-situ, 2 densidade real, 9 máx/mín
+  - Sistema detectando corretamente: 1 densidade in-situ, 6 densidade real, 11 máx/mín
   - Todas as calculadoras com funcionalidade completa de salvamento e PDF
+- June 14, 2025: Feedback visual completo implementado em todos os botões
+  - Estado de loading adicionado em todos os botões de PDF (densidade in-situ, real, máx/mín)
+  - Botões mostram "Gerando PDF..." durante processamento e ficam desabilitados
+  - Problema de salvamento em densidade in-situ corrigido (removido .json() duplicado)
+  - Notificações toast melhoradas com feedback em tempo real
+  - Sistema com 18 ensaios detectados funcionando perfeitamente
 
 ## User Preferences
 
