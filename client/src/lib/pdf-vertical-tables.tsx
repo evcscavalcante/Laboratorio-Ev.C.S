@@ -1399,21 +1399,33 @@ export async function generateDensityInSituVerticalPDF(data: any, calculations: 
     
     const pdfDocument = <DensityInSituVerticalDocument data={data} calculations={calculations} />;
     const asPdf = pdf(pdfDocument);
+    
+    console.log('🔧 Gerando blob do PDF...');
     const blob = await asPdf.toBlob();
+    console.log('📦 Blob gerado:', blob.size, 'bytes');
     
     const url = URL.createObjectURL(blob);
-    const link = globalThis.document.createElement('a');
+    console.log('🔗 URL criada:', url);
+    
+    const link = document.createElement('a');
     link.href = url;
     link.download = `densidade-in-situ-${data.registrationNumber || 'ensaio'}-${new Date().toISOString().split('T')[0]}.pdf`;
-    globalThis.document.body.appendChild(link);
+    link.style.display = 'none';
+    
+    console.log('📥 Iniciando download:', link.download);
+    document.body.appendChild(link);
     link.click();
-    globalThis.document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+    
+    setTimeout(() => {
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      console.log('🧹 Limpeza concluída');
+    }, 100);
     
     console.log('✅ PDF gerado e baixado com sucesso');
   } catch (error) {
     console.error('❌ Erro ao gerar PDF:', error);
-    alert(`Erro ao gerar PDF: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
+    console.error('Stack trace:', error instanceof Error ? error.stack : 'N/A');
     throw error;
   }
 }
@@ -1427,21 +1439,33 @@ export async function generateMaxMinDensityVerticalPDF(data: any, calculations: 
     
     const pdfDocument = <MaxMinDensityVerticalDocument data={data} calculations={calculations} />;
     const asPdf = pdf(pdfDocument);
+    
+    console.log('🔧 Gerando blob do PDF...');
     const blob = await asPdf.toBlob();
+    console.log('📦 Blob gerado:', blob.size, 'bytes');
     
     const url = URL.createObjectURL(blob);
-    const link = globalThis.document.createElement('a');
+    console.log('🔗 URL criada:', url);
+    
+    const link = document.createElement('a');
     link.href = url;
     link.download = `densidade-max-min-${data.registrationNumber || 'ensaio'}-${new Date().toISOString().split('T')[0]}.pdf`;
-    globalThis.document.body.appendChild(link);
+    link.style.display = 'none';
+    
+    console.log('📥 Iniciando download:', link.download);
+    document.body.appendChild(link);
     link.click();
-    globalThis.document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+    
+    setTimeout(() => {
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      console.log('🧹 Limpeza concluída');
+    }, 100);
     
     console.log('✅ PDF gerado e baixado com sucesso');
   } catch (error) {
     console.error('❌ Erro ao gerar PDF:', error);
-    alert(`Erro ao gerar PDF: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
+    console.error('Stack trace:', error instanceof Error ? error.stack : 'N/A');
     throw error;
   }
 }
@@ -1455,21 +1479,33 @@ export async function generateRealDensityVerticalPDF(data: any, calculations: an
     
     const pdfDocument = <RealDensityVerticalDocument data={data} calculations={calculations} />;
     const asPdf = pdf(pdfDocument);
+    
+    console.log('🔧 Gerando blob do PDF...');
     const blob = await asPdf.toBlob();
+    console.log('📦 Blob gerado:', blob.size, 'bytes');
     
     const url = URL.createObjectURL(blob);
-    const link = globalThis.document.createElement('a');
+    console.log('🔗 URL criada:', url);
+    
+    const link = document.createElement('a');
     link.href = url;
     link.download = `densidade-real-${data.registrationNumber || 'ensaio'}-${new Date().toISOString().split('T')[0]}.pdf`;
-    globalThis.document.body.appendChild(link);
+    link.style.display = 'none';
+    
+    console.log('📥 Iniciando download:', link.download);
+    document.body.appendChild(link);
     link.click();
-    globalThis.document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+    
+    setTimeout(() => {
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      console.log('🧹 Limpeza concluída');
+    }, 100);
     
     console.log('✅ PDF gerado e baixado com sucesso');
   } catch (error) {
     console.error('❌ Erro ao gerar PDF:', error);
-    alert(`Erro ao gerar PDF: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
+    console.error('Stack trace:', error instanceof Error ? error.stack : 'N/A');
     throw error;
   }
 }
