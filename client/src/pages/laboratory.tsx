@@ -19,20 +19,32 @@ export default function Laboratory() {
   const [testId, setTestId] = useState<number | undefined>();
   const [mode, setMode] = useState<'view' | 'edit' | 'new'>('new');
 
-  // Buscar ensaios dos três tipos
+  // Buscar ensaios dos três tipos usando endpoints temporários
   const { data: densityInSituTests = [] } = useQuery({
-    queryKey: ['/api/tests/density-in-situ'],
-    queryFn: () => apiRequest('GET', '/api/tests/density-in-situ').catch(() => [])
+    queryKey: ['/api/tests/density-in-situ/temp'],
+    queryFn: async () => {
+      const response = await fetch('/api/tests/density-in-situ/temp');
+      if (!response.ok) return [];
+      return response.json();
+    }
   });
 
   const { data: realDensityTests = [] } = useQuery({
-    queryKey: ['/api/tests/real-density'],
-    queryFn: () => apiRequest('GET', '/api/tests/real-density').catch(() => [])
+    queryKey: ['/api/tests/real-density/temp'],
+    queryFn: async () => {
+      const response = await fetch('/api/tests/real-density/temp');
+      if (!response.ok) return [];
+      return response.json();
+    }
   });
 
   const { data: maxMinDensityTests = [] } = useQuery({
-    queryKey: ['/api/tests/max-min-density'],
-    queryFn: () => apiRequest('GET', '/api/tests/max-min-density').catch(() => [])
+    queryKey: ['/api/tests/max-min-density/temp'],
+    queryFn: async () => {
+      const response = await fetch('/api/tests/max-min-density/temp');
+      if (!response.ok) return [];
+      return response.json();
+    }
   });
 
   // Combinar todos os ensaios
