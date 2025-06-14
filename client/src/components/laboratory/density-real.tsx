@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import StatusIndicator from "./status-indicator";
+
 import { calculateMoistureContent, getWaterDensity } from "@/lib/calculations";
 import { generateRealDensityVerticalPDF } from "@/lib/pdf-vertical-tables";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -392,7 +392,7 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
       </div>
 
       {/* Status */}
-      <StatusIndicator status={calculations.results.status} description="APROVADO se diferença ≤ 0.02 g/cm³" />
+
 
       {/* General Information */}
       <Card>

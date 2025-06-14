@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import StatusIndicator from "./status-indicator";
+
 import { calculateMoistureContent, calculateDensityInSitu } from "@/lib/calculations";
 import { generateDensityInSituVerticalPDF } from "@/lib/pdf-vertical-tables";
 import { useMutation, useQuery } from "@tanstack/react-query";
