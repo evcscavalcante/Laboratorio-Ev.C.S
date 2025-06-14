@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-
+import StatusIndicator from "./status-indicator";
 import { generateMaxMinDensityVerticalPDF } from "@/lib/pdf-vertical-tables";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
@@ -549,7 +549,7 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
       </div>
 
       {/* Status */}
-
+      <StatusIndicator status={calculations.results.status} description="Avaliação da consistência das determinações" />
 
       {/* General Information */}
       <Card>
