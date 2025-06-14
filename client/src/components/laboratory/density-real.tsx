@@ -52,6 +52,7 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
   const [equipamentos, setEquipamentos] = useState<{capsulas: any[]}>({
     capsulas: []
   });
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
   // Query para buscar dados do ensaio específico
   const { data: testData, isLoading: loadingTest } = useQuery({
@@ -359,6 +360,7 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
 
   const handleGeneratePDF = async () => {
     try {
+      setIsGeneratingPDF(true);
       toast({
         title: "🔄 Gerando PDF...",
         description: "Preparando relatório do ensaio de densidade real",
@@ -377,6 +379,8 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
         variant: "destructive",
         duration: 5000,
       });
+    } finally {
+      setIsGeneratingPDF(false);
     }
   };
 
@@ -888,9 +892,10 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
             <Button 
               onClick={handleGeneratePDF}
               className="flex-1 min-w-[200px] bg-green-600 hover:bg-green-700"
+              disabled={isGeneratingPDF}
             >
               <FileText className="mr-2" size={16} />
-              Gerar PDF
+              {isGeneratingPDF ? "Gerando PDF..." : "Gerar PDF"}
             </Button>
             <Button 
               onClick={handleClear}

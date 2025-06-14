@@ -64,6 +64,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
     capsulas: [],
     cilindros: []
   });
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
   // Query para buscar dados do ensaio específico
   const { data: testData, isLoading: loadingTest } = useQuery({
@@ -101,13 +102,13 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
       console.log("🔄 Enviando dados do ensaio:", testData);
       const response = await apiRequest("POST", "/api/tests/density-in-situ/temp", testData);
       console.log("📡 Resposta da API:", response);
-      return response.json();
+      return response;
     },
     onSuccess: (result) => {
       console.log("✅ Ensaio salvo com sucesso:", result);
       toast({
         title: "✅ Ensaio Salvo com Sucesso!",
-        description: `Ensaio "${result.registrationNumber || result.id}" foi salvo no banco de dados PostgreSQL.`,
+        description: "Ensaio de densidade in-situ salvo no banco PostgreSQL.",
         duration: 5000,
       });
       queryClient.invalidateQueries({ queryKey: ["/api/tests/density-in-situ/temp"] });
@@ -1043,6 +1044,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
             <Button 
               onClick={async () => {
                 try {
+                  setIsGeneratingPDF(true);
                   toast({
                     title: "🔄 Gerando PDF...",
                     description: "Preparando relatório do ensaio de densidade in-situ",
@@ -1061,13 +1063,16 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                     variant: "destructive",
                     duration: 5000,
                   });
+                } finally {
+                  setIsGeneratingPDF(false);
                 }
               }}
               variant="outline"
               className="flex-1 min-w-[200px]"
+              disabled={isGeneratingPDF}
             >
               <FileText className="mr-2" size={16} />
-              Gerar PDF
+              {isGeneratingPDF ? "Gerando PDF..." : "Gerar PDF"}
             </Button>
           </div>
         </CardContent>
