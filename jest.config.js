@@ -1,11 +1,12 @@
-export default {
+module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['<rootDir>/client/src/test/setup.ts'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/client/src/$1',
     '^@shared/(.*)$': '<rootDir>/shared/$1',
-    '^@assets/(.*)$': '<rootDir>/attached_assets/$1'
+    '^@assets/(.*)$': '<rootDir>/attached_assets/$1',
+    '\\.(css|less|scss|sass)$': 'identity-obj-proxy'
   },
   testMatch: [
     '<rootDir>/client/src/**/*.test.{js,jsx,ts,tsx}',
@@ -22,13 +23,9 @@ export default {
   coverageDirectory: 'coverage',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
   transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest'
-  },
-  extensionsToTreatAsEsm: ['.ts', '.tsx'],
-  globals: {
-    'ts-jest': {
-      useESM: true,
+    '^.+\\.(ts|tsx)$': ['ts-jest', {
       tsconfig: 'tsconfig.json'
-    }
-  }
+    }]
+  },
+  testTimeout: 10000
 };

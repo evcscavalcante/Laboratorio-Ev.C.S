@@ -12,7 +12,7 @@ import { db } from "./db";
 import { subscriptionPlans, users } from "@shared/schema";
 import { eq } from "drizzle-orm";
 import { initializeAdminUser } from "./init-admin";
-import { storage } from "./storage-fixed";
+import { storage } from "./storage-corrected";
 
 async function startServer() {
   const app = express();
