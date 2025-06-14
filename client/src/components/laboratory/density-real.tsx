@@ -227,10 +227,14 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
     mutationFn: async (testData: any) => {
       return apiRequest("POST", "/api/tests/real-density/temp", testData);
     },
-    onSuccess: () => {
-      toast({ title: "Ensaio salvo com sucesso!" });
+    onSuccess: (result) => {
+      const response = result.json ? result.json() : result;
+      toast({ 
+        title: "✅ Ensaio Salvo com Sucesso!",
+        description: `Ensaio de densidade real salvo no banco PostgreSQL.`,
+        duration: 5000,
+      });
       queryClient.invalidateQueries({ queryKey: ["/api/tests/real-density/temp"] });
-      // Limpar progresso salvo após salvamento bem-sucedido
       localStorage.removeItem('density-real-progress');
       console.log('🗑️ Progresso do ensaio de densidade real limpo após salvamento');
     },
@@ -353,8 +357,27 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
     saveTestMutation.mutate(testData);
   };
 
-  const handleGeneratePDF = () => {
-    generateRealDensityVerticalPDF(data, calculations);
+  const handleGeneratePDF = async () => {
+    try {
+      toast({
+        title: "🔄 Gerando PDF...",
+        description: "Preparando relatório do ensaio de densidade real",
+        duration: 3000,
+      });
+      await generateRealDensityVerticalPDF(data, calculations);
+      toast({
+        title: "📄 PDF Gerado com Sucesso!",
+        description: "O relatório foi baixado para seu computador.",
+        duration: 5000,
+      });
+    } catch (error) {
+      toast({
+        title: "❌ Erro ao Gerar PDF",
+        description: "Não foi possível gerar o relatório. Verifique os dados.",
+        variant: "destructive",
+        duration: 5000,
+      });
+    }
   };
 
   const handleClear = () => {

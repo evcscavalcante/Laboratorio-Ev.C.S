@@ -106,8 +106,9 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
     onSuccess: (result) => {
       console.log("✅ Ensaio salvo com sucesso:", result);
       toast({
-        title: "Ensaio salvo com sucesso",
-        description: "O ensaio foi salvo no banco de dados.",
+        title: "✅ Ensaio Salvo com Sucesso!",
+        description: `Ensaio "${result.registrationNumber || result.id}" foi salvo no banco de dados PostgreSQL.`,
+        duration: 5000,
       });
       queryClient.invalidateQueries({ queryKey: ["/api/tests/density-in-situ/temp"] });
       localStorage.removeItem('density-in-situ-progress');
@@ -1040,7 +1041,28 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
               {saveTestMutation.isPending ? "Salvando..." : "Salvar Ensaio"}
             </Button>
             <Button 
-              onClick={() => generateDensityInSituVerticalPDF(data, calculations)}
+              onClick={async () => {
+                try {
+                  toast({
+                    title: "🔄 Gerando PDF...",
+                    description: "Preparando relatório do ensaio de densidade in-situ",
+                    duration: 3000,
+                  });
+                  await generateDensityInSituVerticalPDF(data, calculations);
+                  toast({
+                    title: "📄 PDF Gerado com Sucesso!",
+                    description: "O relatório foi baixado para seu computador.",
+                    duration: 5000,
+                  });
+                } catch (error) {
+                  toast({
+                    title: "❌ Erro ao Gerar PDF",
+                    description: "Não foi possível gerar o relatório. Verifique os dados.",
+                    variant: "destructive",
+                    duration: 5000,
+                  });
+                }
+              }}
               variant="outline"
               className="flex-1 min-w-[200px]"
             >

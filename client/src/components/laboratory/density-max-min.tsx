@@ -341,10 +341,13 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
     mutationFn: async (testData: any) => {
       return apiRequest("POST", "/api/tests/max-min-density/temp", testData);
     },
-    onSuccess: () => {
-      toast({ title: "Ensaio salvo com sucesso!" });
+    onSuccess: (result) => {
+      toast({ 
+        title: "✅ Ensaio Salvo com Sucesso!",
+        description: "Ensaio de densidade máx/mín salvo no banco PostgreSQL.",
+        duration: 5000,
+      });
       queryClient.invalidateQueries({ queryKey: ["/api/tests/max-min-density/temp"] });
-      // Limpar progresso salvo após salvamento bem-sucedido
       localStorage.removeItem('density-max-min-progress');
       console.log('🗑️ Progresso do ensaio de densidade máx/mín limpo após salvamento');
     },
@@ -518,8 +521,27 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
     saveTestMutation.mutate(testData);
   };
 
-  const handleGeneratePDF = () => {
-    generateMaxMinDensityVerticalPDF(data, calculations);
+  const handleGeneratePDF = async () => {
+    try {
+      toast({
+        title: "🔄 Gerando PDF...",
+        description: "Preparando relatório do ensaio de densidade máx/mín",
+        duration: 3000,
+      });
+      await generateMaxMinDensityVerticalPDF(data, calculations);
+      toast({
+        title: "📄 PDF Gerado com Sucesso!",
+        description: "O relatório foi baixado para seu computador.",
+        duration: 5000,
+      });
+    } catch (error) {
+      toast({
+        title: "❌ Erro ao Gerar PDF",
+        description: "Não foi possível gerar o relatório. Verifique os dados.",
+        variant: "destructive",
+        duration: 5000,
+      });
+    }
   };
 
   const handleClear = () => {
