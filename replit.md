@@ -152,6 +152,14 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Componente StatusIndicator removido do density-in-situ.tsx
   - Interface simplificada mantendo funcionalidade completa
   - Sistema operacional na porta 5000 com PostgreSQL carregando 3 ensaios detectados
+- June 14, 2025: Sistema de testes Jest configurado e erros TypeScript resolvidos
+  - Jest configuração atualizada para resolver warnings de configuração deprecated
+  - Criado storage-corrected.ts com implementação Drizzle ORM correta
+  - Servidor atualizado para usar storage corrigido (storage-corrected.ts)
+  - Configuração Jest modernizada: removido globals deprecated, adicionado timeout
+  - Testes básicos criados para Button component e Laboratory component
+  - Sistema compilando sem erros críticos de TypeScript
+  - Servidor rodando estável na porta 5000 com autenticação híbrida funcionando
 
 ## User Preferences
 
