@@ -273,8 +273,13 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
   };
 
   const handleSave = () => {
+    console.log("🚀 Botão Salvar clicado!");
+    console.log("📊 Dados atuais:", data);
+    console.log("🧮 Cálculos atuais:", calculations);
+    
     // Validação básica dos campos obrigatórios
     if (!data.registrationNumber || !data.operator || !data.material) {
+      console.log("❌ Validação falhou - campos obrigatórios vazios");
       toast({
         title: "Campos obrigatórios",
         description: "Preencha pelo menos Registro, Operador e Material",
@@ -282,6 +287,8 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
       });
       return;
     }
+    
+    console.log("✅ Validação passou - preparando dados para envio");
 
     const testData = {
       registrationNumber: data.registrationNumber || '',
