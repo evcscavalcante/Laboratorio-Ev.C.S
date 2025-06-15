@@ -83,7 +83,7 @@ export default function Laboratory() {
       type: 'real-density',
       icon: '⚛️',
       name: 'Massa Específica dos Sólidos',
-      description: 'NBR 6508 - Fração passante na peneira de 2,0 mm',
+      description: 'NBR 17212:2025 - Fração passante na peneira de 2,0 mm',
       count: allTests.filter(t => t.type === 'real-density').length,
       route: '/solos/densidade-real',
       color: 'green'
