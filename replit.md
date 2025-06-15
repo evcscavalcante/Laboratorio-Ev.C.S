@@ -460,7 +460,12 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Implementada transição com translate-x para mobile e sempre visível em desktop (lg:translate-x-0)
   - Layout principal ajustado com margem fixa de 64px em telas grandes (lg:ml-64)
   - Sistema de responsividade otimizado: móvel expansível, desktop sempre visível
-  - Botão de menu mantido apenas para mobile com overlay escuro
+  - Botão de menu mantido apenas para mobile con overlay escuro
+- June 15, 2025: Margens laterais otimizadas para aproveitamento máximo da tela
+  - Margens laterais reduzidas drasticamente (px-1 mobile, px-2 desktop)
+  - Cabeçalho TestHeader com padding mínimo (p-1 md:p-2)
+  - Proporções de colunas ajustadas no cabeçalho (1fr:2fr - descrição mais estreita, dados mais largos)
+  - Layout otimizado para dispositivos móveis com aproveitamento máximo do espaço
 
 ## User Preferences
 
