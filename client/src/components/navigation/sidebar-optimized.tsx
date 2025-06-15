@@ -175,10 +175,11 @@ export default function Sidebar({ isOpen }: SidebarProps) {
 
   const menuItems = buildMenuItems();
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed left-0 top-0 z-40 h-screen w-64 bg-white border-r border-gray-200 shadow-lg flex flex-col">
+    <div className={cn(
+      "fixed left-0 top-0 z-40 h-screen w-64 bg-white border-r border-gray-200 shadow-lg flex flex-col transition-transform duration-300",
+      isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+    )}>
       {/* Header */}
       <div className="flex items-center justify-between p-6 border-b border-gray-200">
         <div className="flex items-center gap-3">

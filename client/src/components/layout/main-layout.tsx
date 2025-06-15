@@ -46,7 +46,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
       <Sidebar isOpen={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} />
 
       {/* Main content */}
-      <div className={`transition-all duration-300 ${sidebarOpen ? 'lg:ml-64' : 'ml-0'}`}>
+      <div className="transition-all duration-300 lg:ml-64">
         <main className="min-h-screen">
           <div className="p-4 lg:p-6">
             <Breadcrumb />

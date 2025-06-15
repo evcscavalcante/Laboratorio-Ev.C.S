@@ -631,56 +631,6 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
 
           {/* Médias - Densidade In Situ */}
           <div className="mt-4 p-4 bg-blue-50 rounded-lg">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-700">Molde + Solo Médio (g):</span>
-              <span className="text-lg font-bold text-blue-600 font-mono">
-                {(() => {
-                  const val1 = data.det1.moldeSolo || 0;
-                  const val2 = data.det2.moldeSolo || 0;
-                  return val1 > 0 || val2 > 0 ? ((val1 + val2) / 2).toFixed(2) : '0.00';
-                })()}
-              </span>
-            </div>
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-700">Molde Médio (g):</span>
-              <span className="text-lg font-bold text-blue-600 font-mono">
-                {(() => {
-                  const val1 = data.det1.molde || 0;
-                  const val2 = data.det2.molde || 0;
-                  return val1 > 0 || val2 > 0 ? ((val1 + val2) / 2).toFixed(2) : '0.00';
-                })()}
-              </span>
-            </div>
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-700">Solo Médio (g):</span>
-              <span className="text-lg font-bold text-blue-600 font-mono">
-                {(() => {
-                  const val1 = calculations.det1.soil || 0;
-                  const val2 = calculations.det2.soil || 0;
-                  return val1 > 0 || val2 > 0 ? ((val1 + val2) / 2).toFixed(2) : '0.00';
-                })()}
-              </span>
-            </div>
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-700">Volume Médio (cm³):</span>
-              <span className="text-lg font-bold text-blue-600 font-mono">
-                {(() => {
-                  const val1 = data.det1.volume || 0;
-                  const val2 = data.det2.volume || 0;
-                  return val1 > 0 || val2 > 0 ? ((val1 + val2) / 2).toFixed(2) : '0.00';
-                })()}
-              </span>
-            </div>
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-700">γnat úmido Médio (g/cm³):</span>
-              <span className="text-lg font-bold text-blue-600 font-mono">
-                {(() => {
-                  const val1 = calculations.det1.gammaNatWet || 0;
-                  const val2 = calculations.det2.gammaNatWet || 0;
-                  return val1 > 0 || val2 > 0 ? ((val1 + val2) / 2).toFixed(3) : '0.000';
-                })()}
-              </span>
-            </div>
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium text-gray-700">γnat seco Médio (g/cm³):</span>
               <span className="text-lg font-bold text-blue-600 font-mono">

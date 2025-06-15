@@ -450,10 +450,17 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Terminologia técnica ajustada conforme especificação
 - June 15, 2025: Tabela de densidade in-situ padronizada com médias embaixo
   - Corrigida implementação: médias embaixo da tabela (não lateral) seguindo padrão das umidades
-  - Seção "Médias das Determinações" em card amarelo separado
-  - Cálculos automáticos para: Molde + Solo, Molde, Solo, Volume, γnat úmido, γnat seco
-  - Tabela principal limpa com apenas 2 colunas de determinações
+  - Seção "Médias das Determinações" em card azul seguindo formato exato das médias de umidade
+  - Layout vertical com cada média em linha separada (formato flex justify-between)
+  - Cálculos matemáticos corretos usando fórmula (valor1 + valor2) / 2
+  - Validação adequada para casos sem dados (mostra valores apropriados)
   - Design consistente com outras calculadoras do sistema
+- June 15, 2025: Sidebar responsiva corrigida para telas grandes
+  - Problema identificado: sidebar só aparecia em telas pequenas
+  - Implementada transição com translate-x para mobile e sempre visível em desktop (lg:translate-x-0)
+  - Layout principal ajustado com margem fixa de 64px em telas grandes (lg:ml-64)
+  - Sistema de responsividade otimizado: móvel expansível, desktop sempre visível
+  - Botão de menu mantido apenas para mobile com overlay escuro
 
 ## User Preferences
 
