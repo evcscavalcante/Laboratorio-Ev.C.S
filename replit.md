@@ -194,6 +194,12 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Queries React Query otimizadas - removidas requisições desnecessárias que causavam overhead
   - Problemas críticos de variáveis não definidas corrigidos após limpeza de código
   - Sistema funcionando com performance otimizada e interface limpa
+- June 15, 2025: Correção crítica no componente EquipamentosGestao
+  - Erro TypeError corrigido na função getConferenciaStatus
+  - Validação robusta implementada para aceitar Date ou string
+  - Tratamento de dados inválidos com fallback para 'pendente'
+  - Sistema estável detectando 18 ensaios salvos (1 densidade in-situ, 6 densidade real, 11 densidade máx/mín)
+  - Reinicializações do servidor identificadas como comportamento normal do Vite em desenvolvimento
 
 ## User Preferences
 
