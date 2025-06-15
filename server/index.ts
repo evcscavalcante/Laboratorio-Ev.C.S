@@ -2,6 +2,7 @@ import express, { type Request, Response, NextFunction } from "express";
 import { createServer } from "http";
 import session from "express-session";
 import cors from "cors";
+import path from "path";
 import hybridAuthRoutes, { verifyFirebaseToken } from "./auth-firebase-hybrid";
 import { registerRoutes } from "./routes";
 import { registerPaymentRoutes } from "./payment-routes";
@@ -386,12 +387,19 @@ async function startServer() {
   // Setup Vite AFTER all API routes are defined
   try {
     if (process.env.NODE_ENV === "development") {
+      console.log('Tentando configurar Vite...');
       await setupVite(app, server);
+      console.log('Vite configurado com sucesso');
     } else {
       serveStatic(app);
     }
   } catch (error) {
-    console.error('Error setting up Vite:', error);
+    console.error('Erro ao configurar Vite, continuando sem ele:', error);
+    // Servir arquivos estáticos como fallback
+    app.use(express.static('dist'));
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(process.cwd(), 'dist', 'index.html'));
+    });
   }
 
   const PORT = parseInt(process.env.PORT || "5000", 10);
