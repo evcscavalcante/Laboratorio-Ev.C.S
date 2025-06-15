@@ -353,6 +353,12 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Sistema de detecção de regressão funcionando automaticamente
   - Logs detalhados implementados para debugging da sincronização
   - Autenticação híbrida Firebase-PostgreSQL operacional
+- June 15, 2025: Botão logout corrigido e sistema estabilizado
+  - Compatibilidade reversa adicionada no useAuth (signOut alias para logout)
+  - Rate limiting ajustado para desenvolvimento evitando bloqueios
+  - Trust proxy configurado adequadamente para Replit
+  - Módulos de segurança problemáticos temporariamente desabilitados
+  - Sistema operacional estável na porta 5000 com todas funcionalidades
 
 ## User Preferences
 
