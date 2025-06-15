@@ -110,36 +110,20 @@ class EnsaiosSavingTester {
     
     try {
       const testData = {
-        operador: 'Operador Teste',
-        responsavelCalculo: 'Responsável Teste',
-        verificador: 'Verificador Teste',
-        norte: '123456',
-        este: '654321',
-        cota: '100.50',
-        quadrante: 'NE',
-        camada: 'Superficial',
-        tempo: 'sol_forte',
-        amostraReensaiada: false,
-        balanca: 'Balança Digital 0.01g',
-        estufa: 'Estufa 105°C',
-        termometro: 'Termômetro Digital',
-        cronometro: 'Cronômetro Digital',
-        
-        // Dados específicos do ensaio
-        picnometroId: 'PIC-001',
-        massaPicnometro: 125.50,
-        massaPicnometroSolo: 175.25,
-        massaPicnometroSoloAgua: 675.80,
-        massaPicnometroAgua: 625.30,
-        temperatura: 23.5,
-        
-        // Segunda determinação
-        picnometroId2: 'PIC-002',
-        massaPicnometro2: 126.20,
-        massaPicnometroSolo2: 176.15,
-        massaPicnometroSoloAgua2: 676.45,
-        massaPicnometroAgua2: 626.10,
-        temperatura2: 23.8
+        registrationNumber: 'TEST-REAL-001',
+        date: '2025-06-15',
+        operator: 'Operador Teste',
+        material: 'Solo Teste',
+        origin: 'Laboratório Teste',
+        moisture: {
+          det1: { capsule: 'CAP-1', wetTare: 45.2, dryTare: 38.5, tare: 20.1 },
+          det2: { capsule: 'CAP-2', wetTare: 44.8, dryTare: 38.1, tare: 19.9 },
+          det3: { capsule: 'CAP-3', wetTare: 43.5, dryTare: 37.2, tare: 20.3 }
+        },
+        picnometer: {
+          det1: { massaPicnometro: 125.50, massaPicAmostraAgua: 675.80, massaPicAgua: 625.30, temperatura: 23.5, massaSoloUmido: 50.0 },
+          det2: { massaPicnometro: 126.20, massaPicAmostraAgua: 676.45, massaPicAgua: 626.10, temperatura: 23.8, massaSoloUmido: 50.5 }
+        }
       };
 
       const response = await fetch(`${this.baseUrl}/api/tests/densidade-real/temp`, {
@@ -177,47 +161,11 @@ class EnsaiosSavingTester {
     
     try {
       const testData = {
-        operador: 'Operador Teste',
-        responsavelCalculo: 'Responsável Teste',
-        verificador: 'Verificador Teste',
-        norte: '123456',
-        este: '654321',
-        cota: '100.50',
-        quadrante: 'NE',
-        camada: 'Superficial',
-        tempo: 'sol_forte',
-        amostraReensaiada: false,
-        balanca: 'Balança Digital 0.01g',
-        estufa: 'Estufa 105°C',
-        termometro: 'Termômetro Digital',
-        cronometro: 'Cronômetro Digital',
-        
-        // Dados específicos do ensaio
-        massaEspecificaReal: 2.68,
-        
-        // Densidade Máxima
-        moldeMaxId: 'MOL-MAX-01',
-        massaMoldeMax: 2150.5,
-        massaMoldeSoloMax: 4350.8,
-        volumeMoldeMax: 1000.0,
-        
-        // Segunda determinação máxima
-        moldeMaxId2: 'MOL-MAX-02',
-        massaMoldeMax2: 2148.2,
-        massaMoldeSoloMax2: 4348.6,
-        volumeMoldeMax2: 1000.0,
-        
-        // Densidade Mínima
-        moldeMinId: 'MOL-MIN-01',
-        massaMoldeMin: 1850.3,
-        massaMoldeSoloMin: 3650.7,
-        volumeMoldeMin: 1000.0,
-        
-        // Segunda determinação mínima
-        moldeMinId2: 'MOL-MIN-02',
-        massaMoldeMin2: 1852.1,
-        massaMoldeSoloMin2: 3652.4,
-        volumeMoldeMin2: 1000.0
+        registrationNumber: 'TEST-MAX-MIN-001',
+        date: '2025-06-15',
+        operator: 'Operador Teste MaxMin',
+        material: 'Solo Granular Teste',
+        origin: 'Laboratório MaxMin'
       };
 
       const response = await fetch(`${this.baseUrl}/api/tests/densidade-max-min/temp`, {
