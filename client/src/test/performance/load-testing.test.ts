@@ -172,7 +172,7 @@ describe('Testes de Performance e Escalabilidade', () => {
       const endTime = performance.now();
       const calculationTime = endTime - startTime;
 
-      expect(calculations.averageDensity).toBeGreaterThan(0);
+      expect((calculations as any).averageDensity).toBeGreaterThan(0);
       expect(calculationTime).toBeLessThan(50);
     });
 
