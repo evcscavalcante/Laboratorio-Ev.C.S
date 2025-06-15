@@ -39,6 +39,7 @@ interface TestHeaderProps {
   onRegistroChange?: (value: string) => void;
   onNorteChange?: (value: string) => void;
   onEsteChange?: (value: string) => void;
+  onCotaChange?: (value: string) => void;
   onQuadranteChange?: (value: string) => void;
   onCamadaChange?: (value: string) => void;
   onFvsChange?: (value: string) => void;
@@ -69,6 +70,7 @@ export default function TestHeader({
   onRegistroChange,
   onNorteChange,
   onEsteChange,
+  onCotaChange,
   onQuadranteChange,
   onCamadaChange,
   onFvsChange

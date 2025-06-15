@@ -127,6 +127,12 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
           ...parsedData,
           date: parsedData.date || new Date().toISOString().split('T')[0],
           time: parsedData.time || new Date().toTimeString().slice(0, 5),
+          north: parsedData.north || "",
+          east: parsedData.east || "",
+          elevation: parsedData.elevation || "",
+          fvs: parsedData.fvs || "",
+          weather: parsedData.weather || "",
+          resampled: parsedData.resampled || false,
         };
       }
     } catch (error) {
@@ -149,6 +155,12 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
       ovenId: "",
       realDensityRef: "",
       maxMinDensityRef: "",
+      north: "",
+      east: "",
+      elevation: "",
+      fvs: "",
+      weather: "",
+      resampled: false,
       det1: { cylinderNumber: "", moldeSolo: 0, molde: 0, volume: 0 },
       det2: { cylinderNumber: "", moldeSolo: 0, molde: 0, volume: 0 },
       moistureTop1: { capsule: "", wetTare: 0, dryTare: 0, tare: 0 },
