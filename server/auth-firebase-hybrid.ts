@@ -80,11 +80,11 @@ router.post('/api/auth/sync-user', verifyFirebaseToken, async (req: Request, res
       console.log('📝 Criando novo usuário no banco de dados...');
       // Se não existe, criar no banco
       await db.insert(users).values({
-        firebaseUid: user.uid,
+        firebase_uid: user.uid,
         email: user.email,
         name: user.name,
         role: user.role,
-        isActive: true
+        active: true
       });
     }
     

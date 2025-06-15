@@ -347,6 +347,12 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Hook useAuth corrigido para enviar dados JSON válidos na sincronização
   - Testes específicos criados para detectar problemas de autenticação (test-auth-sync.js)
   - Sistema de detecção automática de problemas de API implementado
+- June 15, 2025: Sistema de autenticação Firebase totalmente funcional
+  - Problema de schema corrigido: firebase_uid vs firebaseUid no PostgreSQL
+  - Scripts de teste convertidos para módulos ES6 compatíveis
+  - Sistema de detecção de regressão funcionando automaticamente
+  - Logs detalhados implementados para debugging da sincronização
+  - Autenticação híbrida Firebase-PostgreSQL operacional
 
 ## User Preferences
 
