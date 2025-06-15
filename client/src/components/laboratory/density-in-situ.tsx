@@ -477,7 +477,6 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                   <TableHead className="w-[200px]">Parâmetro</TableHead>
                   <TableHead className="text-center">Determinação 1</TableHead>
                   <TableHead className="text-center">Determinação 2</TableHead>
-                  <TableHead className="text-center bg-yellow-50">Média</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -499,9 +498,6 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                       placeholder="Número do cilindro"
                     />
                   </TableCell>
-                  <TableCell className="bg-gray-100">
-                    <span className="text-xs text-gray-500">-</span>
-                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell className="font-medium">Molde + Solo (g)</TableCell>
@@ -521,15 +517,6 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                       value={data.det2.moldeSolo}
                       onChange={(e) => updateData("det2", { ...data.det2, moldeSolo: parseFloat(e.target.value) || 0 })}
                       placeholder="0.00"
-                    />
-                  </TableCell>
-                  <TableCell className="bg-yellow-100">
-                    <Input
-                      type="number"
-                      step="0.01"
-                      value={((data.det1.moldeSolo + data.det2.moldeSolo) / 2).toFixed(2)}
-                      readOnly
-                      className="bg-yellow-100 border-yellow-300 font-mono font-bold"
                     />
                   </TableCell>
                 </TableRow>
@@ -553,15 +540,6 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                       placeholder="0.00"
                     />
                   </TableCell>
-                  <TableCell className="bg-yellow-100">
-                    <Input
-                      type="number"
-                      step="0.01"
-                      value={((data.det1.molde + data.det2.molde) / 2).toFixed(2)}
-                      readOnly
-                      className="bg-yellow-100 border-yellow-300 font-mono font-bold"
-                    />
-                  </TableCell>
                 </TableRow>
                 <TableRow className="bg-blue-50">
                   <TableCell className="font-medium">Solo (g) <Calculator className="inline ml-1" size={12} /></TableCell>
@@ -581,15 +559,6 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                       value={calculations.det2.soil.toFixed(2)}
                       readOnly
                       className="bg-blue-50 border-blue-200 font-mono"
-                    />
-                  </TableCell>
-                  <TableCell className="bg-yellow-100">
-                    <Input
-                      type="number"
-                      step="0.01"
-                      value={((calculations.det1.soil + calculations.det2.soil) / 2).toFixed(2)}
-                      readOnly
-                      className="bg-yellow-100 border-yellow-300 font-mono font-bold"
                     />
                   </TableCell>
                 </TableRow>
@@ -613,15 +582,6 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                       placeholder="0.00"
                     />
                   </TableCell>
-                  <TableCell className="bg-yellow-100">
-                    <Input
-                      type="number"
-                      step="0.01"
-                      value={((data.det1.volume + data.det2.volume) / 2).toFixed(2)}
-                      readOnly
-                      className="bg-yellow-100 border-yellow-300 font-mono font-bold"
-                    />
-                  </TableCell>
                 </TableRow>
                 <TableRow className="bg-blue-50">
                   <TableCell className="font-medium">γnat úmido (g/cm³) <Calculator className="inline ml-1" size={12} /></TableCell>
@@ -641,15 +601,6 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                       value={calculations.det2.gammaNatWet.toFixed(3)}
                       readOnly
                       className="bg-blue-50 border-blue-200 font-mono"
-                    />
-                  </TableCell>
-                  <TableCell className="bg-yellow-100">
-                    <Input
-                      type="number"
-                      step="0.001"
-                      value={((calculations.det1.gammaNatWet + calculations.det2.gammaNatWet) / 2).toFixed(3)}
-                      readOnly
-                      className="bg-yellow-100 border-yellow-300 font-mono font-bold"
                     />
                   </TableCell>
                 </TableRow>
@@ -673,18 +624,52 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                       className="bg-blue-50 border-blue-200 font-mono"
                     />
                   </TableCell>
-                  <TableCell className="bg-yellow-100">
-                    <Input
-                      type="number"
-                      step="0.001"
-                      value={((calculations.det1.gammaNatDry + calculations.det2.gammaNatDry) / 2).toFixed(3)}
-                      readOnly
-                      className="bg-yellow-100 border-yellow-300 font-mono font-bold"
-                    />
-                  </TableCell>
                 </TableRow>
               </TableBody>
             </Table>
+          </div>
+
+          {/* Médias - Densidade In Situ */}
+          <div className="mt-4 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+            <h4 className="font-semibold text-sm mb-3 text-yellow-800">Médias das Determinações</h4>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+              <div className="text-center">
+                <div className="font-medium text-gray-600">Molde + Solo (g)</div>
+                <div className="font-mono font-bold text-yellow-800">
+                  {((data.det1.moldeSolo + data.det2.moldeSolo) / 2).toFixed(2)}
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="font-medium text-gray-600">Molde (g)</div>
+                <div className="font-mono font-bold text-yellow-800">
+                  {((data.det1.molde + data.det2.molde) / 2).toFixed(2)}
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="font-medium text-gray-600">Solo (g)</div>
+                <div className="font-mono font-bold text-yellow-800">
+                  {((calculations.det1.soil + calculations.det2.soil) / 2).toFixed(2)}
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="font-medium text-gray-600">Volume (cm³)</div>
+                <div className="font-mono font-bold text-yellow-800">
+                  {((data.det1.volume + data.det2.volume) / 2).toFixed(2)}
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="font-medium text-gray-600">γnat úmido (g/cm³)</div>
+                <div className="font-mono font-bold text-yellow-800">
+                  {((calculations.det1.gammaNatWet + calculations.det2.gammaNatWet) / 2).toFixed(3)}
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="font-medium text-gray-600">γnat seco (g/cm³)</div>
+                <div className="font-mono font-bold text-yellow-800">
+                  {((calculations.det1.gammaNatDry + calculations.det2.gammaNatDry) / 2).toFixed(3)}
+                </div>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>

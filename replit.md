@@ -448,11 +448,12 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
 - June 15, 2025: Campo "Volume" substituído por "Estaca" no cabeçalho TestHeader
   - Atualização aplicada em todos os ensaios (densidade in-situ, real, máx/mín)
   - Terminologia técnica ajustada conforme especificação
-- June 15, 2025: Coluna "Média" adicionada na tabela de densidade in-situ
-  - Implementada seguindo mesmo padrão das tabelas de umidade
-  - Cálculos automáticos para todas as linhas aplicáveis
-  - Estrutura completa: Cilindro nº, Molde + Solo, Molde, Solo, Volume, γnat úmido, γnat seco
-  - Campos não aplicáveis mostram "-" (Cilindro nº)
+- June 15, 2025: Tabela de densidade in-situ padronizada com médias embaixo
+  - Corrigida implementação: médias embaixo da tabela (não lateral) seguindo padrão das umidades
+  - Seção "Médias das Determinações" em card amarelo separado
+  - Cálculos automáticos para: Molde + Solo, Molde, Solo, Volume, γnat úmido, γnat seco
+  - Tabela principal limpa com apenas 2 colunas de determinações
+  - Design consistente com outras calculadoras do sistema
 
 ## User Preferences
 
