@@ -341,6 +341,12 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Configurado trust proxy no Express para resolver erro de rate limiting
   - Adicionados logs detalhados na verificação de token Firebase
   - Sistema de sincronização usuário-banco funcionando corretamente
+- June 15, 2025: Problemas de parsing JSON identificados e corrigidos
+  - Erro "JSON inválido" causado por verificação rígida de JSON vazio
+  - Middleware de parsing ajustado para aceitar bodies vazios
+  - Hook useAuth corrigido para enviar dados JSON válidos na sincronização
+  - Testes específicos criados para detectar problemas de autenticação (test-auth-sync.js)
+  - Sistema de detecção automática de problemas de API implementado
 
 ## User Preferences
 

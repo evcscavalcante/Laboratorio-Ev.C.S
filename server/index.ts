@@ -85,8 +85,13 @@ async function startServer() {
     limit: "10mb",
     verify: (req, res, buf) => {
       try {
-        JSON.parse(buf.toString());
+        // Só verificar se não for vazio
+        if (buf.length > 0) {
+          JSON.parse(buf.toString());
+        }
       } catch (e) {
+        const error = e as Error;
+        console.error('❌ Erro de parsing JSON:', error.message, 'Body:', buf.toString());
         throw new Error('JSON inválido');
       }
     }

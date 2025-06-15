@@ -5,7 +5,7 @@
  * Executa todos os tipos de testes possíveis no projeto
  */
 
-const { execSync } = require('child_process');
+import { execSync } from 'child_process';
 const fs = require('fs');
 const path = require('path');
 
@@ -678,4 +678,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = ComprehensiveTestSuite;
+export default ComprehensiveTestSuite;

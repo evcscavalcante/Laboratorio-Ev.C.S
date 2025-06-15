@@ -55,7 +55,16 @@ export const verifyFirebaseToken = async (req: Request, res: Response, next: Nex
 // Endpoint para sincronizar usuário Firebase com PostgreSQL
 router.post('/api/auth/sync-user', verifyFirebaseToken, async (req: Request, res: Response) => {
   try {
+    console.log('🔄 Sincronizando usuário Firebase com PostgreSQL...');
     const user = (req as any).user;
+    
+    if (!user) {
+      console.log('❌ Usuário não encontrado na requisição');
+      return res.status(401).json({ error: 'Usuário não autenticado' });
+    }
+    
+    console.log('👤 Dados do usuário:', { uid: user.uid, email: user.email, role: user.role });
+    
     // Buscar dados do usuário no PostgreSQL
     const [dbUser] = await db.select().from(users).where(eq(users.email, user.email));
     
@@ -63,20 +72,23 @@ router.post('/api/auth/sync-user', verifyFirebaseToken, async (req: Request, res
     let finalName = user.name;
     
     if (dbUser) {
+      console.log('✅ Usuário encontrado no banco, atualizando dados...');
       // Se usuário existe no banco, usar role e nome do banco
       finalRole = dbUser.role;
       finalName = dbUser.name;
     } else {
+      console.log('📝 Criando novo usuário no banco de dados...');
       // Se não existe, criar no banco
       await db.insert(users).values({
-        firebase_uid: user.uid,
+        firebaseUid: user.uid,
         email: user.email,
         name: user.name,
         role: user.role,
-        active: true
+        isActive: true
       });
     }
     
+    console.log('✅ Sincronização concluída com sucesso');
     res.json({
       success: true,
       user: {

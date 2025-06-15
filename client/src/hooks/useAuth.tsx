@@ -51,24 +51,34 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (!user || !token) return;
 
     try {
+      console.log('🔄 Iniciando sincronização do usuário...');
       const response = await fetch('/api/auth/sync-user', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
-        }
+        },
+        body: JSON.stringify({
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName
+        })
       });
 
+      console.log('📡 Resposta da sincronização:', response.status);
+      
       if (response.ok) {
         const contentType = response.headers.get('content-type');
         if (contentType && contentType.includes('application/json')) {
           const data = await response.json();
+          console.log('✅ Dados sincronizados:', data);
           if (data.user) {
             setUserProfile(data.user);
           }
         }
       } else {
-        console.warn('Falha na sincronização do usuário:', response.status);
+        const errorText = await response.text();
+        console.warn('Falha na sincronização do usuário:', response.status, errorText);
       }
     } catch (error) {
       console.error('Erro ao sincronizar usuário:', error);
