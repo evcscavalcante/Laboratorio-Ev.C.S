@@ -375,29 +375,29 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
       {/* Cabeçalho Profissional do Ensaio */}
       <TestHeader 
         testType="densidade-in-situ"
+        registro={data.registrationNumber}
+        data={data.date}
+        hora={data.time}
         operador={data.operator}
         responsavelCalculo={data.technicalResponsible}
         verificador={data.verifier}
-        data={data.date}
-        norte=""
-        este=""
-        cota=""
+        norte={data.north}
+        este={data.east}
+        cota={data.elevation}
         quadrante={data.quadrant}
         camada={data.layer}
-        fvs=""
+        fvs={data.fvs}
         material={data.material}
         origem={data.origin}
-        registro={data.registrationNumber}
-        hora={data.time}
         tempo={{
-          sol: false,
-          chuvaFraca: false,
-          chuvaForte: false,
-          nublado: false
+          sol: data.weather === 'sol',
+          chuvaFraca: data.weather === 'chuva-fraca',
+          chuvaForte: data.weather === 'chuva-forte',
+          nublado: data.weather === 'nublado'
         }}
         amostreaReensaiada={{
-          sim: false,
-          nao: true
+          sim: data.resampled,
+          nao: !data.resampled
         }}
         dispositivosPrecisao={{
           balanca: data.balanceId,
@@ -405,48 +405,23 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
           termometro: "",
           cronometro: ""
         }}
+        onRegistroChange={(value) => updateData("registrationNumber", value)}
+        onDataChange={(value) => updateData("date", value)}
+        onHoraChange={(value) => updateData("time", value)}
+        onOperadorChange={(value) => updateData("operator", value)}
+        onResponsavelCalculoChange={(value) => updateData("technicalResponsible", value)}
+        onVerificadorChange={(value) => updateData("verifier", value)}
+        onNorteChange={(value) => updateData("north", value)}
+        onEsteChange={(value) => updateData("east", value)}
+        onCotaChange={(value) => updateData("elevation", value)}
+        onQuadranteChange={(value) => updateData("quadrant", value)}
+        onCamadaChange={(value) => updateData("layer", value)}
+        onFvsChange={(value) => updateData("fvs", value)}
+        onMaterialChange={(value) => updateData("material", value)}
+        onOrigemChange={(value) => updateData("origin", value)}
       />
 
-      {/* Configurações do Ensaio */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center">
-            <Settings className="mr-2 text-blue-600" size={20} />
-            Configurações do Ensaio
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <Label htmlFor="registrationNumber">Registro</Label>
-              <Input
-                id="registrationNumber"
-                value={data.registrationNumber}
-                onChange={(e) => updateData("registrationNumber", e.target.value)}
-                placeholder="DIS-001"
-              />
-            </div>
-            <div>
-              <Label htmlFor="date">Data</Label>
-              <Input
-                id="date"
-                type="date"
-                value={data.date}
-                onChange={(e) => updateData("date", e.target.value)}
-              />
-            </div>
-            <div>
-              <Label htmlFor="time">Hora</Label>
-              <Input
-                id="time"
-                type="time"
-                value={data.time}
-                onChange={(e) => updateData("time", e.target.value)}
-              />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+
 
       {/* Referencias */}
       <Card>

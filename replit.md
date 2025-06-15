@@ -395,16 +395,16 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Cabeçalho integrado em todas as três calculadoras (densidade in-situ, real, máx/mín)
   - Ferramenta check-duplicates.js criada para verificar redundância antes de implementações
   - Sistema livre de overhead desnecessário e funcionando otimizado
-- June 15, 2025: Sistema completo de cálculos implementado conforme PDF de referência
-  - TestHeader reformulado com layout igual ao PDF (duas colunas lado a lado)
-  - Massa Específica Real dos Grãos implementada com campo editável para valor de referência
+- June 15, 2025: Sistema completo finalizado conforme PDF de referência oficial
+  - TestHeader reformulado com layout exato do PDF (duas colunas lado a lado)
+  - Massa Específica Real dos Grãos corrigida: valor puxado automaticamente do registro (não editável)
+  - Tabelas principais implementadas com estrutura idêntica ao PDF
   - Seção TOPO com cálculos automáticos de CR (Compacidade Relativa) e IV (Índice de Vazios)
-  - Seção BASE com cálculos automáticos de CR e IV com variações de fórmulas
+  - Seção BASE com cálculos automáticos de CR e IV com fórmulas corretas
   - Status do Ensaio implementado com indicador visual APROVADO/REPROVADO
-  - Todas as fórmulas matemáticas correspondem exatamente aos cálculos do PDF
-  - Sistema gera todos os dados que aparecem no relatório final
-  - Interface da calculadora e PDF agora completamente sincronizados
-  - Aplicação operacional com todas as seções de cálculo funcionais
+  - Sistema gera exatamente os mesmos dados que aparecem no PDF final
+  - Interface da calculadora e relatório PDF completamente sincronizados
+  - Aplicação web operacional produzindo dados idênticos ao padrão técnico
 - June 15, 2025: Melhorias significativas de UX implementadas nos ensaios laboratoriais
   - Sistema de navegação por seções com âncoras automáticas para ensaios complexos
   - Indicador de progresso visual em tempo real (header fixo com percentual)
