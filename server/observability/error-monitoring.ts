@@ -276,7 +276,8 @@ export class ErrorMonitor {
       const now = Date.now();
       const maxAge = 24 * 60 * 60 * 1000;
       
-      for (const [errorId, errorReport] of this.errorCache.entries()) {
+      const entries = Array.from(this.errorCache.entries());
+      for (const [errorId, errorReport] of entries) {
         const age = now - new Date(errorReport.lastOccurrence).getTime();
         if (age > maxAge) {
           this.errorCache.delete(errorId);
@@ -303,9 +304,14 @@ export class ErrorMonitor {
         .slice(0, 10)
     };
 
-    for (const errorReport of this.errorCache.values()) {
-      metrics.bySeverity[errorReport.severity]++;
-      metrics.byCategory[errorReport.category]++;
+    const errorReports = Array.from(this.errorCache.values());
+    for (const errorReport of errorReports) {
+      if (metrics.bySeverity[errorReport.severity] !== undefined) {
+        metrics.bySeverity[errorReport.severity]++;
+      }
+      if (metrics.byCategory[errorReport.category] !== undefined) {
+        metrics.byCategory[errorReport.category]++;
+      }
     }
 
     return metrics;

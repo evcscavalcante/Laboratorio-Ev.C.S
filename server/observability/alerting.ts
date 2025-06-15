@@ -297,13 +297,15 @@ export class AlertingSystem {
   }
 
   private getRecommendedActions(alert: Alert): string {
-    const actions = {
+    const actions: Record<AlertType, string> = {
       [AlertType.ERROR_RATE]: 'Verificar logs de erro recentes e identificar causa raiz',
       [AlertType.RESPONSE_TIME]: 'Monitorar recursos do sistema e otimizar queries lentas',
       [AlertType.MEMORY_USAGE]: 'Reiniciar serviço se necessário, investigar vazamentos de memória',
+      [AlertType.DISK_USAGE]: 'Limpar arquivos temporários e verificar espaço em disco',
       [AlertType.DATABASE_ERROR]: 'Verificar conectividade e integridade do banco de dados',
       [AlertType.SECURITY_THREAT]: 'Bloquear IPs suspeitos e revisar logs de segurança',
       [AlertType.CALCULATION_ERROR]: 'Verificar dados de entrada e validar fórmulas NBR',
+      [AlertType.NETWORK]: 'Verificar conectividade de rede e dependências externas',
       [AlertType.SYSTEM_DOWN]: 'Reiniciar serviços e verificar dependências externas'
     };
 
@@ -392,7 +394,8 @@ export class AlertingSystem {
       const now = Date.now();
       const maxAge = 7 * 24 * 60 * 60 * 1000; // 7 dias
       
-      for (const [alertId, alert] of this.alerts.entries()) {
+      const alertEntries = Array.from(this.alerts.entries());
+      for (const [alertId, alert] of alertEntries) {
         const age = now - new Date(alert.timestamp).getTime();
         if (age > maxAge && alert.resolved) {
           this.alerts.delete(alertId);
@@ -400,7 +403,8 @@ export class AlertingSystem {
       }
 
       // Limpar rate limiting antigo
-      for (const [alertId, lastSent] of this.rateLimiting.entries()) {
+      const rateLimitEntries = Array.from(this.rateLimiting.entries());
+      for (const [alertId, lastSent] of rateLimitEntries) {
         if (now - lastSent > 24 * 60 * 60 * 1000) { // 24 horas
           this.rateLimiting.delete(alertId);
         }
