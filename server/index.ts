@@ -15,6 +15,31 @@ import { eq } from "drizzle-orm";
 import { initializeAdminUser } from "./init-admin";
 import { storage } from "./storage-corrected";
 
+// Importar middlewares de segurança
+import { 
+  validateRequest, 
+  validateParams, 
+  validateQuery, 
+  authRateLimit, 
+  apiRateLimit, 
+  securityLogger 
+} from "./middleware/validation";
+import { 
+  sqlProtection, 
+  escapeSQL, 
+  validateIdParam, 
+  detectSuspiciousPayload, 
+  securityHeaders 
+} from "./middleware/sql-protection";
+import { 
+  densityInSituSchema, 
+  realDensitySchema, 
+  maxMinDensitySchema, 
+  authSchema, 
+  searchQuerySchema, 
+  routeParamsSchema 
+} from "../shared/validation-schemas";
+
 async function startServer() {
   const app = express();
   const server = createServer(app);
@@ -25,15 +50,35 @@ async function startServer() {
   // Session TTL
   const sessionTtl = 24 * 60 * 60 * 1000; // 24 hours
 
+  // Middlewares de segurança (ordem importa)
+  app.use(securityHeaders);
+  app.use(securityLogger);
+  app.use(detectSuspiciousPayload);
+  app.use(sqlProtection);
+  app.use(escapeSQL);
+
   // CORS configuration
   app.use(cors({
     origin: true,
     credentials: true
   }));
 
-  // Basic middleware
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: false }));
+  // Middleware de parsing com limites de segurança
+  app.use(express.json({ 
+    limit: "10mb",
+    verify: (req, res, buf) => {
+      try {
+        JSON.parse(buf.toString());
+      } catch (e) {
+        throw new Error('JSON inválido');
+      }
+    }
+  }));
+  app.use(express.urlencoded({ 
+    extended: true, 
+    limit: "10mb",
+    parameterLimit: 100
+  }));
   
   // Serve static assets
   app.use('/attached_assets', express.static('attached_assets'));
@@ -274,15 +319,19 @@ async function startServer() {
     }
   });
 
-  app.post('/api/tests/real-density', verifyFirebaseToken, async (req: Request, res: Response) => {
-    try {
-      const test = await storage.createRealDensityTest(req.body);
-      res.status(201).json(test);
-    } catch (error) {
-      console.error('Error creating real density test:', error);
-      res.status(500).json({ message: 'Failed to create test' });
+  app.post('/api/tests/real-density', 
+    verifyFirebaseToken,
+    validateRequest(realDensitySchema),
+    async (req: Request, res: Response) => {
+      try {
+        const test = await storage.createRealDensityTest((req as any).validatedData);
+        res.status(201).json(test);
+      } catch (error) {
+        console.error('Error creating real density test:', error);
+        res.status(500).json({ message: 'Failed to create test' });
+      }
     }
-  });
+  );
 
   // Max/Min Density Tests
   app.get('/api/tests/max-min-density', verifyFirebaseToken, async (req: Request, res: Response) => {
@@ -332,15 +381,19 @@ async function startServer() {
     }
   });
 
-  app.post('/api/tests/max-min-density', verifyFirebaseToken, async (req: Request, res: Response) => {
-    try {
-      const test = await storage.createMaxMinDensityTest(req.body);
-      res.status(201).json(test);
-    } catch (error) {
-      console.error('Error creating max/min density test:', error);
-      res.status(500).json({ message: 'Failed to create test' });
+  app.post('/api/tests/max-min-density', 
+    verifyFirebaseToken,
+    validateRequest(maxMinDensitySchema),
+    async (req: Request, res: Response) => {
+      try {
+        const test = await storage.createMaxMinDensityTest((req as any).validatedData);
+        res.status(201).json(test);
+      } catch (error) {
+        console.error('Error creating max/min density test:', error);
+        res.status(500).json({ message: 'Failed to create test' });
+      }
     }
-  });
+  );
 
   // Equipamentos API endpoints
   app.get('/api/equipamentos', verifyFirebaseToken, async (req: Request, res: Response) => {
