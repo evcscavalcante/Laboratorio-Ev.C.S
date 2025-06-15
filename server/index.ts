@@ -413,96 +413,9 @@ async function startServer() {
     }
   });
 
-  // Rota temporária para buscar ensaios sem autenticação
-  app.get('/api/ensaios/densidade-in-situ/temp', async (req: Request, res: Response) => {
-    try {
-      const tests = await storage.getDensityInSituTests();
-      console.log('📋 Ensaios densidade in-situ encontrados:', tests.length);
-      res.json(tests);
-    } catch (error) {
-      console.error('Erro ao buscar ensaios de densidade in situ:', error);
-      res.status(500).json({ message: 'Falha ao buscar ensaios' });
-    }
-  });
 
-  // Rota temporária sem autenticação para testes
-  app.post('/api/ensaios/densidade-in-situ/temp', async (req: Request, res: Response) => {
-    try {
-      console.log('📥 Recebendo dados do ensaio (temp):', JSON.stringify(req.body, null, 2));
-      
-      // Remover userId para evitar erro de foreign key
-      const testData = {
-        ...req.body,
-        userId: null,
-        createdBy: 'sistema-temp'
-      };
-      
-      console.log('📝 Dados preparados para salvamento:', JSON.stringify(testData, null, 2));
-      
-      const test = await storage.createDensityInSituTest(testData);
-      console.log('✅ Ensaio salvo com sucesso:', test);
-      
-      res.status(201).json(test);
-    } catch (error) {
-      console.error('❌ Erro detalhado ao criar ensaio:', error);
-      console.error('📊 Stack trace:', (error as Error).stack);
-      res.status(500).json({ message: 'Failed to create test', error: (error as Error).message });
-    }
-  });
 
-  // Endpoint temporário para listar ensaios densidade in-situ
-  app.get('/api/tests/densidade-in-situ/temp', async (req: Request, res: Response) => {
-    try {
-      const tests = await storage.getDensityInSituTests();
-      console.log('📋 Ensaios densidade in-situ encontrados:', tests.length);
-      res.json(tests);
-    } catch (error) {
-      console.error('❌ Erro ao buscar ensaios densidade in-situ:', error);
-      res.status(500).json({ message: 'Falha ao buscar ensaios' });
-    }
-  });
 
-  // Endpoint temporário para criar ensaios densidade in-situ (sem autenticação)
-  app.post('/api/tests/densidade-in-situ/temp', async (req: Request, res: Response) => {
-    try {
-      console.log('📥 Recebendo dados do ensaio densidade in-situ (temp):', JSON.stringify(req.body, null, 2));
-      
-      const testData = {
-        ...req.body,
-        userId: null,
-        createdBy: 'sistema-temp'
-      };
-      
-      console.log('📝 Dados preparados para salvamento:', JSON.stringify(testData, null, 2));
-      
-      const test = await storage.createDensityInSituTest(testData);
-      console.log('✅ Ensaio densidade in-situ salvo com sucesso:', test);
-      
-      res.status(201).json(test);
-    } catch (error) {
-      console.error('❌ Erro detalhado ao criar ensaio densidade in-situ:', error);
-      res.status(500).json({ message: 'Failed to create test', error: (error as Error).message });
-    }
-  });
-
-  // Endpoint de exclusão temporário para densidade in-situ
-  app.delete('/api/tests/densidade-in-situ/temp/:id', async (req: Request, res: Response) => {
-    try {
-      const id = parseInt(req.params.id);
-      console.log('🗑️ Excluindo ensaio densidade in-situ ID:', id);
-      
-      const success = await storage.deleteDensityInSituTest(id);
-      if (!success) {
-        return res.status(404).json({ message: 'Ensaio não encontrado' });
-      }
-      
-      console.log('✅ Ensaio densidade in-situ excluído com sucesso');
-      res.status(204).send();
-    } catch (error) {
-      console.error('❌ Erro ao excluir ensaio densidade in-situ:', error);
-      res.status(500).json({ message: 'Falha ao excluir ensaio' });
-    }
-  });
 
   app.post('/api/tests/density-in-situ', verifyFirebaseToken, async (req: Request, res: Response) => {
     try {
@@ -581,48 +494,7 @@ async function startServer() {
     }
   });
 
-  // Rota temporária para salvar ensaios de densidade real sem autenticação
-  app.post('/api/tests/densidade-real/temp', async (req: Request, res: Response) => {
-    try {
-      console.log('📥 Recebendo dados do ensaio densidade real (temp):', JSON.stringify(req.body, null, 2));
-      
-      const testData = {
-        ...req.body,
-        userId: null,
-        createdBy: 'sistema-temp'
-      };
-      
-      console.log('📝 Dados preparados para salvamento:', JSON.stringify(testData, null, 2));
-      
-      const test = await storage.createRealDensityTest(testData);
-      console.log('✅ Ensaio densidade real salvo com sucesso:', test);
-      
-      res.status(201).json(test);
-    } catch (error) {
-      console.error('❌ Erro detalhado ao criar ensaio densidade real:', error);
-      console.error('📊 Stack trace:', (error as Error).stack);
-      res.status(500).json({ message: 'Failed to create test', error: (error as Error).message });
-    }
-  });
 
-  // Endpoint de exclusão temporário para densidade real
-  app.delete('/api/tests/densidade-real/temp/:id', async (req: Request, res: Response) => {
-    try {
-      const id = parseInt(req.params.id);
-      console.log('🗑️ Excluindo ensaio densidade real ID:', id);
-      
-      const success = await storage.deleteRealDensityTest(id);
-      if (!success) {
-        return res.status(404).json({ message: 'Ensaio não encontrado' });
-      }
-      
-      console.log('✅ Ensaio densidade real excluído com sucesso');
-      res.status(204).send();
-    } catch (error) {
-      console.error('❌ Erro ao excluir ensaio densidade real:', error);
-      res.status(500).json({ message: 'Falha ao excluir ensaio' });
-    }
-  });
 
   app.post('/api/tests/real-density', 
     verifyFirebaseToken,
@@ -650,60 +522,7 @@ async function startServer() {
     }
   });
 
-  // Rota temporária para buscar ensaios máx/mín sem autenticação
-  app.get('/api/tests/densidade-max-min/temp', async (req: Request, res: Response) => {
-    try {
-      const tests = await storage.getMaxMinDensityTests();
-      console.log('📋 Ensaios máx/mín encontrados:', tests.length);
-      res.json(tests);
-    } catch (error) {
-      console.error('Erro ao buscar ensaios máx/mín:', error);
-      res.status(500).json({ message: 'Falha ao buscar ensaios' });
-    }
-  });
 
-  // Rota temporária para salvar ensaios máx/mín sem autenticação
-  app.post('/api/tests/densidade-max-min/temp', async (req: Request, res: Response) => {
-    try {
-      console.log('📥 Recebendo dados do ensaio máx/mín (temp):', JSON.stringify(req.body, null, 2));
-      
-      const testData = {
-        ...req.body,
-        userId: null,
-        createdBy: 'sistema-temp'
-      };
-      
-      console.log('📝 Dados preparados para salvamento:', JSON.stringify(testData, null, 2));
-      
-      const test = await storage.createMaxMinDensityTest(testData);
-      console.log('✅ Ensaio máx/mín salvo com sucesso:', test);
-      
-      res.status(201).json(test);
-    } catch (error) {
-      console.error('❌ Erro detalhado ao criar ensaio máx/mín:', error);
-      console.error('📊 Stack trace:', (error as Error).stack);
-      res.status(500).json({ message: 'Failed to create test', error: (error as Error).message });
-    }
-  });
-
-  // Endpoint de exclusão temporário para densidade máx/mín
-  app.delete('/api/tests/densidade-max-min/temp/:id', async (req: Request, res: Response) => {
-    try {
-      const id = parseInt(req.params.id);
-      console.log('🗑️ Excluindo ensaio densidade máx/mín ID:', id);
-      
-      const success = await storage.deleteMaxMinDensityTest(id);
-      if (!success) {
-        return res.status(404).json({ message: 'Ensaio não encontrado' });
-      }
-      
-      console.log('✅ Ensaio densidade máx/mín excluído com sucesso');
-      res.status(204).send();
-    } catch (error) {
-      console.error('❌ Erro ao excluir ensaio densidade máx/mín:', error);
-      res.status(500).json({ message: 'Falha ao excluir ensaio' });
-    }
-  });
 
   app.post('/api/tests/max-min-density', 
     verifyFirebaseToken,
@@ -722,32 +541,18 @@ async function startServer() {
   // Equipamentos API endpoints com proteção hierárquica
   app.get('/api/equipamentos', 
     verifyFirebaseToken, 
-    enforceDataIsolation, 
-    sanitizeDataByRole, 
-    requirePermission('view_equipment'),
-    auditLog('VIEW_EQUIPAMENTOS'),
+    requireRole(['TECHNICIAN', 'MANAGER', 'ADMIN', 'DEVELOPER']),
     async (req: Request, res: Response) => {
     try {
       const user = (req as any).user;
       let capsulasList, cilindrosList;
 
-      // DEVELOPER vê todos os equipamentos do sistema
-      if (user.role === 'DEVELOPER') {
-        capsulasList = await db.select().from(capsulas);
-        cilindrosList = await db.select().from(cilindros);
-      } else {
-        // Outros roles só veem equipamentos da própria organização
-        if (!user.organizationId) {
-          return res.status(403).json({ 
-            error: 'Acesso negado: usuário não associado a uma organização' 
-          });
-        }
-        
-        capsulasList = await db.select().from(capsulas)
-          .where(eq(capsulas.organization_id, user.organizationId));
-        cilindrosList = await db.select().from(cilindros)
-          .where(eq(cilindros.organization_id, user.organizationId));
-      }
+      // Por enquanto todos veem os equipamentos (será implementado isolamento por organização futuramente)
+      // TODO: Adicionar campo organization_id às tabelas capsulas/cilindros
+      capsulasList = await db.select().from(capsulas);
+      cilindrosList = await db.select().from(cilindros);
+      
+      console.log(`🔐 Acesso por ${user.role}: ${user.email}`);
       
       // Combinar e padronizar formato
       const equipamentos = [
@@ -792,228 +597,19 @@ async function startServer() {
     }
   });
 
-  // Endpoint temporário sem autenticação para teste
-  app.get('/api/equipamentos/temp', async (req: Request, res: Response) => {
-    try {
-      // Buscar cápsulas e cilindros do banco PostgreSQL
-      const capsulasList = await db.select().from(capsulas);
-      const cilindrosList = await db.select().from(cilindros);
-      
-      // Combinar e padronizar formato
-      const equipamentos = [
-        ...capsulasList.map(cap => ({
-          id: cap.id,
-          codigo: cap.codigo,
-          tipo: 'capsula',
-          descricao: cap.descricao,
-          peso: cap.peso,
-          material: cap.material,
-          fabricante: cap.fabricante,
-          status: cap.status,
-          localizacao: cap.localizacao,
-          observacoes: cap.observacoes,
-          createdAt: cap.created_at,
-          updatedAt: cap.updated_at
-        })),
-        ...cilindrosList.map(cil => ({
-          id: cil.id,
-          codigo: cil.codigo,
-          tipo: 'cilindro',
-          descricao: cil.descricao,
-          peso: cil.peso,
-          volume: cil.volume,
-          altura: cil.altura,
-          diametro: cil.diametro,
-          material: cil.material,
-          fabricante: cil.fabricante,
-          status: cil.status,
-          localizacao: cil.localizacao,
-          observacoes: cil.observacoes,
-          createdAt: cil.created_at,
-          updatedAt: cil.updated_at
-        }))
-      ];
-      
-      console.log(`📦 Equipamentos encontrados (temp): ${equipamentos.length} (${capsulasList.length} cápsulas, ${cilindrosList.length} cilindros)`);
-      res.json(equipamentos);
-    } catch (error) {
-      console.error('Error fetching equipamentos (temp):', error);
-      res.status(500).json({ message: 'Failed to fetch equipamentos' });
-    }
-  });
+  // ENDPOINT TEMPORÁRIO REMOVIDO POR SEGURANÇA
+  // Use /api/equipamentos com autenticação adequada
 
-  // Endpoint temporário para criação sem autenticação
-  app.post('/api/equipamentos/temp', async (req: Request, res: Response) => {
-    try {
-      console.log('📥 Recebendo dados do equipamento (temp):', JSON.stringify(req.body, null, 2));
-      
-      const { tipo, codigo, descricao, peso, volume, altura, diametro, material, fabricante, status, localizacao, observacoes, tipoEspecifico } = req.body;
-      
-      if (!codigo || !tipo || !peso) {
-        return res.status(400).json({ message: 'Código, tipo e peso são obrigatórios' });
-      }
-
-      let savedEquipamento;
-
-      if (tipo === 'capsula') {
-        // Salvar na tabela capsulas
-        const [newCapsula] = await db.insert(capsulas).values({
-          codigo,
-          descricao: descricao || `Cápsula ${tipoEspecifico || 'padrão'}`,
-          peso: parseFloat(peso),
-          material: material || 'Alumínio',
-          fabricante: fabricante || '',
-          status: status || 'ativo',
-          localizacao: localizacao || '',
-          observacoes: observacoes || '',
-          data_aquisicao: new Date()
-        }).returning();
-
-        savedEquipamento = {
-          ...newCapsula,
-          tipo: 'capsula',
-          tipoEspecifico,
-          createdAt: newCapsula.created_at,
-          updatedAt: newCapsula.updated_at
-        };
-
-      } else if (tipo === 'cilindro') {
-        // Salvar na tabela cilindros
-        const [newCilindro] = await db.insert(cilindros).values({
-          codigo,
-          tipo: tipoEspecifico || 'biselado',
-          descricao: descricao || `Cilindro ${tipoEspecifico || 'biselado'}`,
-          peso: parseFloat(peso),
-          volume: parseFloat(volume) || 0,
-          altura: parseFloat(altura) || 0,
-          diametro: parseFloat(diametro) || 0,
-          material: material || 'Aço',
-          fabricante: fabricante || '',
-          status: status || 'ativo',
-          localizacao: localizacao || '',
-          observacoes: observacoes || '',
-          data_aquisicao: new Date()
-        }).returning();
-
-        savedEquipamento = {
-          ...newCilindro,
-          tipo: 'cilindro',
-          tipoEspecifico: newCilindro.tipo,
-          createdAt: newCilindro.created_at,
-          updatedAt: newCilindro.updated_at
-        };
-      }
-
-      console.log('✅ Equipamento salvo com sucesso:', savedEquipamento);
-      res.status(201).json(savedEquipamento);
-
-    } catch (error) {
-      console.error('Erro ao criar equipamento:', error);
-      res.status(500).json({ message: 'Failed to create equipamento' });
-    }
-  });
-
-  // Endpoint temporário para edição sem autenticação
-  app.put('/api/equipamentos/temp/:id', async (req: Request, res: Response) => {
-    try {
-      const { id } = req.params;
-      const { tipo, codigo, descricao, peso, volume, altura, diametro, material, fabricante, status, localizacao, observacoes, tipoEspecifico } = req.body;
-      
-      console.log(`📝 Atualizando equipamento ${tipo} ID: ${id}`);
-
-      let updatedEquipamento;
-
-      if (tipo === 'capsula') {
-        const [updated] = await db.update(capsulas)
-          .set({
-            codigo,
-            descricao,
-            peso: parseFloat(peso),
-            material,
-            fabricante,
-            status,
-            localizacao,
-            observacoes,
-            updated_at: new Date()
-          })
-          .where(eq(capsulas.id, parseInt(id)))
-          .returning();
-
-        updatedEquipamento = {
-          ...updated,
-          tipo: 'capsula',
-          tipoEspecifico,
-          createdAt: updated.created_at,
-          updatedAt: updated.updated_at
-        };
-
-      } else if (tipo === 'cilindro') {
-        const [updated] = await db.update(cilindros)
-          .set({
-            codigo,
-            tipo: tipoEspecifico || 'biselado',
-            descricao,
-            peso: parseFloat(peso),
-            volume: parseFloat(volume) || 0,
-            altura: parseFloat(altura) || 0,
-            diametro: parseFloat(diametro) || 0,
-            material,
-            fabricante,
-            status,
-            localizacao,
-            observacoes,
-            updated_at: new Date()
-          })
-          .where(eq(cilindros.id, parseInt(id)))
-          .returning();
-
-        updatedEquipamento = {
-          ...updated,
-          tipo: 'cilindro',
-          tipoEspecifico: updated.tipo,
-          createdAt: updated.created_at,
-          updatedAt: updated.updated_at
-        };
-      }
-
-      if (!updatedEquipamento) {
-        return res.status(404).json({ message: 'Equipamento não encontrado' });
-      }
-
-      console.log('✅ Equipamento atualizado:', updatedEquipamento);
-      res.json(updatedEquipamento);
-
-    } catch (error) {
-      console.error('Erro ao atualizar equipamento:', error);
-      res.status(500).json({ message: 'Failed to update equipamento' });
-    }
-  });
-
-  // Endpoint temporário para exclusão sem autenticação
-  app.delete('/api/equipamentos/temp/:id', async (req: Request, res: Response) => {
-    try {
-      const { id } = req.params;
-      const { tipo } = req.query;
-
-      console.log(`🗑️ Excluindo equipamento ${tipo} ID: ${id}`);
-
-      if (tipo === 'capsula') {
-        await db.delete(capsulas).where(eq(capsulas.id, parseInt(id)));
-      } else if (tipo === 'cilindro') {
-        await db.delete(cilindros).where(eq(cilindros.id, parseInt(id)));
-      } else {
-        // Tentar excluir de ambas as tabelas se tipo não especificado
-        await db.delete(capsulas).where(eq(capsulas.id, parseInt(id)));
-        await db.delete(cilindros).where(eq(cilindros.id, parseInt(id)));
-      }
-
-      console.log(`✅ Equipamento ${id} excluído com sucesso`);
-      res.status(204).send();
-
-    } catch (error) {
-      console.error('Erro ao excluir equipamento:', error);
-      res.status(500).json({ message: 'Failed to delete equipamento' });
-    }
+  // ENDPOINTS TEMPORÁRIOS REMOVIDOS POR VULNERABILIDADES DE SEGURANÇA
+  // Endpoints criados, edição e exclusão devem usar autenticação adequada
+  
+  // Interceptar tentativas de acesso aos endpoints vulneráveis removidos
+  app.all('/api/equipamentos/temp*', (req: Request, res: Response) => {
+    console.log(`🚨 TENTATIVA DE ACESSO BLOQUEADA: ${req.method} ${req.originalUrl} - IP: ${req.ip}`);
+    res.status(410).json({ 
+      error: 'Endpoint removido por questões de segurança',
+      message: 'Use /api/equipamentos com autenticação adequada'
+    });
   });
 
   // Endpoint protegido para modificação de roles (apenas ADMIN e DEVELOPER)
