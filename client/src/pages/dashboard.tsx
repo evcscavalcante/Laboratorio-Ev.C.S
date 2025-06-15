@@ -152,7 +152,7 @@ export default function Dashboard() {
           const operator = test.operator || test.responsavel || 'Operador não especificado';
 
           activities.push({
-            id: `test_${test.id}`,
+            id: `${type}_${test.id}_${Date.now()}_${Math.random()}`,
             type,
             title: `${title} - ${location}`,
             subtitle: `Por ${operator} • ${format(new Date(testDate), 'dd/MM/yyyy', { locale: ptBR })}`,
@@ -167,7 +167,7 @@ export default function Dashboard() {
         .slice(0, 2)
         .forEach(balance => {
           activities.push({
-            id: `balance_${balance.id}`,
+            id: `balance_verification_${balance.id}_${Date.now()}_${Math.random()}`,
             type: 'balance_verification',
             title: `Verificação - ${balance.equipamento}`,
             subtitle: `${balance.localizacao} • ${format(new Date(balance.dataVerificacao), 'dd/MM/yyyy', { locale: ptBR })}`,

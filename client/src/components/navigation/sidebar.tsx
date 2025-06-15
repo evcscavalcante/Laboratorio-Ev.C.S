@@ -82,12 +82,6 @@ export default function Sidebar({ isOpen }: SidebarProps) {
       active: location === '/analytics'
     },
     {
-      label: 'Laboratório',
-      icon: FlaskRound,
-      href: '/laboratory',
-      active: location === '/laboratory'
-    },
-    {
       label: 'Ensaios',
       icon: FlaskRound,
       expandable: true,

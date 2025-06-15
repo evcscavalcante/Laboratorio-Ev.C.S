@@ -78,23 +78,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
     enabled: !!testId
   });
 
-  // Buscar ensaios de densidade real salvos
-  const { data: realDensityTests = [] } = useQuery({
-    queryKey: ["/api/tests/real-density/temp"],
-    queryFn: async () => {
-      const response = await apiRequest("GET", "/api/tests/real-density/temp");
-      return response.json();
-    }
-  });
 
-  // Buscar ensaios de densidade máx/mín salvos
-  const { data: maxMinDensityTests = [] } = useQuery({
-    queryKey: ["/api/tests/max-min-density/temp"],
-    queryFn: async () => {
-      const response = await apiRequest("GET", "/api/tests/max-min-density/temp");
-      return response.json();
-    }
-  });
 
   // Mutation para salvar ensaio
   const saveTestMutation = useMutation({

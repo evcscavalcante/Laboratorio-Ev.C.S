@@ -7,7 +7,6 @@ import { DataSyncProvider } from "@/contexts/data-sync-context";
 import MainLayout from "@/components/layout/main-layout";
 import NotFound from "@/pages/not-found";
 import Dashboard from "@/pages/dashboard";
-import Laboratory from "@/pages/laboratory";
 import Analytics from "@/pages/analytics";
 import Login from "@/pages/login";
 import SubscriptionPage from "@/pages/subscription";
@@ -17,7 +16,6 @@ import DensidadeInSituPage from "@/pages/solos/densidade-in-situ";
 import DensidadeRealPage from "@/pages/solos/densidade-real";
 import DensidadeMaxMinPage from "@/pages/solos/densidade-max-min";
 import BalancaVerificacao from "@/pages/balanca-verificacao";
-import Equipamentos from "@/pages/equipamentos";
 import Configuracoes from "@/pages/configuracoes";
 import Relatorios from "@/pages/relatorios";
 import EquipamentosGestao from "@/pages/equipamentos-gestao";
@@ -54,7 +52,6 @@ function Router() {
       <Switch>
         <Route path="/" component={Dashboard} />
         <Route path="/dashboard" component={Dashboard} />
-        <Route path="/laboratory" component={Laboratory} />
         <Route path="/analytics" component={Analytics} />
         <Route path="/subscription" component={SubscriptionPage} />
 
@@ -63,10 +60,9 @@ function Router() {
         <Route path="/solos/densidade-real" component={DensidadeRealPage} />
         <Route path="/solos/densidade-max-min" component={DensidadeMaxMinPage} />
         <Route path="/balanca-verificacao" component={BalancaVerificacao} />
-        <Route path="/equipamentos" component={Equipamentos} />
+        <Route path="/equipamentos" component={EquipamentosGestao} />
         <Route path="/configuracoes" component={Configuracoes} />
         <Route path="/relatorios" component={Relatorios} />
-        <Route path="/equipamentos" component={EquipamentosGestao} />
         <Route path="/admin" component={AdminDashboard} />
         <Route path="/admin/users" component={UserManagement} />
         <Route path="/admin/user-roles" component={UserRoles} />
