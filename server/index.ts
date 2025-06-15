@@ -482,17 +482,7 @@ async function startServer() {
     }
   });
 
-  // Rota temporária para buscar ensaios de densidade real sem autenticação
-  app.get('/api/tests/densidade-real/temp', async (req: Request, res: Response) => {
-    try {
-      const tests = await storage.getRealDensityTests();
-      console.log('📋 Ensaios densidade real encontrados:', tests.length);
-      res.json(tests);
-    } catch (error) {
-      console.error('Erro ao buscar ensaios densidade real:', error);
-      res.status(500).json({ message: 'Falha ao buscar ensaios' });
-    }
-  });
+
 
 
 
@@ -597,11 +587,113 @@ async function startServer() {
     }
   });
 
-  // ENDPOINT TEMPORÁRIO REMOVIDO POR SEGURANÇA
-  // Use /api/equipamentos com autenticação adequada
+  // Create new equipment (requires authentication)
+  app.post('/api/equipamentos', verifyFirebaseToken, async (req: Request, res: Response) => {
+    try {
+      const user = (req as any).user;
+      const equipmentData = req.body;
+      
+      let savedEquipment;
+      
+      if (equipmentData.tipo === 'capsula') {
+        const [newCapsula] = await db.insert(capsulas).values({
+          codigo: equipmentData.codigo,
+          peso: parseFloat(equipmentData.peso) || 0,
+          material: equipmentData.material || '',
+          localizacao: equipmentData.localizacao || '',
+          observacoes: equipmentData.observacoes || '',
+          proxima_conferencia: equipmentData.proximaConferencia ? new Date(equipmentData.proximaConferencia) : null,
+          status: equipmentData.status || 'ativo'
+        }).returning();
+        savedEquipment = newCapsula;
+      } else if (equipmentData.tipo === 'cilindro') {
+        const [newCilindro] = await db.insert(cilindros).values({
+          codigo: equipmentData.codigo,
+          tipo: equipmentData.tipoEspecifico || 'biselado',
+          volume: parseFloat(equipmentData.volume) || 0,
+          altura: parseFloat(equipmentData.altura) || 0,
+          diametro: parseFloat(equipmentData.diametro) || 0,
+          localizacao: equipmentData.localizacao || '',
+          observacoes: equipmentData.observacoes || '',
+          proxima_conferencia: equipmentData.proximaConferencia ? new Date(equipmentData.proximaConferencia) : null,
+          status: equipmentData.status || 'ativo'
+        }).returning();
+        savedEquipment = newCilindro;
+      }
+      
+      console.log(`✅ Equipamento ${equipmentData.tipo} criado:`, savedEquipment);
+      res.status(201).json(savedEquipment);
+    } catch (error) {
+      console.error('Error creating equipment:', error);
+      res.status(500).json({ message: 'Failed to create equipment' });
+    }
+  });
 
-  // ENDPOINTS TEMPORÁRIOS REMOVIDOS POR VULNERABILIDADES DE SEGURANÇA
-  // Endpoints criados, edição e exclusão devem usar autenticação adequada
+  // Update equipment (requires authentication)
+  app.put('/api/equipamentos/:id', verifyFirebaseToken, async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const equipmentData = req.body;
+      
+      let updatedEquipment;
+      
+      if (equipmentData.tipo === 'capsula') {
+        updatedEquipment = await storage.updateCapsula(parseInt(id), {
+          codigo: equipmentData.codigo,
+          peso: parseFloat(equipmentData.peso) || 0,
+          material: equipmentData.material || '',
+          localizacao: equipmentData.localizacao || '',
+          observacoes: equipmentData.observacoes || '',
+          proxima_conferencia: equipmentData.proximaConferencia || null,
+          status: equipmentData.status || 'ativo'
+        });
+      } else if (equipmentData.tipo === 'cilindro') {
+        updatedEquipment = await storage.updateCilindro(parseInt(id), {
+          codigo: equipmentData.codigo,
+          tipo: equipmentData.tipoEspecifico || 'biselado',
+          volume: parseFloat(equipmentData.volume) || 0,
+          altura: parseFloat(equipmentData.altura) || 0,
+          diametro: parseFloat(equipmentData.diametro) || 0,
+          localizacao: equipmentData.localizacao || '',
+          observacoes: equipmentData.observacoes || '',
+          proxima_conferencia: equipmentData.proximaConferencia || null,
+          status: equipmentData.status || 'ativo'
+        });
+      }
+      
+      console.log(`✅ Equipamento ${equipmentData.tipo} atualizado:`, updatedEquipment);
+      res.json(updatedEquipment);
+    } catch (error) {
+      console.error('Error updating equipment:', error);
+      res.status(500).json({ message: 'Failed to update equipment' });
+    }
+  });
+
+  // Delete equipment (requires authentication and MANAGER+ role)
+  app.delete('/api/equipamentos/:id', verifyFirebaseToken, requireRole(['MANAGER', 'ADMIN', 'DEVELOPER']), async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const { tipo } = req.query;
+      
+      let deleted = false;
+      
+      if (tipo === 'capsula') {
+        deleted = await storage.deleteCapsula(parseInt(id));
+      } else if (tipo === 'cilindro') {
+        deleted = await storage.deleteCilindro(parseInt(id));
+      }
+      
+      if (deleted) {
+        console.log(`✅ Equipamento ${tipo} ID ${id} excluído com sucesso`);
+        res.status(204).send();
+      } else {
+        res.status(404).json({ message: 'Equipment not found' });
+      }
+    } catch (error) {
+      console.error('Error deleting equipment:', error);
+      res.status(500).json({ message: 'Failed to delete equipment' });
+    }
+  });
   
   // Interceptar tentativas de acesso aos endpoints vulneráveis removidos
   app.all('/api/equipamentos/temp*', (req: Request, res: Response) => {

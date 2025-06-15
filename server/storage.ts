@@ -2,14 +2,16 @@ import {
   densityInSituTests,
   realDensityTests,
   maxMinDensityTests,
+  capsulas,
+  cilindros,
   type DensityInSituTest,
   type RealDensityTest,
   type MaxMinDensityTest,
+  type User,
+  type InsertUser,
   type InsertDensityInSituTest,
   type InsertRealDensityTest,
-  type InsertMaxMinDensityTest,
-  type User,
-  type InsertUser
+  type InsertMaxMinDensityTest
 } from "@shared/schema";
 
 export interface IStorage {
@@ -40,6 +42,18 @@ export interface IStorage {
   getMaxMinDensityTests(): Promise<MaxMinDensityTest[]>;
   updateMaxMinDensityTest(id: number, test: Partial<InsertMaxMinDensityTest>): Promise<MaxMinDensityTest | undefined>;
   deleteMaxMinDensityTest(id: number): Promise<boolean>;
+
+  // Equipment - Capsulas
+  createCapsula(capsula: any): Promise<any>;
+  updateCapsula(id: number, capsula: any): Promise<any>;
+  deleteCapsula(id: number): Promise<boolean>;
+  getCapsulas(): Promise<any[]>;
+
+  // Equipment - Cilindros
+  createCilindro(cilindro: any): Promise<any>;
+  updateCilindro(id: number, cilindro: any): Promise<any>;
+  deleteCilindro(id: number): Promise<boolean>;
+  getCilindros(): Promise<any[]>;
 }
 
 export class MemStorage implements IStorage {
@@ -252,6 +266,41 @@ export class MemStorage implements IStorage {
     
     this.users.set(String(user.id), user);
     return user;
+  }
+
+  // Equipment - Capsulas methods (stub implementation for interface compliance)
+  async createCapsula(capsula: any): Promise<any> {
+    // This method will use the real PostgreSQL implementation in the server
+    throw new Error("Use real PostgreSQL implementation");
+  }
+
+  async updateCapsula(id: number, capsula: any): Promise<any> {
+    throw new Error("Use real PostgreSQL implementation");
+  }
+
+  async deleteCapsula(id: number): Promise<boolean> {
+    throw new Error("Use real PostgreSQL implementation");
+  }
+
+  async getCapsulas(): Promise<any[]> {
+    throw new Error("Use real PostgreSQL implementation");
+  }
+
+  // Equipment - Cilindros methods (stub implementation for interface compliance)
+  async createCilindro(cilindro: any): Promise<any> {
+    throw new Error("Use real PostgreSQL implementation");
+  }
+
+  async updateCilindro(id: number, cilindro: any): Promise<any> {
+    throw new Error("Use real PostgreSQL implementation");
+  }
+
+  async deleteCilindro(id: number): Promise<boolean> {
+    throw new Error("Use real PostgreSQL implementation");
+  }
+
+  async getCilindros(): Promise<any[]> {
+    throw new Error("Use real PostgreSQL implementation");
   }
 }
 

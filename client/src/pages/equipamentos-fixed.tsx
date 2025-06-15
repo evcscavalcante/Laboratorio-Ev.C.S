@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Search, Plus, Package, Wrench, Edit, Trash2 } from 'lucide-react';
+import { useAuth } from '@/lib/auth';
 
 interface Equipamento {
   id: string | number;
@@ -82,7 +83,7 @@ export default function EquipamentosFixed() {
   const carregarEquipamentos = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/equipamentos/temp');
+      const response = await fetch('/api/equipamentos');
       
       if (response.ok) {
         const equipamentosData = await response.json();
