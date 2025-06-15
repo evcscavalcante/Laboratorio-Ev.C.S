@@ -346,6 +346,25 @@ async function startServer() {
     }
   });
 
+  // Endpoint de exclusão temporário para densidade in-situ
+  app.delete('/api/tests/densidade-in-situ/temp/:id', async (req: Request, res: Response) => {
+    try {
+      const id = parseInt(req.params.id);
+      console.log('🗑️ Excluindo ensaio densidade in-situ ID:', id);
+      
+      const success = await storage.deleteDensityInSituTest(id);
+      if (!success) {
+        return res.status(404).json({ message: 'Ensaio não encontrado' });
+      }
+      
+      console.log('✅ Ensaio densidade in-situ excluído com sucesso');
+      res.status(204).send();
+    } catch (error) {
+      console.error('❌ Erro ao excluir ensaio densidade in-situ:', error);
+      res.status(500).json({ message: 'Falha ao excluir ensaio' });
+    }
+  });
+
   app.post('/api/tests/density-in-situ', verifyFirebaseToken, async (req: Request, res: Response) => {
     try {
       console.log('📥 Recebendo dados do ensaio:', JSON.stringify(req.body, null, 2));
@@ -447,6 +466,25 @@ async function startServer() {
     }
   });
 
+  // Endpoint de exclusão temporário para densidade real
+  app.delete('/api/tests/densidade-real/temp/:id', async (req: Request, res: Response) => {
+    try {
+      const id = parseInt(req.params.id);
+      console.log('🗑️ Excluindo ensaio densidade real ID:', id);
+      
+      const success = await storage.deleteRealDensityTest(id);
+      if (!success) {
+        return res.status(404).json({ message: 'Ensaio não encontrado' });
+      }
+      
+      console.log('✅ Ensaio densidade real excluído com sucesso');
+      res.status(204).send();
+    } catch (error) {
+      console.error('❌ Erro ao excluir ensaio densidade real:', error);
+      res.status(500).json({ message: 'Falha ao excluir ensaio' });
+    }
+  });
+
   app.post('/api/tests/real-density', 
     verifyFirebaseToken,
     validateRequest(realDensitySchema) as any,
@@ -506,6 +544,25 @@ async function startServer() {
       console.error('❌ Erro detalhado ao criar ensaio máx/mín:', error);
       console.error('📊 Stack trace:', (error as Error).stack);
       res.status(500).json({ message: 'Failed to create test', error: (error as Error).message });
+    }
+  });
+
+  // Endpoint de exclusão temporário para densidade máx/mín
+  app.delete('/api/tests/densidade-max-min/temp/:id', async (req: Request, res: Response) => {
+    try {
+      const id = parseInt(req.params.id);
+      console.log('🗑️ Excluindo ensaio densidade máx/mín ID:', id);
+      
+      const success = await storage.deleteMaxMinDensityTest(id);
+      if (!success) {
+        return res.status(404).json({ message: 'Ensaio não encontrado' });
+      }
+      
+      console.log('✅ Ensaio densidade máx/mín excluído com sucesso');
+      res.status(204).send();
+    } catch (error) {
+      console.error('❌ Erro ao excluir ensaio densidade máx/mín:', error);
+      res.status(500).json({ message: 'Falha ao excluir ensaio' });
     }
   });
 

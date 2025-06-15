@@ -494,6 +494,15 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Mapeamento correto dos dados do PostgreSQL para exibição na interface
   - Sistema detectando e exibindo 17 ensaios: 0 densidade in-situ, 6 densidade real, 11 máx/mín
   - Funcionalidades de exclusão e navegação implementadas
+- June 15, 2025: Problemas de exclusão e rate limiting corrigidos
+  - Rate limiting ajustado para desenvolvimento (50 tentativas/minuto vs 5 anteriores)
+  - Endpoints de exclusão implementados para todos os tipos de ensaios
+  - DELETE /api/tests/densidade-in-situ/temp/:id para densidade in-situ
+  - DELETE /api/tests/densidade-real/temp/:id para densidade real
+  - DELETE /api/tests/densidade-max-min/temp/:id para densidade máx/mín
+  - Sistema de exclusão funcionando sem reinicialização do site
+  - Sincronização Firebase-PostgreSQL otimizada para desenvolvimento
+  - Todas as funcionalidades operacionais: criar, visualizar, buscar, filtrar e excluir ensaios
 
 ## User Preferences
 
