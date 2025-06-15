@@ -477,6 +477,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                   <TableHead className="w-[200px]">Parâmetro</TableHead>
                   <TableHead className="text-center">Determinação 1</TableHead>
                   <TableHead className="text-center">Determinação 2</TableHead>
+                  <TableHead className="text-center bg-yellow-50">Média</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -498,6 +499,9 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                       placeholder="Número do cilindro"
                     />
                   </TableCell>
+                  <TableCell className="bg-gray-100">
+                    <span className="text-xs text-gray-500">-</span>
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell className="font-medium">Molde + Solo (g)</TableCell>
@@ -517,6 +521,15 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                       value={data.det2.moldeSolo}
                       onChange={(e) => updateData("det2", { ...data.det2, moldeSolo: parseFloat(e.target.value) || 0 })}
                       placeholder="0.00"
+                    />
+                  </TableCell>
+                  <TableCell className="bg-yellow-100">
+                    <Input
+                      type="number"
+                      step="0.01"
+                      value={((data.det1.moldeSolo + data.det2.moldeSolo) / 2).toFixed(2)}
+                      readOnly
+                      className="bg-yellow-100 border-yellow-300 font-mono font-bold"
                     />
                   </TableCell>
                 </TableRow>
@@ -540,6 +553,15 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                       placeholder="0.00"
                     />
                   </TableCell>
+                  <TableCell className="bg-yellow-100">
+                    <Input
+                      type="number"
+                      step="0.01"
+                      value={((data.det1.molde + data.det2.molde) / 2).toFixed(2)}
+                      readOnly
+                      className="bg-yellow-100 border-yellow-300 font-mono font-bold"
+                    />
+                  </TableCell>
                 </TableRow>
                 <TableRow className="bg-blue-50">
                   <TableCell className="font-medium">Solo (g) <Calculator className="inline ml-1" size={12} /></TableCell>
@@ -559,6 +581,15 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                       value={calculations.det2.soil.toFixed(2)}
                       readOnly
                       className="bg-blue-50 border-blue-200 font-mono"
+                    />
+                  </TableCell>
+                  <TableCell className="bg-yellow-100">
+                    <Input
+                      type="number"
+                      step="0.01"
+                      value={((calculations.det1.soil + calculations.det2.soil) / 2).toFixed(2)}
+                      readOnly
+                      className="bg-yellow-100 border-yellow-300 font-mono font-bold"
                     />
                   </TableCell>
                 </TableRow>
@@ -582,6 +613,15 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                       placeholder="0.00"
                     />
                   </TableCell>
+                  <TableCell className="bg-yellow-100">
+                    <Input
+                      type="number"
+                      step="0.01"
+                      value={((data.det1.volume + data.det2.volume) / 2).toFixed(2)}
+                      readOnly
+                      className="bg-yellow-100 border-yellow-300 font-mono font-bold"
+                    />
+                  </TableCell>
                 </TableRow>
                 <TableRow className="bg-blue-50">
                   <TableCell className="font-medium">γnat úmido (g/cm³) <Calculator className="inline ml-1" size={12} /></TableCell>
@@ -603,6 +643,15 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                       className="bg-blue-50 border-blue-200 font-mono"
                     />
                   </TableCell>
+                  <TableCell className="bg-yellow-100">
+                    <Input
+                      type="number"
+                      step="0.001"
+                      value={((calculations.det1.gammaNatWet + calculations.det2.gammaNatWet) / 2).toFixed(3)}
+                      readOnly
+                      className="bg-yellow-100 border-yellow-300 font-mono font-bold"
+                    />
+                  </TableCell>
                 </TableRow>
                 <TableRow className="bg-blue-50">
                   <TableCell className="font-medium">γnat seco (g/cm³) <Calculator className="inline ml-1" size={12} /></TableCell>
@@ -622,6 +671,15 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                       value={calculations.det2.gammaNatDry.toFixed(3)}
                       readOnly
                       className="bg-blue-50 border-blue-200 font-mono"
+                    />
+                  </TableCell>
+                  <TableCell className="bg-yellow-100">
+                    <Input
+                      type="number"
+                      step="0.001"
+                      value={((calculations.det1.gammaNatDry + calculations.det2.gammaNatDry) / 2).toFixed(3)}
+                      readOnly
+                      className="bg-yellow-100 border-yellow-300 font-mono font-bold"
                     />
                   </TableCell>
                 </TableRow>
