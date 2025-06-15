@@ -65,6 +65,8 @@ export default function Login() {
         message = 'Usuário não encontrado';
       } else if (error.code === 'auth/wrong-password') {
         message = 'Senha incorreta';
+      } else if (error.code === 'auth/invalid-credential') {
+        message = 'Credenciais inválidas. Verifique email e senha ou crie uma conta primeiro.';
       } else if (error.code === 'auth/email-already-in-use') {
         message = 'Este email já está em uso';
       } else if (error.code === 'auth/weak-password') {
