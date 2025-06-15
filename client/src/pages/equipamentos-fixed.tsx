@@ -4,8 +4,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { Search, Plus, Package, Wrench } from 'lucide-react';
+import { Search, Plus, Package, Wrench, Edit, Trash2 } from 'lucide-react';
 
 interface Equipamento {
   id: string | number;
@@ -41,6 +44,10 @@ export default function EquipamentosFixed() {
   const [filtroTipo, setFiltroTipo] = useState<string>('todos');
   const [filtroStatus, setFiltroStatus] = useState<string>('todos');
   const [busca, setBusca] = useState('');
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [equipamentoSelecionado, setEquipamentoSelecionado] = useState<Equipamento | null>(null);
+  const [editando, setEditando] = useState(false);
+  const [salvando, setSalvando] = useState(false);
   const { toast } = useToast();
 
   // Carregar equipamentos do PostgreSQL
@@ -85,6 +92,113 @@ export default function EquipamentosFixed() {
     carregarEquipamentos();
   }, []);
 
+  // Criar novo equipamento
+  const novoEquipamento = () => {
+    const equipamentoVazio: Equipamento = {
+      id: '',
+      codigo: '',
+      tipo: 'capsula',
+      descricao: '',
+      peso: 0,
+      volume: 0,
+      altura: 0,
+      diametro: 0,
+      material: '',
+      fabricante: '',
+      localizacao: '',
+      status: 'ativo',
+      observacoes: '',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    setEquipamentoSelecionado(equipamentoVazio);
+    setEditando(false);
+    setDialogOpen(true);
+  };
+
+  // Editar equipamento
+  const editarEquipamento = (equipamento: Equipamento) => {
+    setEquipamentoSelecionado({ ...equipamento });
+    setEditando(true);
+    setDialogOpen(true);
+  };
+
+  // Salvar equipamento (criar ou editar)
+  const salvarEquipamento = async () => {
+    if (!equipamentoSelecionado) return;
+
+    try {
+      setSalvando(true);
+      
+      const url = editando 
+        ? `/api/equipamentos/temp/${equipamentoSelecionado.id}`
+        : '/api/equipamentos/temp';
+      
+      const method = editando ? 'PUT' : 'POST';
+      
+      const response = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(equipamentoSelecionado),
+      });
+
+      if (response.ok) {
+        await carregarEquipamentos();
+        setDialogOpen(false);
+        setEquipamentoSelecionado(null);
+        
+        toast({
+          title: editando ? "Equipamento atualizado" : "Equipamento criado",
+          description: `${equipamentoSelecionado.codigo} foi ${editando ? 'atualizado' : 'criado'} com sucesso.`,
+        });
+      } else {
+        throw new Error(`Falha ao ${editando ? 'salvar' : 'criar'} equipamento`);
+      }
+    } catch (error) {
+      console.error('Erro ao salvar equipamento:', error);
+      toast({
+        title: "Erro ao salvar",
+        description: `Não foi possível ${editando ? 'salvar as alterações' : 'criar o equipamento'}.`,
+        variant: "destructive",
+      });
+    } finally {
+      setSalvando(false);
+    }
+  };
+
+  // Excluir equipamento
+  const excluirEquipamento = async (equipamento: Equipamento) => {
+    if (!confirm(`Tem certeza que deseja excluir o equipamento ${equipamento.codigo}?`)) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/equipamentos/temp/${equipamento.id}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        await carregarEquipamentos();
+        
+        toast({
+          title: "Equipamento excluído",
+          description: `${equipamento.codigo} foi excluído com sucesso.`,
+        });
+      } else {
+        throw new Error('Falha ao excluir equipamento');
+      }
+    } catch (error) {
+      console.error('Erro ao excluir equipamento:', error);
+      toast({
+        title: "Erro ao excluir",
+        description: "Não foi possível excluir o equipamento.",
+        variant: "destructive",
+      });
+    }
+  };
+
   // Filtrar equipamentos
   const equipamentosFiltrados = equipamentos.filter(equipamento => {
     const matchTipo = filtroTipo === 'todos' || equipamento.tipo === filtroTipo;
@@ -105,7 +219,7 @@ export default function EquipamentosFixed() {
           <h1 className="text-3xl font-bold">Equipamentos</h1>
           <p className="text-gray-600">Gerenciamento de equipamentos do laboratório</p>
         </div>
-        <Button>
+        <Button onClick={novoEquipamento}>
           <Plus className="h-4 w-4 mr-2" />
           Novo Equipamento
         </Button>
