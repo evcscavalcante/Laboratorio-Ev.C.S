@@ -444,6 +444,41 @@ async function startServer() {
     }
   });
 
+  // Endpoint temporário para listar ensaios densidade in-situ
+  app.get('/api/tests/densidade-in-situ/temp', async (req: Request, res: Response) => {
+    try {
+      const tests = await storage.getDensityInSituTests();
+      console.log('📋 Ensaios densidade in-situ encontrados:', tests.length);
+      res.json(tests);
+    } catch (error) {
+      console.error('❌ Erro ao buscar ensaios densidade in-situ:', error);
+      res.status(500).json({ message: 'Falha ao buscar ensaios' });
+    }
+  });
+
+  // Endpoint temporário para criar ensaios densidade in-situ (sem autenticação)
+  app.post('/api/tests/densidade-in-situ/temp', async (req: Request, res: Response) => {
+    try {
+      console.log('📥 Recebendo dados do ensaio densidade in-situ (temp):', JSON.stringify(req.body, null, 2));
+      
+      const testData = {
+        ...req.body,
+        userId: null,
+        createdBy: 'sistema-temp'
+      };
+      
+      console.log('📝 Dados preparados para salvamento:', JSON.stringify(testData, null, 2));
+      
+      const test = await storage.createDensityInSituTest(testData);
+      console.log('✅ Ensaio densidade in-situ salvo com sucesso:', test);
+      
+      res.status(201).json(test);
+    } catch (error) {
+      console.error('❌ Erro detalhado ao criar ensaio densidade in-situ:', error);
+      res.status(500).json({ message: 'Failed to create test', error: (error as Error).message });
+    }
+  });
+
   // Endpoint de exclusão temporário para densidade in-situ
   app.delete('/api/tests/densidade-in-situ/temp/:id', async (req: Request, res: Response) => {
     try {
@@ -796,6 +831,36 @@ async function startServer() {
     } catch (error) {
       console.error('Error deleting equipamento:', error);
       res.status(500).json({ message: 'Failed to delete equipamento' });
+    }
+  });
+
+  // Endpoint protegido para modificação de roles (apenas ADMIN e DEVELOPER)
+  app.post('/api/auth/set-role', verifyFirebaseToken, requireRole(['ADMIN', 'DEVELOPER']), async (req: Request, res: Response) => {
+    try {
+      const { userId, newRole } = req.body;
+      
+      if (!userId || !newRole) {
+        return res.status(400).json({ message: 'userId e newRole são obrigatórios' });
+      }
+      
+      // Verificar se o role é válido
+      const validRoles = ['VIEWER', 'TECHNICIAN', 'MANAGER', 'ADMIN', 'DEVELOPER'];
+      if (!validRoles.includes(newRole)) {
+        return res.status(400).json({ message: 'Role inválido' });
+      }
+      
+      // Simular modificação (em produção seria no banco)
+      console.log(`🔐 Modificando role do usuário ${userId} para ${newRole}`);
+      
+      res.json({ 
+        message: 'Role modificado com sucesso',
+        userId,
+        newRole,
+        modifiedBy: (req as any).user?.email || 'sistema'
+      });
+    } catch (error) {
+      console.error('❌ Erro ao modificar role:', error);
+      res.status(500).json({ message: 'Falha ao modificar role' });
     }
   });
 

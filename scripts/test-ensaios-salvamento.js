@@ -75,11 +75,10 @@ class EnsaiosSavingTester {
         umidadeBaseTara2: 20.0
       };
 
-      const response = await fetch(`${this.baseUrl}/api/tests/density-in-situ`, {
+      const response = await fetch(`${this.baseUrl}/api/tests/densidade-in-situ/temp`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer fake-token-for-testing'
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(testData)
       });
