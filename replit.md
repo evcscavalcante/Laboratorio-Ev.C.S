@@ -445,6 +445,9 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - TestHeader completamente padronizado com tema visual consistente do sistema
   - Interface totalmente unificada com espaçamento e cores padronizados
   - Sistema agora segue rigorosamente o mesmo padrão visual estabelecido nos ensaios de densidade real e máx/mín
+- June 15, 2025: Campo "Volume" substituído por "Estaca" no cabeçalho TestHeader
+  - Atualização aplicada em todos os ensaios (densidade in-situ, real, máx/mín)
+  - Terminologia técnica ajustada conforme especificação
 
 ## User Preferences
 

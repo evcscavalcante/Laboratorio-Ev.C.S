@@ -240,7 +240,7 @@ export default function TestHeader({
                 placeholder="-"
               />
             </div>
-            <div className="bg-blue-50 p-2 border-r border-blue-200 font-medium text-blue-900">Volume:</div>
+            <div className="bg-blue-50 p-2 border-r border-blue-200 font-medium text-blue-900">Estaca:</div>
             <div className="p-2">
               <input 
                 type="text" 
