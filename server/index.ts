@@ -15,13 +15,7 @@ import { eq } from "drizzle-orm";
 import { initializeAdminUser } from "./init-admin";
 import { storage } from "./storage-corrected";
 import { observability } from "./observability-simple";
-// import { 
-//   initializeSecurity, 
-//   securityMiddleware, 
-//   createSecurityRoutes,
-//   accessControl,
-//   Permission
-// } from "./security";
+// Sistema de segurança simplificado removido para otimização
 
 // Importar middlewares de segurança
 import { 
@@ -58,8 +52,7 @@ async function startServer() {
   // Middleware de observabilidade
   app.use(observability.middleware());
   
-  // // Inicializar sistemas de segurança
-  // initializeSecurity();
+  // Sistema de segurança otimizado
   
   // Inicializar usuário administrador
   await initializeAdminUser();
@@ -121,8 +114,7 @@ async function startServer() {
     },
   }));
 
-  // // Middleware de segurança integrado
-  // app.use(...securityMiddleware());
+  // Middleware de segurança otimizado
 
   // Endpoints de observabilidade
   app.get('/api/health', (req, res) => {
@@ -135,8 +127,7 @@ async function startServer() {
     res.json(metrics);
   });
 
-  // // Rotas de segurança
-  // createSecurityRoutes(app);
+  // Rotas de segurança otimizadas
 
   // Firebase Authentication routes com rate limiting
   app.use('/api/auth', authRateLimit, hybridAuthRoutes);

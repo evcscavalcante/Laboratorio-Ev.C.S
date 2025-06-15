@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { storage } from './storage-final';
+import { storage } from './storage-corrected';
 
 export async function initializeDefaultUsers() {
   try {
