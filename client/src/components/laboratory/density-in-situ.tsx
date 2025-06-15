@@ -1002,26 +1002,50 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
         </CardContent>
       </Card>
 
-      {/* Massa Específica Real dos Grãos */}
+      {/* Massa Específica Real dos Grãos - MASSA ESPECÍFICA REAL DOS GRÃOS (g/cm³) */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center">
-            <Beaker className="mr-2 text-purple-600" size={20} />
-            Massa Específica Real dos Grãos (g/cm³)
+          <CardTitle className="flex items-center text-sm font-bold">
+            <Beaker className="mr-2 text-purple-600" size={16} />
+            MASSA ESPECÍFICA REAL DOS GRÃOS (g/cm³)
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-2 md:p-6">
-          <div className="flex items-center justify-center">
-            <div className="bg-purple-50 p-6 rounded-lg border border-purple-200 text-center">
-              <Input
-                type="number"
-                step="0.001"
-                value={data.realDensityRef}
-                onChange={(e) => updateField('realDensityRef', e.target.value)}
-                className="text-3xl font-bold text-purple-900 font-mono text-center bg-transparent border-none"
-                placeholder="3.149"
-              />
-              <p className="text-sm text-purple-600 mt-2">Valor de referência conforme NBR 17212:2025</p>
+        <CardContent className="p-2">
+          <div className="border border-gray-300 p-4">
+            <div className="grid grid-cols-4 gap-2 text-xs">
+              <div className="text-center border p-2">
+                <div className="font-mono font-bold text-purple-900">≤6(3+2+1)×(9841÷7)</div>
+                <div className="text-purple-600 mt-1">=</div>
+              </div>
+              <div className="text-center border p-2">
+                <div className="font-mono font-bold text-purple-900">≤6(3+2+1)×(9841÷7)</div>
+                <div className="text-purple-600 mt-1">=</div>
+              </div>
+              <div className="text-center border p-2">
+                <div className="font-mono font-bold text-purple-900">X</div>
+              </div>
+              <div className="text-center border p-2">
+                <div className="font-mono font-bold text-purple-900">=</div>
+              </div>
+            </div>
+            <div className="grid grid-cols-4 gap-2 text-xs mt-2">
+              <div className="text-center border p-2">
+                <div className="font-mono font-bold text-purple-900">≤6(3+2+1)×(9841÷7)</div>
+                <div className="text-purple-600 mt-1">=</div>
+              </div>
+              <div className="text-center border p-2">
+                <div className="font-mono font-bold text-purple-900">≤6(3+2+1)×(9841÷7)</div>
+                <div className="text-purple-600 mt-1">=</div>
+              </div>
+              <div className="text-center border p-2">
+                <div className="font-mono font-bold text-purple-900">X</div>
+              </div>
+              <div className="text-center border p-2">
+                <div className="font-mono font-bold text-purple-900">=</div>
+              </div>
+            </div>
+            <div className="text-center mt-4 p-2 bg-purple-50 border border-purple-200">
+              <div className="text-sm text-purple-600">REGISTRO 930.556</div>
             </div>
           </div>
         </CardContent>

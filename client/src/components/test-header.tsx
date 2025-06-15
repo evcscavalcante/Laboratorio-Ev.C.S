@@ -18,9 +18,15 @@ interface TestHeaderProps {
   norte?: string;
   este?: string;
   cota?: string;
+  local?: string;
   quadrante?: string;
   camada?: string;
   fvs?: string;
+  nomeAmostra?: string;
+  regSalum?: string;
+  tempo?: any;
+  amostreaReensaiada?: any;
+  dispositivosPrecisao?: any;
   
   // Callbacks para tornar os campos funcionais
   onOperadorChange?: (value: string) => void;
