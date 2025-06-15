@@ -917,9 +917,6 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                       placeholder="0.00"
                     />
                   </TableCell>
-                  <TableCell className="bg-gray-100">
-                    <span className="text-xs text-gray-500">-</span>
-                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell className="font-medium">Tara (g)</TableCell>
@@ -949,9 +946,6 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                       onChange={(e) => updateData("moistureBase3", { ...data.moistureBase3, tare: parseFloat(e.target.value) || 0 })}
                       placeholder="0.00"
                     />
-                  </TableCell>
-                  <TableCell className="bg-gray-100">
-                    <span className="text-xs text-gray-500">-</span>
                   </TableCell>
                 </TableRow>
                 <TableRow className="bg-blue-50">
@@ -983,18 +977,15 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                       className="bg-blue-50 border-blue-200 font-mono"
                     />
                   </TableCell>
-                  <TableCell className="bg-yellow-100">
-                    <Input
-                      type="number"
-                      step="0.01"
-                      value={((calculations.moistureBase1 + calculations.moistureBase2 + calculations.moistureBase3) / 3).toFixed(2)}
-                      readOnly
-                      className="bg-yellow-100 border-yellow-300 font-mono font-bold"
-                    />
-                  </TableCell>
                 </TableRow>
               </TableBody>
             </Table>
+          </div>
+          <div className="mt-4 p-4 bg-blue-50 rounded-lg">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-700">Umidade Média BASE (%):</span>
+              <span className="text-lg font-bold text-blue-600 font-mono">{calculations.results.averageMoistureBase.toFixed(2)}</span>
+            </div>
           </div>
         </CardContent>
       </Card>

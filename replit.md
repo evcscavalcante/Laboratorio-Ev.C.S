@@ -438,6 +438,13 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Design responsivo mobile-first mantido com grid adaptativo
   - Sistema mais limpo focado nos valores CR (Compacidade Relativa) e IV (Índice de Vazios)
   - Interface otimizada para laboratório com melhor aproveitamento do espaço de tela
+- June 15, 2025: Padronização completa das tabelas de densidade in-situ implementada
+  - Tabelas de umidade TOPO e BASE padronizadas seguindo modelo dos outros ensaios
+  - Colunas "Média" removidas dos cabeçalhos e movidas para seções separadas na parte inferior
+  - Layout unificado com design card-based azul consistente em todos os componentes
+  - TestHeader completamente padronizado com tema visual consistente do sistema
+  - Interface totalmente unificada com espaçamento e cores padronizados
+  - Sistema agora segue rigorosamente o mesmo padrão visual estabelecido nos ensaios de densidade real e máx/mín
 
 ## User Preferences
 
