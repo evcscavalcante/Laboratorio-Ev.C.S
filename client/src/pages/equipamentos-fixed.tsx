@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Search, Plus, Package, Wrench, Edit, Trash2 } from 'lucide-react';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/hooks/useAuth';
 
 interface Equipamento {
   id: string | number;
@@ -78,12 +78,23 @@ export default function EquipamentosFixed() {
   const [editando, setEditando] = useState(false);
   const [salvando, setSalvando] = useState(false);
   const { toast } = useToast();
+  const { user, token } = useAuth();
 
   // Carregar equipamentos do PostgreSQL
   const carregarEquipamentos = async () => {
+    if (!token) {
+      console.log('🔐 Token não disponível para carregar equipamentos');
+      return;
+    }
+
     try {
       setLoading(true);
-      const response = await fetch('/api/equipamentos');
+      const response = await fetch('/api/equipamentos', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
       
       if (response.ok) {
         const equipamentosData = await response.json();
@@ -156,20 +167,21 @@ export default function EquipamentosFixed() {
 
   // Salvar equipamento (criar ou editar)
   const salvarEquipamento = async () => {
-    if (!equipamentoSelecionado) return;
+    if (!equipamentoSelecionado || !token) return;
 
     try {
       setSalvando(true);
       
       const url = editando 
-        ? `/api/equipamentos/temp/${equipamentoSelecionado.id}`
-        : '/api/equipamentos/temp';
+        ? `/api/equipamentos/${equipamentoSelecionado.id}`
+        : '/api/equipamentos';
       
       const method = editando ? 'PUT' : 'POST';
       
       const response = await fetch(url, {
         method,
         headers: {
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(equipamentoSelecionado),
@@ -201,13 +213,26 @@ export default function EquipamentosFixed() {
 
   // Excluir equipamento
   const excluirEquipamento = async (equipamento: Equipamento) => {
+    if (!token) {
+      toast({
+        title: "Erro de autenticação",
+        description: "Token não disponível para exclusão",
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (!confirm(`Tem certeza que deseja excluir o equipamento ${equipamento.codigo}?`)) {
       return;
     }
 
     try {
-      const response = await fetch(`/api/equipamentos/temp/${equipamento.id}`, {
+      const response = await fetch(`/api/equipamentos/${equipamento.id}?tipo=${equipamento.tipo}`, {
         method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
       });
 
       if (response.ok) {

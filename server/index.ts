@@ -610,9 +610,11 @@ async function startServer() {
         const [newCilindro] = await db.insert(cilindros).values({
           codigo: equipmentData.codigo,
           tipo: equipmentData.tipoEspecifico || 'biselado',
+          peso: parseFloat(equipmentData.peso) || 0,
           volume: parseFloat(equipmentData.volume) || 0,
           altura: parseFloat(equipmentData.altura) || 0,
           diametro: parseFloat(equipmentData.diametro) || 0,
+          material: equipmentData.material || '',
           localizacao: equipmentData.localizacao || '',
           observacoes: equipmentData.observacoes || '',
           proxima_conferencia: equipmentData.proximaConferencia ? new Date(equipmentData.proximaConferencia) : null,
@@ -638,27 +640,37 @@ async function startServer() {
       let updatedEquipment;
       
       if (equipmentData.tipo === 'capsula') {
-        updatedEquipment = await storage.updateCapsula(parseInt(id), {
-          codigo: equipmentData.codigo,
-          peso: parseFloat(equipmentData.peso) || 0,
-          material: equipmentData.material || '',
-          localizacao: equipmentData.localizacao || '',
-          observacoes: equipmentData.observacoes || '',
-          proxima_conferencia: equipmentData.proximaConferencia || null,
-          status: equipmentData.status || 'ativo'
-        });
+        const [updatedCapsula] = await db.update(capsulas)
+          .set({
+            codigo: equipmentData.codigo,
+            peso: parseFloat(equipmentData.peso) || 0,
+            material: equipmentData.material || '',
+            localizacao: equipmentData.localizacao || '',
+            observacoes: equipmentData.observacoes || '',
+            proxima_conferencia: equipmentData.proximaConferencia ? new Date(equipmentData.proximaConferencia) : null,
+            status: equipmentData.status || 'ativo',
+            updated_at: new Date()
+          })
+          .where(eq(capsulas.id, parseInt(id)))
+          .returning();
+        updatedEquipment = updatedCapsula;
       } else if (equipmentData.tipo === 'cilindro') {
-        updatedEquipment = await storage.updateCilindro(parseInt(id), {
-          codigo: equipmentData.codigo,
-          tipo: equipmentData.tipoEspecifico || 'biselado',
-          volume: parseFloat(equipmentData.volume) || 0,
-          altura: parseFloat(equipmentData.altura) || 0,
-          diametro: parseFloat(equipmentData.diametro) || 0,
-          localizacao: equipmentData.localizacao || '',
-          observacoes: equipmentData.observacoes || '',
-          proxima_conferencia: equipmentData.proximaConferencia || null,
-          status: equipmentData.status || 'ativo'
-        });
+        const [updatedCilindro] = await db.update(cilindros)
+          .set({
+            codigo: equipmentData.codigo,
+            tipo: equipmentData.tipoEspecifico || 'biselado',
+            volume: parseFloat(equipmentData.volume) || 0,
+            altura: parseFloat(equipmentData.altura) || 0,
+            diametro: parseFloat(equipmentData.diametro) || 0,
+            localizacao: equipmentData.localizacao || '',
+            observacoes: equipmentData.observacoes || '',
+            proxima_conferencia: equipmentData.proximaConferencia ? new Date(equipmentData.proximaConferencia) : null,
+            status: equipmentData.status || 'ativo',
+            updated_at: new Date()
+          })
+          .where(eq(cilindros.id, parseInt(id)))
+          .returning();
+        updatedEquipment = updatedCilindro;
       }
       
       console.log(`✅ Equipamento ${equipmentData.tipo} atualizado:`, updatedEquipment);
@@ -678,9 +690,11 @@ async function startServer() {
       let deleted = false;
       
       if (tipo === 'capsula') {
-        deleted = await storage.deleteCapsula(parseInt(id));
+        const result = await db.delete(capsulas).where(eq(capsulas.id, parseInt(id)));
+        deleted = (result.rowCount || 0) > 0;
       } else if (tipo === 'cilindro') {
-        deleted = await storage.deleteCilindro(parseInt(id));
+        const result = await db.delete(cilindros).where(eq(cilindros.id, parseInt(id)));
+        deleted = (result.rowCount || 0) > 0;
       }
       
       if (deleted) {
