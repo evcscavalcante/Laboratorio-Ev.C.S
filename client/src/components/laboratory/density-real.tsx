@@ -56,10 +56,10 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
 
   // Query para buscar dados do ensaio específico
   const { data: testData, isLoading: loadingTest } = useQuery({
-    queryKey: ['/api/tests/density-real/temp', testId],
+    queryKey: ['/api/tests/densidade-real/temp', testId],
     queryFn: async () => {
       if (!testId) return null;
-      const response = await apiRequest('GET', `/api/tests/density-real/temp`);
+      const response = await apiRequest('GET', `/api/tests/densidade-real/temp`);
       const tests = await response.json();
       return tests.find((test: any) => test.id === testId) || null;
     },
@@ -226,7 +226,7 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
 
   const saveTestMutation = useMutation({
     mutationFn: async (testData: any) => {
-      return apiRequest("POST", "/api/tests/real-density/temp", testData);
+      return apiRequest("POST", "/api/tests/densidade-real/temp", testData);
     },
     onSuccess: (result) => {
       const response = result.json ? result.json() : result;
@@ -235,7 +235,7 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
         description: `Ensaio de densidade real salvo no banco PostgreSQL.`,
         duration: 5000,
       });
-      queryClient.invalidateQueries({ queryKey: ["/api/tests/real-density/temp"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/tests/densidade-real/temp"] });
       localStorage.removeItem('density-real-progress');
       console.log('🗑️ Progresso do ensaio de densidade real limpo após salvamento');
     },

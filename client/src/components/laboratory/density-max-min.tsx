@@ -50,10 +50,10 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
   
   // Query para buscar dados do ensaio específico
   const { data: testData, isLoading: loadingTest } = useQuery({
-    queryKey: ['/api/tests/max-min-density/temp', testId],
+    queryKey: ['/api/tests/densidade-max-min/temp', testId],
     queryFn: async () => {
       if (!testId) return null;
-      const response = await apiRequest('GET', `/api/tests/max-min-density/temp`);
+      const response = await apiRequest('GET', `/api/tests/densidade-max-min/temp`);
       const tests = await response.json();
       return tests.find((test: any) => test.id === testId) || null;
     },
@@ -340,7 +340,7 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
 
   const saveTestMutation = useMutation({
     mutationFn: async (testData: any) => {
-      return apiRequest("POST", "/api/tests/max-min-density/temp", testData);
+      return apiRequest("POST", "/api/tests/densidade-max-min/temp", testData);
     },
     onSuccess: (result) => {
       toast({ 
@@ -348,7 +348,7 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
         description: "Ensaio de densidade máx/mín salvo no banco PostgreSQL.",
         duration: 5000,
       });
-      queryClient.invalidateQueries({ queryKey: ["/api/tests/max-min-density/temp"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/tests/densidade-max-min/temp"] });
       localStorage.removeItem('density-max-min-progress');
       console.log('🗑️ Progresso do ensaio de densidade máx/mín limpo após salvamento');
     },
