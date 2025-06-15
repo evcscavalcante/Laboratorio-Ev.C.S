@@ -544,6 +544,13 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Salvamento funcionando: densidade real (ID:7), densidade máx/mín (ID:14) validados
   - Sistema detectando 4 ensaios densidade real e 11 densidade máx/mín no PostgreSQL
   - Testes garantem que novas implementações não quebrem funcionalidades existentes
+- June 15, 2025: Sistema de equipamentos completamente funcional implementado
+  - Endpoint de equipamentos corrigido para buscar das tabelas corretas (capsulas, cilindros)
+  - Interface de equipamentos corrigida (equipamentos-fixed.tsx) com carregamento automático do PostgreSQL
+  - Equipamento CAP-TEST-001 confirmado salvo e exibido corretamente na interface
+  - Sistema detectando 1 equipamento no PostgreSQL (Cápsula de teste, 25.5g, Alumínio)
+  - Sincronização tripla validada: IndexedDB Local → PostgreSQL Central → Firebase Firestore
+  - Rota atualizada para usar página corrigida, interface totalmente operacional
 - June 15, 2025: Testes completos de camadas hierárquicas e controle de acesso implementados
   - Scripts criados: test-hierarquia-roles.js, test-permissoes-especificas.js
   - Validação de 5 níveis hierárquicos: VIEWER, TECHNICIAN, MANAGER, ADMIN, DEVELOPER
