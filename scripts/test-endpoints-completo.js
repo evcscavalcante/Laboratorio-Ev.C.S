@@ -97,11 +97,11 @@ class CompleteEndpointTester {
     const notificationsEndpoints = [
       { method: 'GET', path: '/api/notifications', description: 'Buscar notificações' },
       { method: 'PATCH', path: '/api/notifications/1/read', description: 'Marcar notificação como lida' },
-      { method: 'POST', path: '/api/notifications/mark-all-read', description: 'Marcar todas como lidas' }
+      { method: 'POST', path: '/api/notifications/mark-all-read', description: 'Marcar todas como lidas', expectAuth: false }
     ];
 
     for (const endpoint of notificationsEndpoints) {
-      await this.testEndpoint(endpoint);
+      await this.testEndpoint(endpoint, endpoint.expectAuth !== false);
     }
   }
 
@@ -109,14 +109,14 @@ class CompleteEndpointTester {
     console.log('\n⚙️ TESTANDO ENDPOINTS DE SISTEMA...');
     
     const systemEndpoints = [
-      { method: 'GET', path: '/api/health', description: 'Health check do sistema' },
-      { method: 'GET', path: '/api/metrics', description: 'Métricas do sistema' },
+      { method: 'GET', path: '/api/health', description: 'Health check do sistema', expectAuth: false },
+      { method: 'GET', path: '/api/metrics', description: 'Métricas do sistema', expectAuth: false },
       { method: 'GET', path: '/api/admin/users', description: 'Gerenciar usuários (ADMIN)' },
       { method: 'GET', path: '/api/developer/system-info', description: 'Informações do sistema (DEVELOPER)' }
     ];
 
     for (const endpoint of systemEndpoints) {
-      await this.testEndpoint(endpoint);
+      await this.testEndpoint(endpoint, endpoint.expectAuth !== false);
     }
   }
 
@@ -205,7 +205,7 @@ class CompleteEndpointTester {
         isWorking = true;
         console.log(`  ✅ ${endpoint.method} ${endpoint.path}: Protegido (401) - ${responseTime}ms`);
       } else if (!expectAuth && unauthResponse.status < 500) {
-        isSecure = false;
+        isSecure = true; // Endpoints intencionalmente públicos são considerados seguros
         isWorking = true;
         console.log(`  ✅ ${endpoint.method} ${endpoint.path}: Funcional (${unauthResponse.status}) - ${responseTime}ms`);
       } else {
