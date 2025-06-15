@@ -14,7 +14,7 @@ import { subscriptionPlans, users } from "@shared/schema";
 import { eq } from "drizzle-orm";
 import { initializeAdminUser } from "./init-admin";
 import { storage } from "./storage-corrected";
-import { observability } from "./observability-simple";
+import { observability } from "./observability-minimal";
 // Sistema de segurança simplificado removido para otimização
 
 // Importar middlewares de segurança
