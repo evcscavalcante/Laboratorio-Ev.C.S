@@ -12,6 +12,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { localDataManager } from "@/lib/local-storage";
+import TestHeader from "@/components/test-header";
 
 interface RealDensityData {
   registrationNumber: string;
@@ -469,6 +470,38 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
 
   return (
     <div className="laboratory-page space-y-6">
+      {/* Cabeçalho Profissional do Ensaio */}
+      <TestHeader 
+        testType="densidade-real"
+        operador={data.operator}
+        responsavelCalculo={data.technicalResponsible}
+        verificador={data.verifier}
+        data={data.date}
+        norte={data.north}
+        este={data.east}
+        cota={data.cota}
+        local={data.local}
+        material={data.material}
+        origem={data.origin}
+        registro={data.registrationNumber}
+        tempo={{
+          sol: data.weatherCondition === "SOL FORTE",
+          chuvaFraca: data.weatherCondition === "CHUVA FRACA",
+          chuvaForte: data.weatherCondition === "CHUVA FORTE",
+          nublado: data.weatherCondition === "NUBLADO"
+        }}
+        amostreaReensaiada={{
+          sim: data.sampleReensayed,
+          nao: !data.sampleReensayed
+        }}
+        dispositivosPrecisao={{
+          balanca: data.balanceId,
+          estufa: data.ovenId,
+          termometro: data.thermometerId,
+          cronometro: data.chronometerId
+        }}
+      />
+
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-2">Densidade Real dos Grãos</h2>
         <p className="text-gray-600">Determinação da densidade real por picnometria</p>

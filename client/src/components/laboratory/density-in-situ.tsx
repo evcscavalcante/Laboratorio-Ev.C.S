@@ -372,6 +372,41 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
 
   return (
     <div className="laboratory-page space-y-6">
+      {/* Cabeçalho Profissional do Ensaio */}
+      <TestHeader 
+        testType="densidade-in-situ"
+        operador={data.operator}
+        responsavelCalculo={data.technicalResponsible}
+        verificador={data.verifier}
+        data={data.date}
+        norte=""
+        este=""
+        cota=""
+        quadrante={data.quadrant}
+        camada={data.layer}
+        fvs=""
+        material={data.material}
+        origem={data.origin}
+        registro={data.registrationNumber}
+        hora={data.time}
+        tempo={{
+          sol: false,
+          chuvaFraca: false,
+          chuvaForte: false,
+          nublado: false
+        }}
+        amostreaReensaiada={{
+          sim: false,
+          nao: true
+        }}
+        dispositivosPrecisao={{
+          balanca: data.balanceId,
+          estufa: data.ovenId,
+          termometro: "",
+          cronometro: ""
+        }}
+      />
+
       {/* Header */}
       <Card>
         <CardHeader>

@@ -11,6 +11,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { localDataManager } from "@/lib/local-storage";
+import TestHeader from "@/components/test-header";
 
 interface MaxMinDensityData {
   registrationNumber: string;
@@ -617,6 +618,39 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
 
   return (
     <div className="laboratory-page space-y-6">
+      {/* Cabeçalho Profissional do Ensaio */}
+      <TestHeader 
+        testType="densidade-max-min"
+        operador={data.operator}
+        responsavelCalculo={data.technicalResponsible}
+        verificador={data.verifier}
+        data={data.date}
+        norte={data.north}
+        este={data.east}
+        cota={data.cota}
+        quadrante={data.quadrant}
+        material={data.material}
+        origem={data.origin}
+        registro={data.registrationNumber}
+        hora={data.time}
+        tempo={{
+          sol: false,
+          chuvaFraca: false,
+          chuvaForte: false,
+          nublado: false
+        }}
+        amostreaReensaiada={{
+          sim: false,
+          nao: true
+        }}
+        dispositivosPrecisao={{
+          balanca: data.balanceId,
+          estufa: data.ovenId,
+          termometro: "",
+          cronometro: ""
+        }}
+      />
+
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-2">Densidade Máxima e Mínima</h2>
         <p className="text-gray-600">Determinação dos índices de vazios máximo e mínimo</p>
