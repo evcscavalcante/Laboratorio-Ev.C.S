@@ -102,6 +102,12 @@ export default function Sidebar({ isOpen }: SidebarProps) {
         ]
       },
       {
+        label: 'Ensaios Salvos',
+        icon: FileText,
+        href: '/ensaios-salvos',
+        active: location === '/ensaios-salvos'
+      },
+      {
         label: 'Equipamentos',
         icon: Package,
         href: '/equipamentos',

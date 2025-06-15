@@ -29,6 +29,7 @@ import TestAccess from "@/pages/test-access";
 import UserCreation from "@/pages/admin/user-creation";
 import SystemStatus from "@/pages/system-status";
 import SystemMonitoring from "@/pages/system-monitoring";
+import EnsaiosSalvos from "@/pages/ensaios-salvos";
 
 function Router() {
   const { user, loading } = useAuth();
@@ -62,6 +63,7 @@ function Router() {
         <Route path="/densidade-max-min" component={DensidadeMaxMinPage} />
         <Route path="/balanca-verificacao" component={BalancaVerificacao} />
         <Route path="/equipamentos" component={EquipamentosGestao} />
+        <Route path="/ensaios-salvos" component={EnsaiosSalvos} />
         <Route path="/configuracoes" component={Configuracoes} />
         <Route path="/relatorios" component={Relatorios} />
         <Route path="/admin" component={AdminDashboard} />
