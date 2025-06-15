@@ -4,7 +4,7 @@ import session from "express-session";
 import cors from "cors";
 import path from "path";
 import hybridAuthRoutes, { verifyFirebaseToken } from "./auth-firebase-hybrid";
-import { registerRoutes } from "./routes";
+// Rotas específicas removidas para simplificação
 import { registerPaymentRoutes } from "./payment-routes";
 import { setupVite, serveStatic } from "./vite";
 import MemoryStore from "memorystore";
@@ -458,8 +458,7 @@ async function startServer() {
     }
   });
 
-  // Register additional routes
-  await registerRoutes(app);
+  // Rotas específicas integradas diretamente no servidor principal
   await registerPaymentRoutes(app);
 
   // Error handling middleware
