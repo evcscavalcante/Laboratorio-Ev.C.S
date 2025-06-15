@@ -54,34 +54,29 @@ export default function Equipamentos() {
   });
   const { toast } = useToast();
 
-  // Carregar equipamentos
+  // Carregar equipamentos do PostgreSQL via API
   const carregarEquipamentos = async () => {
     try {
-      if (firebaseSyncManager.isAuthenticated()) {
-        // Carregar do Firebase se autenticado
-        const equipamentosFirebase = await firebaseSyncManager.loadEquipamentos();
-        setEquipamentos(equipamentosFirebase);
-        setSyncStatus(prev => ({ ...prev, firebase: true }));
+      const response = await fetch('/api/equipamentos/temp');
+      
+      if (response.ok) {
+        const equipamentosData = await response.json();
+        setEquipamentos(equipamentosData);
+        setSyncStatus(prev => ({ ...prev, postgresql: true }));
+        console.log(`✅ ${equipamentosData.length} equipamentos carregados do PostgreSQL`);
       } else {
-        // Carregar do localStorage se não autenticado
-        const equipamentosLocal: Equipamento[] = [];
-        for (let i = 0; i < localStorage.length; i++) {
-          const key = localStorage.key(i);
-          if (key?.startsWith('equipamento_')) {
-            const item = localStorage.getItem(key);
-            if (item) {
-              equipamentosLocal.push(JSON.parse(item));
-            }
-          }
-        }
-        setEquipamentos(equipamentosLocal);
-        console.log('Usando dados locais, Firebase não autenticado');
+        console.error('Erro na resposta da API:', response.status);
+        toast({
+          title: "Erro",
+          description: "Não foi possível carregar os equipamentos do servidor",
+          variant: "destructive",
+        });
       }
     } catch (error) {
       console.error('Erro ao carregar equipamentos:', error);
       toast({
         title: "Erro",
-        description: "Não foi possível carregar os equipamentos",
+        description: "Não foi possível conectar com o servidor",
         variant: "destructive",
       });
     }
