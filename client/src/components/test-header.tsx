@@ -40,6 +40,24 @@ interface TestHeaderProps {
     termometro?: string;
     cronometro?: string;
   };
+  // Funções de callback para tornar os campos funcionais
+  onOperadorChange?: (value: string) => void;
+  onResponsavelCalculoChange?: (value: string) => void;
+  onVerificadorChange?: (value: string) => void;
+  onDataChange?: (value: string) => void;
+  onHoraChange?: (value: string) => void;
+  onNorteChange?: (value: string) => void;
+  onEsteChange?: (value: string) => void;
+  onCotaChange?: (value: string) => void;
+  onQuadranteChange?: (value: string) => void;
+  onCamadaChange?: (value: string) => void;
+  onLocalChange?: (value: string) => void;
+  onMaterialChange?: (value: string) => void;
+  onOrigemChange?: (value: string) => void;
+  onRegistroChange?: (value: string) => void;
+  onTempoChange?: (tempo: any) => void;
+  onAmostreaReensaiadaChange?: (amostra: any) => void;
+  onDispositivosPrecisaoChange?: (dispositivos: any) => void;
 }
 
 const TestHeader: React.FC<TestHeaderProps> = ({
@@ -63,7 +81,24 @@ const TestHeader: React.FC<TestHeaderProps> = ({
   local = '',
   tempo = {},
   amostreaReensaiada = {},
-  dispositivosPrecisao = {}
+  dispositivosPrecisao = {},
+  onOperadorChange,
+  onResponsavelCalculoChange,
+  onVerificadorChange,
+  onDataChange,
+  onHoraChange,
+  onNorteChange,
+  onEsteChange,
+  onCotaChange,
+  onQuadranteChange,
+  onCamadaChange,
+  onLocalChange,
+  onMaterialChange,
+  onOrigemChange,
+  onRegistroChange,
+  onTempoChange,
+  onAmostreaReensaiadaChange,
+  onDispositivosPrecisaoChange
 }) => {
   const getTestTitle = () => {
     switch (testType) {
@@ -85,8 +120,9 @@ const TestHeader: React.FC<TestHeaderProps> = ({
         <label className="flex items-center gap-1">
           <input 
             type="radio" 
+            name="tempo"
             checked={tempo.sol || false} 
-            readOnly 
+            onChange={() => onTempoChange?.({ sol: true, chuvaFraca: false, chuvaForte: false, nublado: false })}
             className="w-4 h-4"
           />
           <span className="text-sm">SOL FORTE</span>
@@ -94,8 +130,9 @@ const TestHeader: React.FC<TestHeaderProps> = ({
         <label className="flex items-center gap-1">
           <input 
             type="radio" 
+            name="tempo"
             checked={tempo.chuvaFraca || false} 
-            readOnly 
+            onChange={() => onTempoChange?.({ sol: false, chuvaFraca: true, chuvaForte: false, nublado: false })}
             className="w-4 h-4"
           />
           <span className="text-sm">CHUVA FRACA</span>
@@ -103,8 +140,9 @@ const TestHeader: React.FC<TestHeaderProps> = ({
         <label className="flex items-center gap-1">
           <input 
             type="radio" 
+            name="tempo"
             checked={tempo.chuvaForte || false} 
-            readOnly 
+            onChange={() => onTempoChange?.({ sol: false, chuvaFraca: false, chuvaForte: true, nublado: false })}
             className="w-4 h-4"
           />
           <span className="text-sm">CHUVA FORTE</span>
@@ -112,8 +150,9 @@ const TestHeader: React.FC<TestHeaderProps> = ({
         <label className="flex items-center gap-1">
           <input 
             type="radio" 
+            name="tempo"
             checked={tempo.nublado || false} 
-            readOnly 
+            onChange={() => onTempoChange?.({ sol: false, chuvaFraca: false, chuvaForte: false, nublado: true })}
             className="w-4 h-4"
           />
           <span className="text-sm">NUBLADO</span>
@@ -129,8 +168,9 @@ const TestHeader: React.FC<TestHeaderProps> = ({
         <label className="flex items-center gap-1">
           <input 
             type="radio" 
+            name="amostra"
             checked={amostreaReensaiada.sim || false} 
-            readOnly 
+            onChange={() => onAmostreaReensaiadaChange?.({ sim: true, nao: false })}
             className="w-4 h-4"
           />
           <span className="text-sm">SIM</span>
@@ -138,8 +178,9 @@ const TestHeader: React.FC<TestHeaderProps> = ({
         <label className="flex items-center gap-1">
           <input 
             type="radio" 
+            name="amostra"
             checked={amostreaReensaiada.nao || false} 
-            readOnly 
+            onChange={() => onAmostreaReensaiadaChange?.({ sim: false, nao: true })}
             className="w-4 h-4"
           />
           <span className="text-sm">NÃO</span>
@@ -181,19 +222,42 @@ const TestHeader: React.FC<TestHeaderProps> = ({
         <div className="space-y-2">
           <div className="grid grid-cols-2 gap-2">
             <span className="text-sm font-medium">OPERADOR:</span>
-            <span className="text-sm border-b border-gray-400 min-h-[1.5rem] px-1">{operador}</span>
+            <input 
+              type="text" 
+              value={operador}
+              onChange={(e) => onOperadorChange?.(e.target.value)}
+              className="text-sm border-b border-gray-400 bg-transparent px-1 py-0 focus:outline-none focus:border-blue-500"
+              placeholder="Nome do operador"
+            />
           </div>
           <div className="grid grid-cols-2 gap-2">
             <span className="text-sm font-medium">RESPONSÁVEL PELO CÁLCULO:</span>
-            <span className="text-sm border-b border-gray-400 min-h-[1.5rem] px-1">{responsavelCalculo}</span>
+            <input 
+              type="text" 
+              value={responsavelCalculo}
+              onChange={(e) => onResponsavelCalculoChange?.(e.target.value)}
+              className="text-sm border-b border-gray-400 bg-transparent px-1 py-0 focus:outline-none focus:border-blue-500"
+              placeholder="Nome do responsável"
+            />
           </div>
           <div className="grid grid-cols-2 gap-2">
             <span className="text-sm font-medium">VERIFICADOR:</span>
-            <span className="text-sm border-b border-gray-400 min-h-[1.5rem] px-1">{verificador}</span>
+            <input 
+              type="text" 
+              value={verificador}
+              onChange={(e) => onVerificadorChange?.(e.target.value)}
+              className="text-sm border-b border-gray-400 bg-transparent px-1 py-0 focus:outline-none focus:border-blue-500"
+              placeholder="Nome do verificador"
+            />
           </div>
           <div className="grid grid-cols-2 gap-2">
             <span className="text-sm font-medium">DATA:</span>
-            <span className="text-sm border-b border-gray-400 min-h-[1.5rem] px-1">{data}</span>
+            <input 
+              type="date" 
+              value={data}
+              onChange={(e) => onDataChange?.(e.target.value)}
+              className="text-sm border-b border-gray-400 bg-transparent px-1 py-0 focus:outline-none focus:border-blue-500"
+            />
           </div>
         </div>
 
@@ -201,24 +265,54 @@ const TestHeader: React.FC<TestHeaderProps> = ({
         <div className="space-y-2">
           <div className="grid grid-cols-2 gap-2">
             <span className="text-sm font-medium">NORTE:</span>
-            <span className="text-sm border-b border-gray-400 min-h-[1.5rem] px-1">{norte}</span>
+            <input 
+              type="text" 
+              value={norte}
+              onChange={(e) => onNorteChange?.(e.target.value)}
+              className="text-sm border-b border-gray-400 bg-transparent px-1 py-0 focus:outline-none focus:border-blue-500"
+              placeholder="Coordenada Norte"
+            />
           </div>
           <div className="grid grid-cols-2 gap-2">
             <span className="text-sm font-medium">ESTE:</span>
-            <span className="text-sm border-b border-gray-400 min-h-[1.5rem] px-1">{este}</span>
+            <input 
+              type="text" 
+              value={este}
+              onChange={(e) => onEsteChange?.(e.target.value)}
+              className="text-sm border-b border-gray-400 bg-transparent px-1 py-0 focus:outline-none focus:border-blue-500"
+              placeholder="Coordenada Este"
+            />
           </div>
           <div className="grid grid-cols-2 gap-2">
             <span className="text-sm font-medium">COTA:</span>
-            <span className="text-sm border-b border-gray-400 min-h-[1.5rem] px-1">{cota}</span>
+            <input 
+              type="text" 
+              value={cota}
+              onChange={(e) => onCotaChange?.(e.target.value)}
+              className="text-sm border-b border-gray-400 bg-transparent px-1 py-0 focus:outline-none focus:border-blue-500"
+              placeholder="Cota"
+            />
           </div>
           <div className="grid grid-cols-2 gap-2">
             <span className="text-sm font-medium">QUADRANTE:</span>
-            <span className="text-sm border-b border-gray-400 min-h-[1.5rem] px-1">{quadrante}</span>
+            <input 
+              type="text" 
+              value={quadrante}
+              onChange={(e) => onQuadranteChange?.(e.target.value)}
+              className="text-sm border-b border-gray-400 bg-transparent px-1 py-0 focus:outline-none focus:border-blue-500"
+              placeholder="Quadrante"
+            />
           </div>
           {testType === 'densidade-real' && (
             <div className="grid grid-cols-2 gap-2">
               <span className="text-sm font-medium">LOCAL:</span>
-              <span className="text-sm border-b border-gray-400 min-h-[1.5rem] px-1">{local}</span>
+              <input 
+                type="text" 
+                value={local}
+                onChange={(e) => onLocalChange?.(e.target.value)}
+                className="text-sm border-b border-gray-400 bg-transparent px-1 py-0 focus:outline-none focus:border-blue-500"
+                placeholder="Local"
+              />
             </div>
           )}
         </div>
@@ -284,27 +378,43 @@ const TestHeader: React.FC<TestHeaderProps> = ({
         <div className="grid grid-cols-4 gap-4">
           <div className="text-center">
             <div className="text-sm font-medium mb-1">BALANÇA:</div>
-            <div className="text-sm border-b border-gray-400 min-h-[1.5rem] px-1">
-              {dispositivosPrecisao.balanca}
-            </div>
+            <input 
+              type="text" 
+              value={dispositivosPrecisao.balanca || ''}
+              onChange={(e) => onDispositivosPrecisaoChange?.({ ...dispositivosPrecisao, balanca: e.target.value })}
+              className="text-sm border-b border-gray-400 bg-transparent px-1 py-0 focus:outline-none focus:border-blue-500 text-center w-full"
+              placeholder="ID Balança"
+            />
           </div>
           <div className="text-center">
             <div className="text-sm font-medium mb-1">ESTUFA:</div>
-            <div className="text-sm border-b border-gray-400 min-h-[1.5rem] px-1">
-              {dispositivosPrecisao.estufa}
-            </div>
+            <input 
+              type="text" 
+              value={dispositivosPrecisao.estufa || ''}
+              onChange={(e) => onDispositivosPrecisaoChange?.({ ...dispositivosPrecisao, estufa: e.target.value })}
+              className="text-sm border-b border-gray-400 bg-transparent px-1 py-0 focus:outline-none focus:border-blue-500 text-center w-full"
+              placeholder="ID Estufa"
+            />
           </div>
           <div className="text-center">
             <div className="text-sm font-medium mb-1">TERMÔMETRO:</div>
-            <div className="text-sm border-b border-gray-400 min-h-[1.5rem] px-1">
-              {dispositivosPrecisao.termometro}
-            </div>
+            <input 
+              type="text" 
+              value={dispositivosPrecisao.termometro || ''}
+              onChange={(e) => onDispositivosPrecisaoChange?.({ ...dispositivosPrecisao, termometro: e.target.value })}
+              className="text-sm border-b border-gray-400 bg-transparent px-1 py-0 focus:outline-none focus:border-blue-500 text-center w-full"
+              placeholder="ID Termômetro"
+            />
           </div>
           <div className="text-center">
             <div className="text-sm font-medium mb-1">CRONÔMETRO:</div>
-            <div className="text-sm border-b border-gray-400 min-h-[1.5rem] px-1">
-              {dispositivosPrecisao.cronometro}
-            </div>
+            <input 
+              type="text" 
+              value={dispositivosPrecisao.cronometro || ''}
+              onChange={(e) => onDispositivosPrecisaoChange?.({ ...dispositivosPrecisao, cronometro: e.target.value })}
+              className="text-sm border-b border-gray-400 bg-transparent px-1 py-0 focus:outline-none focus:border-blue-500 text-center w-full"
+              placeholder="ID Cronômetro"
+            />
           </div>
         </div>
       </div>
