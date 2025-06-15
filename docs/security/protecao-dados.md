@@ -162,33 +162,21 @@ app.post('/api/system/config',
 );
 ```
 
-## 5. Conformidade e Compliance
+## 2. Controle de Acesso
 
-### LGPD (Lei Geral de Proteção de Dados)
-- **Criptografia**: Dados pessoais sempre criptografados
-- **Auditoria**: Rastreamento completo de acesso a dados pessoais
-- **Direito ao esquecimento**: Funcionalidade de exclusão segura
-- **Consentimento**: Logs de consentimento para coleta de dados
+### Sistema de Roles
+- **5 níveis hierárquicos**: VIEWER, TECHNICIAN, MANAGER, ADMIN, DEVELOPER
+- **Validação por token**: Firebase Authentication em 27 endpoints
+- **Middleware de proteção**: requireRole() implementado
+- **Rate limiting**: Proteção básica contra ataques
 
-### Padrões de Segurança
-- **Criptografia forte**: AES-256-GCM padrão militar
-- **Backup seguro**: Criptografia + armazenamento redundante
-- **Princípio do menor privilégio**: Acesso mínimo necessário
-- **Auditoria**: Trilha completa de todas as operações
-
-### Relatórios de Compliance
+### Logs Básicos
 ```bash
-# Relatório de acessos por usuário
-curl "/api/security/audit-logs?userId=user123&timeframe=month" \
-  -H "Authorization: Bearer $TOKEN"
+# Status básico do sistema
+curl "/api/health" 
 
-# Relatório de backup e recuperação
-curl "/api/security/backup-report" \
-  -H "Authorization: Bearer $TOKEN"
-
-# Status geral de segurança
-curl "/api/security/status" \
-  -H "Authorization: Bearer $TOKEN"
+# Métricas simples
+curl "/api/metrics"
 ```
 
 ## 6. Procedimentos de Emergência
