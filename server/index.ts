@@ -14,6 +14,17 @@ import { subscriptionPlans, users } from "@shared/schema";
 import { eq } from "drizzle-orm";
 import { initializeAdminUser } from "./init-admin";
 import { storage } from "./storage-corrected";
+// Importar sistema de observabilidade
+import { 
+  initializeObservability,
+  observabilityMiddleware,
+  globalErrorHandler,
+  createObservabilityRoutes,
+  serverLogger,
+  performanceMonitor,
+  errorMonitor,
+  alertingSystem
+} from "./observability";
 
 // Importar middlewares de segurança
 import { 
@@ -99,7 +110,7 @@ async function startServer() {
     },
   }));
 
-  // Rotas de observabilidade (antes das rotas de autenticação)
+  // Rotas de observabilidade
   createObservabilityRoutes(app);
 
   // Firebase Authentication routes com rate limiting
