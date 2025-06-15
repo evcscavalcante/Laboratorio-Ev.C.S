@@ -200,6 +200,15 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Tratamento de dados inválidos com fallback para 'pendente'
   - Sistema estável detectando 18 ensaios salvos (1 densidade in-situ, 6 densidade real, 11 densidade máx/mín)
   - Reinicializações do servidor identificadas como comportamento normal do Vite em desenvolvimento
+- June 15, 2025: Otimização completa da experiência do usuário e arquitetura de navegação
+  - Navegação simplificada: removida página intermediária /solos, acesso direto às calculadoras
+  - Dashboard redesenhado: reduzido de 6 seções para 3 (estatísticas, ações rápidas, insights)
+  - Design system consistente implementado com CSS custom properties e classes utilitárias
+  - Sidebar otimizada: reduzida de 12+ itens para 8 itens essenciais, melhor agrupamento
+  - Sistema breadcrumb implementado para orientação clara de localização
+  - Mobile-first: sidebar colapsável real, botão menu reposicionado, touch targets otimizados
+  - Performance melhorada: componentes React Query otimizados, menos re-renders
+  - Interface limpa: removidas seções informativas desnecessárias, foco na funcionalidade
 
 ## User Preferences
 

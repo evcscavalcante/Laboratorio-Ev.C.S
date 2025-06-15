@@ -85,7 +85,7 @@ export default function Breadcrumb({ items, className }: BreadcrumbProps) {
   return (
     <nav className={cn("flex items-center space-x-1 text-sm text-gray-600 mb-6", className)}>
       {breadcrumbItems.map((item, index) => (
-        <React.Fragment key={index}>
+        <div key={index} className="flex items-center">
           <div className="flex items-center">
             {item.href ? (
               <Link href={item.href}>
@@ -102,9 +102,9 @@ export default function Breadcrumb({ items, className }: BreadcrumbProps) {
             )}
           </div>
           {index < breadcrumbItems.length - 1 && (
-            <ChevronRight className="w-4 h-4 text-gray-400" />
+            <ChevronRight className="w-4 h-4 text-gray-400 ml-1" />
           )}
-        </React.Fragment>
+        </div>
       ))}
     </nav>
   );
