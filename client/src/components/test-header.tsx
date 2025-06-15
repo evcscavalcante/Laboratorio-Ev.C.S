@@ -88,24 +88,27 @@ export default function TestHeader({
   };
 
   return (
-    <div className="bg-white border border-gray-300 p-4 mb-6 print:mb-4">
-      {/* Cabeçalho com logo oficial e título - Layout igual ao PDF */}
-      <div className="grid grid-cols-3 items-center mb-4 pb-3 border-b border-gray-300">
-        <div className="flex items-center">
+    <div className="bg-white border border-gray-300 p-2 md:p-4 mb-6 print:mb-4">
+      {/* Cabeçalho otimizado para mobile */}
+      <div className="flex flex-col md:grid md:grid-cols-3 items-center mb-4 pb-3 border-b border-gray-300">
+        {/* Mobile: Logo centralizado */}
+        <div className="flex items-center justify-center md:justify-start mb-2 md:mb-0">
           <img 
             src="/attached_assets/file_00000000233061f898ea05ffe6a1752e_1749721558008.png" 
             alt="Laboratório Ev.C.S" 
-            className="h-16 w-auto"
+            className="h-8 md:h-16 w-auto"
           />
         </div>
         
-        <div className="text-center">
-          <h1 className="text-lg font-bold text-gray-900 whitespace-pre-line">
+        {/* Título do ensaio */}
+        <div className="text-center mb-2 md:mb-0">
+          <h1 className="text-sm md:text-lg font-bold text-gray-900 whitespace-pre-line leading-tight">
             {getTestTitle()}
           </h1>
         </div>
         
-        <div className="flex justify-end">
+        {/* Desktop: Info do laboratório (oculta no mobile) */}
+        <div className="hidden md:flex justify-end">
           <div className="text-right">
             <div className="text-sm font-bold text-gray-900">LABORATÓRIO EV.C.S</div>
             <div className="text-xs text-gray-600">Sistema Geotécnico</div>
@@ -114,37 +117,37 @@ export default function TestHeader({
         </div>
       </div>
 
-      {/* Informações principais - Layout igual ao PDF (duas colunas lado a lado) */}
-      <div className="grid grid-cols-2 gap-6 mb-4">
-        {/* Coluna 1 - Dados pessoais */}
+      {/* Informações principais - Mobile-first responsivo */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-6 mb-4">
+        {/* Coluna 1 - Dados principais */}
         <div className="border border-gray-300">
-          <div className="grid grid-cols-2 text-sm">
-            <div className="bg-gray-100 p-2 border-b border-r border-gray-300 font-medium">Registro:</div>
-            <div className="p-2 border-b border-gray-300">
+          <div className="grid grid-cols-2 text-xs md:text-sm">
+            <div className="bg-gray-100 p-1 md:p-2 border-b border-r border-gray-300 font-medium">Registro:</div>
+            <div className="p-1 md:p-2 border-b border-gray-300">
               <input 
                 type="text" 
                 value={registro}
                 onChange={(e) => onRegistroChange?.(e.target.value)}
-                className="w-full bg-transparent border-none outline-none"
-                placeholder="-"
+                className="w-full bg-transparent border-none outline-none text-xs md:text-sm"
+                placeholder="DIS-001"
               />
             </div>
-            <div className="bg-gray-100 p-2 border-b border-r border-gray-300 font-medium">Data:</div>
-            <div className="p-2 border-b border-gray-300">
+            <div className="bg-gray-100 p-1 md:p-2 border-b border-r border-gray-300 font-medium">Data:</div>
+            <div className="p-1 md:p-2 border-b border-gray-300">
               <input 
                 type="date" 
                 value={data}
                 onChange={(e) => onDataChange?.(e.target.value)}
-                className="w-full bg-transparent border-none outline-none"
+                className="w-full bg-transparent border-none outline-none text-xs md:text-sm"
               />
             </div>
-            <div className="bg-gray-100 p-2 border-b border-r border-gray-300 font-medium">Horário:</div>
-            <div className="p-2 border-b border-gray-300">
+            <div className="bg-gray-100 p-1 md:p-2 border-b border-r border-gray-300 font-medium">Hora:</div>
+            <div className="p-1 md:p-2 border-b border-gray-300">
               <input 
                 type="time" 
                 value={hora}
                 onChange={(e) => onHoraChange?.(e.target.value)}
-                className="w-full bg-transparent border-none outline-none"
+                className="w-full bg-transparent border-none outline-none text-xs md:text-sm"
               />
             </div>
             <div className="bg-gray-100 p-2 border-b border-r border-gray-300 font-medium">Operador:</div>
