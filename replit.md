@@ -328,14 +328,14 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Pipeline GitHub Actions completo com relatórios automáticos em PRs
   - Scripts de análise de qualidade executáveis localmente
   - Documentação completa de padrões e melhores práticas
-- June 15, 2025: Problema crítico de CSP identificado e corrigido
+- June 15, 2025: Problema crítico de CSP identificado e corrigido (segunda tentativa)
   - Erro de Content Security Policy bloqueava autenticação Firebase
-  - Lacuna nos testes detectada: não verificavam configurações de frontend críticas
-  - CSP atualizado para permitir domínios Firebase (identitytoolkit.googleapis.com, etc)
-  - Suíte de testes melhorada com verificação específica de CSP e Firebase
-  - Análise de gap documentada para prevenir problemas similares
-  - Sistema agora detecta proativamente problemas de conectividade externa
-  - Correção aplicada em client/src/index.html (arquivo HTML principal usado pelo Vite)
+  - Falha inicial: CSP sendo sobrescrito pelo middleware Express em server/middleware/sql-protection.ts
+  - Problema real identificado: servidor Express definindo CSP restritivo, ignorando HTML
+  - Correção aplicada no middleware do servidor para permitir domínios Firebase
+  - Suíte de testes melhorada para verificar CSP do servidor (não apenas HTML)
+  - Sistema de testes agora detecta problemas de CSP em tempo real
+  - Lição aprendida: verificar tanto HTML quanto headers HTTP do servidor
 
 ## User Preferences
 

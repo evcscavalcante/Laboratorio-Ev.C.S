@@ -255,14 +255,20 @@ export const securityHeaders = (req: Request, res: Response, next: NextFunction)
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=()');
   
-  // CSP básico
+  // CSP com suporte Firebase
   res.setHeader('Content-Security-Policy', 
     "default-src 'self'; " +
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
-    "style-src 'self' 'unsafe-inline'; " +
-    "img-src 'self' data: https:; " +
-    "font-src 'self' data:; " +
-    "connect-src 'self';"
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com; " +
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+    "img-src 'self' data: blob: https:; " +
+    "font-src 'self' data: https://fonts.gstatic.com; " +
+    "connect-src 'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firebase.googleapis.com https://*.googleapis.com wss://*.firebaseio.com; " +
+    "media-src 'self'; " +
+    "object-src 'none'; " +
+    "child-src 'self'; " +
+    "frame-src 'self' https://accounts.google.com; " +
+    "worker-src 'self'; " +
+    "manifest-src 'self';"
   );
 
   next();
