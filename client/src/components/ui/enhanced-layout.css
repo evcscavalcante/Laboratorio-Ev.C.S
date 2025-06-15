@@ -1,0 +1,218 @@
+/* Enhanced Layout Styles for Laboratory Tests */
+
+.test-layout {
+  --primary-blue: #2563eb;
+  --primary-green: #16a34a;
+  --primary-orange: #ea580c;
+  --primary-red: #dc2626;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-600: #4b5563;
+  --gray-900: #111827;
+}
+
+.progress-bar {
+  background: linear-gradient(90deg, var(--primary-blue) 0%, var(--primary-green) 100%);
+  transition: width 0.3s ease-in-out;
+  border-radius: 9999px;
+}
+
+.section-card {
+  scroll-margin-top: 5rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.section-card.completed {
+  border-left: 4px solid var(--primary-green);
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+}
+
+.section-card.required {
+  border-left: 4px solid var(--primary-blue);
+}
+
+.section-card.required:not(.completed) {
+  box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.1);
+}
+
+.field-required {
+  position: relative;
+}
+
+.field-required::after {
+  content: '*';
+  color: var(--primary-red);
+  margin-left: 0.25rem;
+  font-weight: 600;
+}
+
+.input-required:not(:focus):invalid,
+.input-required:not(:focus):placeholder-shown {
+  border-color: #fed7aa;
+  background-color: #fff7ed;
+}
+
+.input-completed {
+  border-color: #bbf7d0;
+  background-color: #f0fdf4;
+}
+
+.navigation-section {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.nav-button {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  border: 1px solid transparent;
+}
+
+.nav-button.completed {
+  background: #dcfce7;
+  color: #166534;
+  border-color: #bbf7d0;
+}
+
+.nav-button.required:not(.completed) {
+  background: #dbeafe;
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+}
+
+.nav-button.required:not(.completed):hover {
+  background: #bfdbfe;
+}
+
+.nav-button.optional {
+  background: var(--gray-100);
+  color: var(--gray-600);
+  border-color: var(--gray-200);
+}
+
+.nav-button.optional:hover {
+  background: var(--gray-200);
+}
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: white;
+  border-bottom: 1px solid var(--gray-200);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.progress-compact {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.progress-bar-small {
+  width: 5rem;
+  height: 0.5rem;
+  background: var(--gray-200);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.mobile-actions {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-top: 1px solid var(--gray-200);
+  padding: 1rem;
+  box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1);
+  z-index: 30;
+}
+
+@media (min-width: 1024px) {
+  .mobile-actions {
+    display: none;
+  }
+}
+
+.help-text {
+  font-size: 0.75rem;
+  color: var(--gray-600);
+  margin-top: 0.25rem;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+}
+
+.status-indicator.completed {
+  color: var(--primary-green);
+}
+
+.status-indicator.pending {
+  color: var(--gray-600);
+}
+
+/* Smooth scrolling for navigation */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus styles for accessibility */
+.nav-button:focus,
+.input-required:focus,
+.input-completed:focus {
+  outline: 2px solid var(--primary-blue);
+  outline-offset: 2px;
+}
+
+/* Animation for progress updates */
+@keyframes progressUpdate {
+  0% { transform: scale(0.95); opacity: 0.7; }
+  50% { transform: scale(1.02); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.progress-updated {
+  animation: progressUpdate 0.3s ease-in-out;
+}
+
+/* Loading states */
+.loading-overlay {
+  position: relative;
+}
+
+.loading-overlay::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.loading-overlay.saving::after {
+  content: 'Salvando...';
+}
+
+.loading-overlay.generating::after {
+  content: 'Gerando PDF...';
+}
