@@ -68,6 +68,14 @@ const breadcrumbMap: Record<string, BreadcrumbItem[]> = {
     { label: 'Dashboard', href: '/', icon: <Home className="w-4 h-4" /> },
     { label: 'Administração', href: '/admin' },
     { label: 'Usuários' }
+  ],
+  '/help/manual-usuario': [
+    { label: 'Dashboard', href: '/', icon: <Home className="w-4 h-4" /> },
+    { label: 'Manual do Usuário' }
+  ],
+  '/help/manual-admin': [
+    { label: 'Dashboard', href: '/', icon: <Home className="w-4 h-4" /> },
+    { label: 'Manual Administrativo' }
   ]
 };
 
