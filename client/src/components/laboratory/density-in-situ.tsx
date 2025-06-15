@@ -630,45 +630,66 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
           </div>
 
           {/* Médias - Densidade In Situ */}
-          <div className="mt-4 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-            <h4 className="font-semibold text-sm mb-3 text-yellow-800">Médias das Determinações</h4>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
-              <div className="text-center">
-                <div className="font-medium text-gray-600">Molde + Solo (g)</div>
-                <div className="font-mono font-bold text-yellow-800">
-                  {((data.det1.moldeSolo + data.det2.moldeSolo) / 2).toFixed(2)}
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="font-medium text-gray-600">Molde (g)</div>
-                <div className="font-mono font-bold text-yellow-800">
-                  {((data.det1.molde + data.det2.molde) / 2).toFixed(2)}
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="font-medium text-gray-600">Solo (g)</div>
-                <div className="font-mono font-bold text-yellow-800">
-                  {((calculations.det1.soil + calculations.det2.soil) / 2).toFixed(2)}
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="font-medium text-gray-600">Volume (cm³)</div>
-                <div className="font-mono font-bold text-yellow-800">
-                  {((data.det1.volume + data.det2.volume) / 2).toFixed(2)}
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="font-medium text-gray-600">γnat úmido (g/cm³)</div>
-                <div className="font-mono font-bold text-yellow-800">
-                  {((calculations.det1.gammaNatWet + calculations.det2.gammaNatWet) / 2).toFixed(3)}
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="font-medium text-gray-600">γnat seco (g/cm³)</div>
-                <div className="font-mono font-bold text-yellow-800">
-                  {((calculations.det1.gammaNatDry + calculations.det2.gammaNatDry) / 2).toFixed(3)}
-                </div>
-              </div>
+          <div className="mt-4 p-4 bg-blue-50 rounded-lg">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-gray-700">Molde + Solo Médio (g):</span>
+              <span className="text-lg font-bold text-blue-600 font-mono">
+                {(() => {
+                  const val1 = data.det1.moldeSolo || 0;
+                  const val2 = data.det2.moldeSolo || 0;
+                  return val1 > 0 || val2 > 0 ? ((val1 + val2) / 2).toFixed(2) : '0.00';
+                })()}
+              </span>
+            </div>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-gray-700">Molde Médio (g):</span>
+              <span className="text-lg font-bold text-blue-600 font-mono">
+                {(() => {
+                  const val1 = data.det1.molde || 0;
+                  const val2 = data.det2.molde || 0;
+                  return val1 > 0 || val2 > 0 ? ((val1 + val2) / 2).toFixed(2) : '0.00';
+                })()}
+              </span>
+            </div>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-gray-700">Solo Médio (g):</span>
+              <span className="text-lg font-bold text-blue-600 font-mono">
+                {(() => {
+                  const val1 = calculations.det1.soil || 0;
+                  const val2 = calculations.det2.soil || 0;
+                  return val1 > 0 || val2 > 0 ? ((val1 + val2) / 2).toFixed(2) : '0.00';
+                })()}
+              </span>
+            </div>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-gray-700">Volume Médio (cm³):</span>
+              <span className="text-lg font-bold text-blue-600 font-mono">
+                {(() => {
+                  const val1 = data.det1.volume || 0;
+                  const val2 = data.det2.volume || 0;
+                  return val1 > 0 || val2 > 0 ? ((val1 + val2) / 2).toFixed(2) : '0.00';
+                })()}
+              </span>
+            </div>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-gray-700">γnat úmido Médio (g/cm³):</span>
+              <span className="text-lg font-bold text-blue-600 font-mono">
+                {(() => {
+                  const val1 = calculations.det1.gammaNatWet || 0;
+                  const val2 = calculations.det2.gammaNatWet || 0;
+                  return val1 > 0 || val2 > 0 ? ((val1 + val2) / 2).toFixed(3) : '0.000';
+                })()}
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-700">γnat seco Médio (g/cm³):</span>
+              <span className="text-lg font-bold text-blue-600 font-mono">
+                {(() => {
+                  const val1 = calculations.det1.gammaNatDry || 0;
+                  const val2 = calculations.det2.gammaNatDry || 0;
+                  return val1 > 0 || val2 > 0 ? ((val1 + val2) / 2).toFixed(3) : '0.000';
+                })()}
+              </span>
             </div>
           </div>
         </CardContent>
