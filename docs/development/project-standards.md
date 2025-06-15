@@ -1,123 +1,294 @@
-# Padrões do Projeto - Sistema Geotécnico
+# Padrões de Desenvolvimento - Sistema Geotécnico
 
-## Análise Automática de Consistência
+## Política de Qualidade Obrigatória
 
-### Arquitetura Estabelecida
-- **Frontend:** React + TypeScript + Tailwind CSS + Shadcn/UI
-- **Backend:** Express.js + Drizzle ORM + PostgreSQL
-- **Autenticação:** Firebase Authentication (híbrido)
-- **Estado:** React Query para server state
-- **Roteamento:** Wouter (client-side)
+**TODA funcionalidade nova DEVE seguir os padrões estabelecidos e ter testes implementados.**
 
-### Padrões de Código Obrigatórios
+## Estrutura de Desenvolvimento
 
-#### 1. Estrutura de Arquivos
+### 1. Test-Driven Development (TDD)
+- **Red Phase:** Escrever teste que falha
+- **Green Phase:** Implementar código mínimo que passa
+- **Refactor Phase:** Melhorar e otimizar código
+- **Documentation:** Atualizar documentação
+
+### 2. Estrutura de Arquivos Obrigatória
+
 ```
-client/src/
-├── components/     # Componentes reutilizáveis
-├── pages/         # Páginas da aplicação
-├── lib/           # Utilitários e configurações
-├── hooks/         # Custom hooks
-└── test/          # Testes automatizados
-
-server/
-├── auth-*.ts      # Módulos de autenticação
-├── storage-*.ts   # Camada de dados
-├── routes.ts      # Definições de rotas
-└── index.ts       # Servidor principal
+src/nova-funcionalidade/
+├── index.ts                    # Funcionalidade principal
+├── types.ts                    # Tipos TypeScript
+├── utils.ts                    # Utilitários específicos
+└── __tests__/
+    ├── unit.test.ts            # Testes unitários
+    ├── integration.test.ts     # Testes de integração
+    ├── security.test.ts        # Testes de segurança
+    └── performance.test.ts     # Testes de performance
 ```
 
-#### 2. Nomenclatura Técnica (NBR ABNT)
-- **NBR 9813:2021** - Massa específica aparente in situ
-- **NBR 17212:2025** - Massa específica dos sólidos
-- **NBR 12004/12051:2021** - Índices de vazios máximo e mínimo
+### 3. Padrões de Nomenclatura
 
-#### 3. Padrões de Implementação
-- Sempre usar TypeScript com tipagem forte
-- Componentes funcionais com hooks
-- Validação com Zod schemas
-- Error boundaries e tratamento robusto
-- Responsividade mobile-first
-- Acessibilidade (aria-labels, keyboard navigation)
+#### Arquivos
+- **Componentes:** `PascalCase.tsx` (ex: `DensityCalculator.tsx`)
+- **Utilitários:** `kebab-case.ts` (ex: `calculation-utils.ts`)
+- **Testes:** `nome.test.ts` (ex: `density-calculator.test.ts`)
+- **Tipos:** `types.ts` ou `nome.types.ts`
 
-#### 4. Dados e Persistência
-- PostgreSQL como fonte única da verdade
-- Drizzle ORM para queries tipadas
-- React Query para cache e sincronização
-- LocalStorage apenas para dados temporários
-- Validação server-side obrigatória
+#### Funções e Variáveis
+- **Funções:** `camelCase` (ex: `calculateDensity`)
+- **Constantes:** `UPPER_SNAKE_CASE` (ex: `MAX_DENSITY_VALUE`)
+- **Interfaces:** `PascalCase` com `I` (ex: `IDensityTest`)
+- **Types:** `PascalCase` (ex: `DensityResult`)
 
-#### 5. Autenticação
-- Firebase Authentication para login
-- PostgreSQL para roles e permissões
-- Middleware de verificação em rotas protegidas
-- Sincronização automática user Firebase ↔ PostgreSQL
+#### Componentes React
+- **Props:** `ComponentNameProps` (ex: `DensityCalculatorProps`)
+- **State:** Usar hooks com prefixo descritivo (ex: `useDensityCalculation`)
 
-### Sistema de Prevenção de Regressões
+### 4. Padrões de Código
 
-#### Componentes Críticos Protegidos
-- `sidebar` v2.1.0 - Navegação principal
-- `breadcrumb` v1.1.0 - Orientação de localização
-- `dashboard` v2.0.0 - Painel estatístico
-- `auth-system` v1.2.0 - Sistema de autenticação
+#### TypeScript Obrigatório
+```typescript
+// ✅ Correto - Tipagem explícita
+interface DensityTestData {
+  soilMass: number;
+  volume: number;
+  operator: string;
+  date: Date;
+}
 
-#### Verificação Automática
-- Script: `node check-regressions.js`
-- Hooks de desenvolvimento ativos
-- Testes de regressão em tempo real
-- Alertas visuais quando regressões detectadas
+function calculateDensity(data: DensityTestData): number {
+  if (data.volume <= 0) {
+    throw new Error('Volume deve ser maior que zero');
+  }
+  return data.soilMass / data.volume;
+}
 
-### Regras de Modificação
+// ❌ Incorreto - Sem tipagem
+function calculateDensity(mass, volume) {
+  return mass / volume;
+}
+```
 
-#### ❌ Proibido Modificar
-- `server/vite.ts` - Configuração crítica
-- `vite.config.ts` - Build configuration
-- `package.json` - Use packager tool
-- `drizzle.config.ts` - Database config
+#### Validação de Entrada
+```typescript
+// ✅ Correto - Validação robusta
+function processTestData(input: unknown): DensityTestData {
+  const schema = z.object({
+    soilMass: z.number().positive(),
+    volume: z.number().positive(),
+    operator: z.string().min(1),
+    date: z.date()
+  });
+  
+  return schema.parse(input);
+}
 
-#### ✅ Sempre Seguir
-1. Analisar arquitetura existente antes de implementar
-2. Manter consistência com padrões estabelecidos
-3. Usar componentes Shadcn/UI quando disponíveis
-4. Implementar validação client + server
-5. Adicionar testes para novas funcionalidades
-6. Documentar mudanças significativas
+// ❌ Incorreto - Sem validação
+function processTestData(input: any) {
+  return input;
+}
+```
 
-### Checklist Pré-Implementação
+#### Tratamento de Erros
+```typescript
+// ✅ Correto - Errors específicos
+class DensityCalculationError extends Error {
+  constructor(message: string, public readonly code: string) {
+    super(message);
+    this.name = 'DensityCalculationError';
+  }
+}
 
-#### Antes de Qualquer Mudança
-- [ ] Revisar arquitetura atual do módulo
-- [ ] Verificar padrões de nomenclatura técnica
-- [ ] Confirmar tipagem TypeScript adequada
-- [ ] Validar consistência com sistema existente
-- [ ] Executar verificação de regressões
+function calculateDensity(mass: number, volume: number): number {
+  if (volume <= 0) {
+    throw new DensityCalculationError(
+      'Volume deve ser maior que zero',
+      'INVALID_VOLUME'
+    );
+  }
+  return mass / volume;
+}
 
-#### Durante Implementação
-- [ ] Seguir estrutura de arquivos estabelecida
-- [ ] Usar componentes e hooks existentes
-- [ ] Manter padrões de validação
-- [ ] Implementar tratamento de erro robusto
-- [ ] Adicionar logs para debugging
+// ❌ Incorreto - Erro genérico
+function calculateDensity(mass: number, volume: number): number {
+  if (volume <= 0) {
+    throw new Error('Erro');
+  }
+  return mass / volume;
+}
+```
 
-#### Pós-Implementação
-- [ ] Executar `node check-regressions.js`
-- [ ] Testar funcionalidade completa
-- [ ] Verificar responsividade
-- [ ] Atualizar documentação se necessário
-- [ ] Registrar mudanças no replit.md
+### 5. Padrões de Testes
 
-## Ferramenta de Análise Automática
+#### Testes Unitários
+```typescript
+describe('calculateDensity', () => {
+  test('calcula densidade corretamente com valores válidos', () => {
+    const result = calculateDensity(1850, 1000);
+    expect(result).toBe(1.85);
+  });
 
-Esta documentação serve como referência obrigatória. Qualquer implementação deve:
+  test('lança erro para volume zero', () => {
+    expect(() => calculateDensity(1850, 0))
+      .toThrow(DensityCalculationError);
+  });
 
-1. **Analisar padrões existentes** no módulo/área afetada
-2. **Seguir nomenclatura técnica** conforme normas ABNT
-3. **Manter consistência arquitetural** com sistema atual
-4. **Preservar funcionalidades existentes** sem regressões
-5. **Documentar mudanças significativas** no replit.md
+  test('lança erro para volume negativo', () => {
+    expect(() => calculateDensity(1850, -100))
+      .toThrow('Volume deve ser maior que zero');
+  });
+});
+```
 
-### Comando de Verificação
+#### Testes de Integração
+```typescript
+describe('Fluxo Completo - Ensaio de Densidade', () => {
+  test('deve salvar ensaio e gerar PDF', async () => {
+    // Preparação
+    const testData = createValidTestData();
+    
+    // Execução
+    const savedTest = await saveTest(testData);
+    const pdfResult = await generatePDF(savedTest);
+    
+    // Verificação
+    expect(savedTest.id).toBeDefined();
+    expect(pdfResult.success).toBe(true);
+  });
+});
+```
+
+#### Testes de Segurança
+```typescript
+describe('Segurança - Input Validation', () => {
+  test('bloqueia SQL injection', () => {
+    const maliciousInput = "'; DROP TABLE tests; --";
+    expect(() => processInput(maliciousInput))
+      .toThrow('Input inválido detectado');
+  });
+
+  test('sanitiza XSS', () => {
+    const xssInput = '<script>alert("xss")</script>';
+    const result = sanitizeInput(xssInput);
+    expect(result).not.toContain('<script>');
+  });
+});
+```
+
+### 6. Documentação Obrigatória
+
+#### JSDoc para Funções Públicas
+```typescript
+/**
+ * Calcula a densidade aparente do solo conforme NBR 9813:2021
+ * 
+ * @param soilMass - Massa do solo em gramas
+ * @param volume - Volume do cilindro em cm³
+ * @returns Densidade aparente em g/cm³
+ * @throws {DensityCalculationError} Quando volume é inválido
+ * 
+ * @example
+ * ```typescript
+ * const density = calculateDensity(1850, 1000);
+ * console.log(density); // 1.85
+ * ```
+ */
+function calculateDensity(soilMass: number, volume: number): number {
+  // implementação
+}
+```
+
+#### README para Módulos
+```markdown
+# Módulo de Cálculo de Densidade
+
+## Objetivo
+Implementa cálculos de densidade conforme normas NBR para ensaios geotécnicos.
+
+## Uso
+```typescript
+import { calculateDensity } from './density-calculator';
+
+const result = calculateDensity(1850, 1000);
+```
+
+## Testes
+- ✅ Testes unitários (100% cobertura)
+- ✅ Testes de integração
+- ✅ Testes de segurança
+- ✅ Validação NBR 9813:2021
+```
+
+### 7. Ferramentas de Validação
+
+#### Scripts Obrigatórios
 ```bash
-node analyze-project-standards.js
+# Validar antes de commit
+npm run pre-commit
+
+# Verificar cobertura de testes
+npm run validate-tests
+
+# Análise de padrões
+npm run analyze-standards
+
+# Verificar regressões
+npm run check-regressions
 ```
-Executar sempre antes de solicitar feedback ou concluir implementação.
+
+#### Git Hooks Automáticos
+```bash
+# Configurar hooks obrigatórios
+npm run setup-hooks
+```
+
+### 8. Critérios de Qualidade
+
+#### Cobertura de Testes Mínima
+- **Funções críticas:** 100%
+- **Componentes UI:** 90%
+- **Fluxos de integração:** 85%
+- **APIs:** 95%
+
+#### Performance Obrigatória
+- **Tempo de resposta:** < 500ms para operações normais
+- **Cálculos:** < 50ms para funções matemáticas
+- **Carregamento:** < 1s para interfaces
+
+#### Segurança Obrigatória
+- **Validação de entrada:** 100% dos inputs
+- **Sanitização:** Para todos os dados de usuário
+- **Rate limiting:** Em todas as APIs
+- **Logs:** Para ações críticas
+
+### 9. Revisão de Código
+
+#### Checklist Obrigatório
+- [ ] Testes implementados e passando
+- [ ] Documentação atualizada
+- [ ] Tipagem TypeScript completa
+- [ ] Validação de segurança
+- [ ] Performance verificada
+- [ ] Padrões de nomenclatura seguidos
+- [ ] Sem TODO ou FIXME no código final
+
+#### Aprovação Necessária
+- **Funcionalidades críticas:** 2 aprovações
+- **Funcionalidades normais:** 1 aprovação
+- **Correções de bug:** 1 aprovação
+
+### 10. Consequências
+
+#### Bloqueios Automáticos
+- **Commit:** Bloqueado se validações falharem
+- **Merge:** Bloqueado sem testes obrigatórios
+- **Deploy:** Bloqueado com cobertura < 85%
+
+#### Responsabilidades
+- **Desenvolvedor:** Seguir padrões e implementar testes
+- **Revisor:** Verificar qualidade e padrões
+- **Tech Lead:** Garantir cumprimento das políticas
+
+---
+
+**Estes padrões são obrigatórios e aplicados automaticamente através de ferramentas de validação.**

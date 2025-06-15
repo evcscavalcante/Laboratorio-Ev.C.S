@@ -286,6 +286,14 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Test Runner automatizado com relatórios detalhados e métricas de cobertura
   - Scripts npm organizados por tipo de teste (unit, integration, security, performance)
   - Validação de ambiente de testes e execução contínua configurada
+- June 15, 2025: Sistema de garantia de qualidade e documentação obrigatória implementado
+  - Política TDD obrigatória: toda funcionalidade deve ter testes antes/durante implementação
+  - Script de validação automática de cobertura de testes (validate-test-coverage.js)
+  - Pre-commit hooks automáticos que bloqueiam commits sem testes adequados
+  - Templates automáticos de teste para diferentes tipos (unit, integration, security, performance)
+  - Documentação completa de padrões de desenvolvimento e políticas de qualidade
+  - Sistema de validação estrutural que verifica arquivos de teste para código novo
+  - Integração com Git hooks para aplicação automática das políticas
 
 ## User Preferences
 
