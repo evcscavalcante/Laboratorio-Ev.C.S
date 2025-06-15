@@ -88,9 +88,9 @@ export default function TestHeader({
   };
 
   return (
-    <div className="bg-white border border-gray-300 p-2 md:p-4 mb-6 print:mb-4">
+    <div className="bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-lg p-4 mb-6 shadow-sm">
       {/* Cabeçalho otimizado para mobile */}
-      <div className="flex flex-col md:grid md:grid-cols-3 items-center mb-4 pb-3 border-b border-gray-300">
+      <div className="flex flex-col md:grid md:grid-cols-3 items-center mb-4 pb-3 border-b border-blue-300">
         {/* Mobile: Logo centralizado */}
         <div className="flex items-center justify-center md:justify-start mb-2 md:mb-0">
           <img 
@@ -102,7 +102,7 @@ export default function TestHeader({
         
         {/* Título do ensaio */}
         <div className="text-center mb-2 md:mb-0">
-          <h1 className="text-sm md:text-lg font-bold text-gray-900 whitespace-pre-line leading-tight">
+          <h1 className="text-sm md:text-lg font-bold text-blue-900 whitespace-pre-line leading-tight">
             {getTestTitle()}
           </h1>
         </div>
@@ -110,9 +110,9 @@ export default function TestHeader({
         {/* Desktop: Info do laboratório (oculta no mobile) */}
         <div className="hidden md:flex justify-end">
           <div className="text-right">
-            <div className="text-sm font-bold text-gray-900">LABORATÓRIO EV.C.S</div>
-            <div className="text-xs text-gray-600">Sistema Geotécnico</div>
-            <div className="text-xs text-gray-600">ABNT NBR Certificado</div>
+            <div className="text-sm font-bold text-blue-900">LABORATÓRIO EV.C.S</div>
+            <div className="text-xs text-blue-700">Sistema Geotécnico</div>
+            <div className="text-xs text-blue-700">ABNT NBR Certificado</div>
           </div>
         </div>
       </div>
@@ -120,10 +120,10 @@ export default function TestHeader({
       {/* Informações principais - Mobile-first responsivo */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-6 mb-4">
         {/* Coluna 1 - Dados principais */}
-        <div className="border border-gray-300">
+        <div className="border border-blue-200 rounded-lg bg-white shadow-sm">
           <div className="grid grid-cols-2 text-xs md:text-sm">
-            <div className="bg-gray-100 p-1 md:p-2 border-b border-r border-gray-300 font-medium">Registro:</div>
-            <div className="p-1 md:p-2 border-b border-gray-300">
+            <div className="bg-blue-50 p-2 border-b border-r border-blue-200 font-medium text-blue-900">Registro:</div>
+            <div className="p-2 border-b border-blue-200">
               <input 
                 type="text" 
                 value={registro}
@@ -132,8 +132,8 @@ export default function TestHeader({
                 placeholder="DIS-001"
               />
             </div>
-            <div className="bg-gray-100 p-1 md:p-2 border-b border-r border-gray-300 font-medium">Data:</div>
-            <div className="p-1 md:p-2 border-b border-gray-300">
+            <div className="bg-blue-50 p-2 border-b border-r border-blue-200 font-medium text-blue-900">Data:</div>
+            <div className="p-2 border-b border-blue-200">
               <input 
                 type="date" 
                 value={data}
@@ -141,8 +141,8 @@ export default function TestHeader({
                 className="w-full bg-transparent border-none outline-none text-xs md:text-sm"
               />
             </div>
-            <div className="bg-gray-100 p-1 md:p-2 border-b border-r border-gray-300 font-medium">Hora:</div>
-            <div className="p-1 md:p-2 border-b border-gray-300">
+            <div className="bg-blue-50 p-2 border-b border-r border-blue-200 font-medium text-blue-900">Hora:</div>
+            <div className="p-2 border-b border-blue-200">
               <input 
                 type="time" 
                 value={hora}
@@ -150,8 +150,8 @@ export default function TestHeader({
                 className="w-full bg-transparent border-none outline-none text-xs md:text-sm"
               />
             </div>
-            <div className="bg-gray-100 p-2 border-b border-r border-gray-300 font-medium">Operador:</div>
-            <div className="p-2 border-b border-gray-300">
+            <div className="bg-blue-50 p-2 border-b border-r border-blue-200 font-medium text-blue-900">Operador:</div>
+            <div className="p-2 border-b border-blue-200">
               <input 
                 type="text" 
                 value={operador}
@@ -160,8 +160,8 @@ export default function TestHeader({
                 placeholder="-"
               />
             </div>
-            <div className="bg-gray-100 p-2 border-b border-r border-gray-300 font-medium">Resp. Técnico:</div>
-            <div className="p-2 border-b border-gray-300">
+            <div className="bg-blue-50 p-2 border-b border-r border-blue-200 font-medium text-blue-900">Resp. Técnico:</div>
+            <div className="p-2 border-b border-blue-200">
               <input 
                 type="text" 
                 value={responsavelCalculo}
@@ -170,7 +170,7 @@ export default function TestHeader({
                 placeholder="-"
               />
             </div>
-            <div className="bg-gray-100 p-2 border-r border-gray-300 font-medium">Verificador:</div>
+            <div className="bg-blue-50 p-2 border-r border-blue-200 font-medium text-blue-900">Verificador:</div>
             <div className="p-2">
               <input 
                 type="text" 
@@ -184,10 +184,10 @@ export default function TestHeader({
         </div>
 
         {/* Coluna 2 - Dados técnicos */}
-        <div className="border border-gray-300">
-          <div className="grid grid-cols-2 text-sm">
-            <div className="bg-gray-100 p-2 border-b border-r border-gray-300 font-medium">Material:</div>
-            <div className="p-2 border-b border-gray-300">
+        <div className="border border-blue-200 rounded-lg bg-white shadow-sm">
+          <div className="grid grid-cols-2 text-xs md:text-sm">
+            <div className="bg-blue-50 p-2 border-b border-r border-blue-200 font-medium text-blue-900">Material:</div>
+            <div className="p-2 border-b border-blue-200">
               <input 
                 type="text" 
                 value={material}
@@ -196,8 +196,8 @@ export default function TestHeader({
                 placeholder="-"
               />
             </div>
-            <div className="bg-gray-100 p-2 border-b border-r border-gray-300 font-medium">Origem:</div>
-            <div className="p-2 border-b border-gray-300">
+            <div className="bg-blue-50 p-2 border-b border-r border-blue-200 font-medium text-blue-900">Origem:</div>
+            <div className="p-2 border-b border-blue-200">
               <input 
                 type="text" 
                 value={origem}
@@ -206,8 +206,8 @@ export default function TestHeader({
                 placeholder="-"
               />
             </div>
-            <div className="bg-gray-100 p-2 border-b border-r border-gray-300 font-medium">Coordenadas:</div>
-            <div className="p-2 border-b border-gray-300">
+            <div className="bg-blue-50 p-2 border-b border-r border-blue-200 font-medium text-blue-900">Coordenadas:</div>
+            <div className="p-2 border-b border-blue-200">
               <input 
                 type="text" 
                 value={`${norte || ''} ${este || ''}`.trim()}
@@ -220,8 +220,8 @@ export default function TestHeader({
                 placeholder="Norte Este"
               />
             </div>
-            <div className="bg-gray-100 p-2 border-b border-r border-gray-300 font-medium">Quadrante:</div>
-            <div className="p-2 border-b border-gray-300">
+            <div className="bg-blue-50 p-2 border-b border-r border-blue-200 font-medium text-blue-900">Quadrante:</div>
+            <div className="p-2 border-b border-blue-200">
               <input 
                 type="text" 
                 value={quadrante}
@@ -230,8 +230,8 @@ export default function TestHeader({
                 placeholder="-"
               />
             </div>
-            <div className="bg-gray-100 p-2 border-b border-r border-gray-300 font-medium">Camada:</div>
-            <div className="p-2 border-b border-gray-300">
+            <div className="bg-blue-50 p-2 border-b border-r border-blue-200 font-medium text-blue-900">Camada:</div>
+            <div className="p-2 border-b border-blue-200">
               <input 
                 type="text" 
                 value={camada}
@@ -240,7 +240,7 @@ export default function TestHeader({
                 placeholder="-"
               />
             </div>
-            <div className="bg-gray-100 p-2 border-r border-gray-300 font-medium">Volume:</div>
+            <div className="bg-blue-50 p-2 border-r border-blue-200 font-medium text-blue-900">Volume:</div>
             <div className="p-2">
               <input 
                 type="text" 
