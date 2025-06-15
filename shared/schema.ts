@@ -285,6 +285,22 @@ export const conferenciaEquipamentos = pgTable("conferencia_equipamentos", {
   updatedAt: timestamp("updated_at").defaultNow()
 });
 
+// Notifications table
+export const notifications = pgTable("notifications", {
+  id: serial("id").primaryKey(),
+  type: varchar("type", { length: 50 }).notNull(), // 'new_user', 'role_change', 'system_alert'
+  title: varchar("title", { length: 255 }).notNull(),
+  message: text("message").notNull(),
+  userId: integer("user_id").references(() => users.id), // usuário relacionado (se aplicável)
+  userEmail: varchar("user_email", { length: 255 }), // email do usuário para facilitar ações
+  userName: varchar("user_name", { length: 255 }), // nome do usuário
+  currentRole: varchar("current_role", { length: 50 }), // role atual do usuário
+  targetRole: varchar("target_role", { length: 50 }), // role sugerido (se aplicável)
+  isRead: boolean("is_read").default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow()
+});
+
 // Equipment relations
 export const equipamentosRelations = relations(equipamentos, ({ one, many }) => ({
   user: one(users, {
@@ -370,6 +386,12 @@ export const insertMaxMinDensityTestSchema = createInsertSchema(maxMinDensityTes
   createdAt: true,
 });
 
+export const insertNotificationSchema = createInsertSchema(notifications).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 // Types
 export type InsertOrganization = z.infer<typeof insertOrganizationSchema>;
 export type InsertUser = z.infer<typeof insertUserSchema>;
@@ -382,6 +404,9 @@ export type UserSession = typeof userSessions.$inferSelect;
 export type InsertDensityInSituTest = z.infer<typeof insertDensityInSituTestSchema>;
 export type InsertRealDensityTest = z.infer<typeof insertRealDensityTestSchema>;
 export type InsertMaxMinDensityTest = z.infer<typeof insertMaxMinDensityTestSchema>;
+export type InsertNotification = z.infer<typeof insertNotificationSchema>;
+
+export type Notification = typeof notifications.$inferSelect;
 
 export const insertEquipamentoSchema = createInsertSchema(equipamentos);
 
