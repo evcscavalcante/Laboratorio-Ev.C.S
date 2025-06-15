@@ -14,6 +14,7 @@ interface Equipamento {
   id: string | number;
   codigo: string;
   tipo: 'capsula' | 'cilindro';
+  tipoEspecifico?: string; // Para cilindros: 'biselado', 'proctor', 'cbr', 'vazios_minimos'
   descricao?: string;
   peso?: number;
   volume?: number;
@@ -24,6 +25,7 @@ interface Equipamento {
   localizacao?: string;
   status: 'ativo' | 'inativo';
   observacoes?: string;
+  proximaConferencia?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -36,6 +38,32 @@ const statusColors = {
 const tipoIcons = {
   capsula: '🧪',
   cilindro: '⚫'
+};
+
+// Tipos específicos conforme banco de dados
+const tiposCilindro = [
+  'biselado',
+  'proctor', 
+  'cbr',
+  'vazios_minimos'
+];
+
+const tiposCapsula = [
+  'pequena',
+  'media',
+  'grande'
+];
+
+const descricoesTipos = {
+  // Cilindros
+  biselado: 'Cilindro Biselado - NBR 9813',
+  proctor: 'Cilindro Proctor - NBR 7182',
+  cbr: 'Cilindro CBR - NBR 9895',
+  vazios_minimos: 'Cilindro Vazios Mínimos - NBR 12004',
+  // Cápsulas
+  pequena: 'Cápsula Pequena (15-25g)',
+  media: 'Cápsula Média (25-35g)',
+  grande: 'Cápsula Grande (35-50g)'
 };
 
 export default function EquipamentosFixed() {
@@ -98,6 +126,7 @@ export default function EquipamentosFixed() {
       id: '',
       codigo: '',
       tipo: 'capsula',
+      tipoEspecifico: '',
       descricao: '',
       peso: 0,
       volume: 0,
@@ -108,6 +137,7 @@ export default function EquipamentosFixed() {
       localizacao: '',
       status: 'ativo',
       observacoes: '',
+      proximaConferencia: '',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
@@ -387,11 +417,284 @@ export default function EquipamentosFixed() {
                 <div className="text-xs text-gray-500 pt-2">
                   Criado em: {new Date(equipamento.createdAt).toLocaleDateString('pt-BR')}
                 </div>
+                
+                {/* Botões de ação */}
+                <div className="flex gap-2 pt-4">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => editarEquipamento(equipamento)}
+                    className="flex-1"
+                  >
+                    <Edit className="h-4 w-4 mr-1" />
+                    Editar
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => excluirEquipamento(equipamento)}
+                    className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           ))}
         </div>
       )}
+
+      {/* Modal de Edição/Criação */}
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>
+              {editando ? 'Editar Equipamento' : 'Novo Equipamento'}
+            </DialogTitle>
+            <DialogDescription>
+              {editando ? 'Atualize as informações do equipamento' : 'Cadastre um novo equipamento no laboratório'}
+            </DialogDescription>
+          </DialogHeader>
+
+          {equipamentoSelecionado && (
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="codigo">Código*</Label>
+                  <Input
+                    id="codigo"
+                    value={equipamentoSelecionado.codigo}
+                    onChange={(e) => setEquipamentoSelecionado({
+                      ...equipamentoSelecionado,
+                      codigo: e.target.value
+                    })}
+                    placeholder="Ex: CAP-001"
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="tipo">Tipo*</Label>
+                  <Select
+                    value={equipamentoSelecionado.tipo}
+                    onValueChange={(value: 'capsula' | 'cilindro') => setEquipamentoSelecionado({
+                      ...equipamentoSelecionado,
+                      tipo: value,
+                      tipoEspecifico: '' // Reset tipo específico
+                    })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione o tipo" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="capsula">Cápsula</SelectItem>
+                      <SelectItem value="cilindro">Cilindro</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {equipamentoSelecionado.tipo && (
+                <div className="space-y-2">
+                  <Label htmlFor="tipoEspecifico">
+                    {equipamentoSelecionado.tipo === 'capsula' ? 'Tamanho' : 'Tipo Específico'}
+                  </Label>
+                  <Select
+                    value={equipamentoSelecionado.tipoEspecifico || ''}
+                    onValueChange={(value) => setEquipamentoSelecionado({
+                      ...equipamentoSelecionado,
+                      tipoEspecifico: value
+                    })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione o tipo específico" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {equipamentoSelecionado.tipo === 'capsula' 
+                        ? tiposCapsula.map(tipo => (
+                            <SelectItem key={tipo} value={tipo}>
+                              {descricoesTipos[tipo as keyof typeof descricoesTipos]}
+                            </SelectItem>
+                          ))
+                        : tiposCilindro.map(tipo => (
+                            <SelectItem key={tipo} value={tipo}>
+                              {descricoesTipos[tipo as keyof typeof descricoesTipos]}
+                            </SelectItem>
+                          ))
+                      }
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+
+              <div className="space-y-2">
+                <Label htmlFor="descricao">Descrição</Label>
+                <Input
+                  id="descricao"
+                  value={equipamentoSelecionado.descricao || ''}
+                  onChange={(e) => setEquipamentoSelecionado({
+                    ...equipamentoSelecionado,
+                    descricao: e.target.value
+                  })}
+                  placeholder="Descrição do equipamento"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="peso">Peso (g)*</Label>
+                  <Input
+                    id="peso"
+                    type="number"
+                    step="0.001"
+                    value={equipamentoSelecionado.peso || ''}
+                    onChange={(e) => setEquipamentoSelecionado({
+                      ...equipamentoSelecionado,
+                      peso: parseFloat(e.target.value) || 0
+                    })}
+                    placeholder="0.000"
+                  />
+                </div>
+
+                {equipamentoSelecionado.tipo === 'cilindro' && (
+                  <div className="space-y-2">
+                    <Label htmlFor="volume">Volume (cm³)*</Label>
+                    <Input
+                      id="volume"
+                      type="number"
+                      step="0.001"
+                      value={equipamentoSelecionado.volume || ''}
+                      onChange={(e) => setEquipamentoSelecionado({
+                        ...equipamentoSelecionado,
+                        volume: parseFloat(e.target.value) || 0
+                      })}
+                      placeholder="0.000"
+                    />
+                  </div>
+                )}
+              </div>
+
+              {equipamentoSelecionado.tipo === 'cilindro' && (
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="altura">Altura (mm)</Label>
+                    <Input
+                      id="altura"
+                      type="number"
+                      step="0.01"
+                      value={equipamentoSelecionado.altura || ''}
+                      onChange={(e) => setEquipamentoSelecionado({
+                        ...equipamentoSelecionado,
+                        altura: parseFloat(e.target.value) || 0
+                      })}
+                      placeholder="0.00"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="diametro">Diâmetro (mm)</Label>
+                    <Input
+                      id="diametro"
+                      type="number"
+                      step="0.01"
+                      value={equipamentoSelecionado.diametro || ''}
+                      onChange={(e) => setEquipamentoSelecionado({
+                        ...equipamentoSelecionado,
+                        diametro: parseFloat(e.target.value) || 0
+                      })}
+                      placeholder="0.00"
+                    />
+                  </div>
+                </div>
+              )}
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="material">Material</Label>
+                  <Input
+                    id="material"
+                    value={equipamentoSelecionado.material || ''}
+                    onChange={(e) => setEquipamentoSelecionado({
+                      ...equipamentoSelecionado,
+                      material: e.target.value
+                    })}
+                    placeholder="Ex: Alumínio, Aço Inox"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="fabricante">Fabricante</Label>
+                  <Input
+                    id="fabricante"
+                    value={equipamentoSelecionado.fabricante || ''}
+                    onChange={(e) => setEquipamentoSelecionado({
+                      ...equipamentoSelecionado,
+                      fabricante: e.target.value
+                    })}
+                    placeholder="Fabricante"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="localizacao">Localização</Label>
+                  <Input
+                    id="localizacao"
+                    value={equipamentoSelecionado.localizacao || ''}
+                    onChange={(e) => setEquipamentoSelecionado({
+                      ...equipamentoSelecionado,
+                      localizacao: e.target.value
+                    })}
+                    placeholder="Local de armazenamento"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="status">Status</Label>
+                  <Select
+                    value={equipamentoSelecionado.status}
+                    onValueChange={(value: 'ativo' | 'inativo') => setEquipamentoSelecionado({
+                      ...equipamentoSelecionado,
+                      status: value
+                    })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="ativo">Ativo</SelectItem>
+                      <SelectItem value="inativo">Inativo</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="observacoes">Observações</Label>
+                <Textarea
+                  id="observacoes"
+                  value={equipamentoSelecionado.observacoes || ''}
+                  onChange={(e) => setEquipamentoSelecionado({
+                    ...equipamentoSelecionado,
+                    observacoes: e.target.value
+                  })}
+                  placeholder="Observações adicionais..."
+                  rows={3}
+                />
+              </div>
+            </div>
+          )}
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDialogOpen(false)}>
+              Cancelar
+            </Button>
+            <Button onClick={salvarEquipamento} disabled={salvando}>
+              {salvando ? 'Salvando...' : (editando ? 'Atualizar' : 'Criar')}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
