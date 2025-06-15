@@ -1489,20 +1489,38 @@ export async function generateDensityInSituVerticalPDF(data: any, calculations: 
     const url = URL.createObjectURL(blob);
     console.log('🔗 URL criada:', url);
     
+    // Configurar nome do arquivo: Nome do ensaio + registro
+    const fileName = `Densidade-In-Situ-${data.registrationNumber || 'Ensaio'}.pdf`;
+    
     const link = document.createElement('a');
     link.href = url;
-    link.download = `densidade-in-situ-${data.registrationNumber || 'ensaio'}-${new Date().toISOString().split('T')[0]}.pdf`;
-    link.style.display = 'none';
+    link.download = fileName;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
     
-    console.log('📥 Iniciando download:', link.download);
+    console.log('📥 Iniciando download:', fileName);
+    
+    // Forçar download com múltiplas tentativas
     document.body.appendChild(link);
+    
+    // Primeira tentativa - click direto
     link.click();
     
+    // Segunda tentativa - abrir em nova aba se download falhar
     setTimeout(() => {
-      document.body.removeChild(link);
+      const newWindow = window.open(url, '_blank');
+      if (newWindow) {
+        newWindow.focus();
+      }
+    }, 500);
+    
+    setTimeout(() => {
+      if (document.body.contains(link)) {
+        document.body.removeChild(link);
+      }
       URL.revokeObjectURL(url);
       console.log('🧹 Limpeza concluída');
-    }, 100);
+    }, 2000);
     
     console.log('✅ PDF gerado e baixado com sucesso');
   } catch (error) {
@@ -1529,20 +1547,38 @@ export async function generateMaxMinDensityVerticalPDF(data: any, calculations: 
     const url = URL.createObjectURL(blob);
     console.log('🔗 URL criada:', url);
     
+    // Configurar nome do arquivo: Nome do ensaio + registro
+    const fileName = `Densidade-Max-Min-${data.registrationNumber || 'Ensaio'}.pdf`;
+    
     const link = document.createElement('a');
     link.href = url;
-    link.download = `densidade-max-min-${data.registrationNumber || 'ensaio'}-${new Date().toISOString().split('T')[0]}.pdf`;
-    link.style.display = 'none';
+    link.download = fileName;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
     
-    console.log('📥 Iniciando download:', link.download);
+    console.log('📥 Iniciando download:', fileName);
+    
+    // Forçar download com múltiplas tentativas
     document.body.appendChild(link);
+    
+    // Primeira tentativa - click direto
     link.click();
     
+    // Segunda tentativa - abrir em nova aba se download falhar
     setTimeout(() => {
-      document.body.removeChild(link);
+      const newWindow = window.open(url, '_blank');
+      if (newWindow) {
+        newWindow.focus();
+      }
+    }, 500);
+    
+    setTimeout(() => {
+      if (document.body.contains(link)) {
+        document.body.removeChild(link);
+      }
       URL.revokeObjectURL(url);
       console.log('🧹 Limpeza concluída');
-    }, 100);
+    }, 2000);
     
     console.log('✅ PDF gerado e baixado com sucesso');
   } catch (error) {
@@ -1569,20 +1605,38 @@ export async function generateRealDensityVerticalPDF(data: any, calculations: an
     const url = URL.createObjectURL(blob);
     console.log('🔗 URL criada:', url);
     
+    // Configurar nome do arquivo: Nome do ensaio + registro
+    const fileName = `Densidade-Real-${data.registrationNumber || 'Ensaio'}.pdf`;
+    
     const link = document.createElement('a');
     link.href = url;
-    link.download = `densidade-real-${data.registrationNumber || 'ensaio'}-${new Date().toISOString().split('T')[0]}.pdf`;
-    link.style.display = 'none';
+    link.download = fileName;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
     
-    console.log('📥 Iniciando download:', link.download);
+    console.log('📥 Iniciando download:', fileName);
+    
+    // Forçar download com múltiplas tentativas
     document.body.appendChild(link);
+    
+    // Primeira tentativa - click direto
     link.click();
     
+    // Segunda tentativa - abrir em nova aba se download falhar
     setTimeout(() => {
-      document.body.removeChild(link);
+      const newWindow = window.open(url, '_blank');
+      if (newWindow) {
+        newWindow.focus();
+      }
+    }, 500);
+    
+    setTimeout(() => {
+      if (document.body.contains(link)) {
+        document.body.removeChild(link);
+      }
       URL.revokeObjectURL(url);
       console.log('🧹 Limpeza concluída');
-    }, 100);
+    }, 2000);
     
     console.log('✅ PDF gerado e baixado com sucesso');
   } catch (error) {
