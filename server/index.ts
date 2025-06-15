@@ -417,6 +417,18 @@ async function startServer() {
 
 
 
+  // Endpoint seguro para buscar ensaios densidade in-situ
+  app.get('/api/tests/density-in-situ', verifyFirebaseToken, async (req: Request, res: Response) => {
+    try {
+      const tests = await storage.getDensityInSituTests();
+      console.log('📋 Ensaios densidade in-situ encontrados:', tests.length);
+      res.json(tests);
+    } catch (error) {
+      console.error('Error fetching density in situ tests:', error);
+      res.status(500).json({ message: 'Failed to fetch tests' });
+    }
+  });
+
   app.post('/api/tests/density-in-situ', verifyFirebaseToken, async (req: Request, res: Response) => {
     try {
       console.log('📥 Recebendo dados do ensaio:', JSON.stringify(req.body, null, 2));
@@ -771,6 +783,31 @@ async function startServer() {
     res.status(410).json({ 
       error: 'Endpoint removido por questões de segurança',
       message: 'Use /api/equipamentos com autenticação adequada'
+    });
+  });
+
+  // Bloquear todos os endpoints temporários de testes
+  app.all('/api/tests/densidade-in-situ/temp*', (req: Request, res: Response) => {
+    console.log(`🚨 TENTATIVA DE ACESSO BLOQUEADA: ${req.method} ${req.originalUrl} - IP: ${req.ip}`);
+    res.status(410).json({ 
+      error: 'Endpoint removido por questões de segurança',
+      message: 'Use /api/tests/density-in-situ com autenticação adequada'
+    });
+  });
+
+  app.all('/api/tests/densidade-real/temp*', (req: Request, res: Response) => {
+    console.log(`🚨 TENTATIVA DE ACESSO BLOQUEADA: ${req.method} ${req.originalUrl} - IP: ${req.ip}`);
+    res.status(410).json({ 
+      error: 'Endpoint removido por questões de segurança',
+      message: 'Use /api/tests/real-density com autenticação adequada'
+    });
+  });
+
+  app.all('/api/tests/densidade-max-min/temp*', (req: Request, res: Response) => {
+    console.log(`🚨 TENTATIVA DE ACESSO BLOQUEADA: ${req.method} ${req.originalUrl} - IP: ${req.ip}`);
+    res.status(410).json({ 
+      error: 'Endpoint removido por questões de segurança',
+      message: 'Use /api/tests/max-min-density com autenticação adequada'
     });
   });
 
