@@ -483,6 +483,15 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Teste de autenticação: 100% sucesso (5/5 após correção do endpoint sync-user)
   - Endpoint de sincronização Firebase-PostgreSQL registrado diretamente no servidor principal
   - Sistema completamente estável com 18 ensaios detectados no banco de dados
+- June 15, 2025: Página de ensaios salvos implementada
+  - Interface completa para visualizar e gerenciar todos os ensaios salvos
+  - Sistema de busca e filtros por tipo de ensaio (densidade in-situ, real, máx/mín)
+  - Contadores dinâmicos mostrando quantidade real por categoria
+  - Botões de ação: visualizar, baixar PDF, excluir ensaios
+  - Painel de estatísticas com totais consolidados
+  - Navegação integrada na sidebar com acesso direto via /ensaios-salvos
+  - Interface responsiva otimizada para desktop e mobile
+  - Sistema detectando 17 ensaios: 0 densidade in-situ, 6 densidade real, 11 máx/mín
 
 ## User Preferences
 
