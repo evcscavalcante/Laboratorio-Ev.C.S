@@ -17,8 +17,22 @@ interface RealDensityData {
   registrationNumber: string;
   date: string;
   operator: string;
+  technicalResponsible: string;
+  verifier: string;
   material: string;
   origin: string;
+  north: string;
+  east: string;
+  cota: string;
+  local: string;
+  weatherCondition: string;
+  humidity: string;
+  temperature: string;
+  sampleReensayed: boolean;
+  balanceId: string;
+  ovenId: string;
+  thermometerId: string;
+  chronometerId: string;
   
   // Moisture determinations
   moisture1: { capsule: string; wetTare: number; dryTare: number; tare: number; };
@@ -85,8 +99,22 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
       registrationNumber: "",
       date: new Date().toISOString().split('T')[0],
       operator: "",
+      technicalResponsible: "",
+      verifier: "",
       material: "",
       origin: "",
+      north: "",
+      east: "",
+      cota: "",
+      local: "",
+      weatherCondition: "SOL FORTE",
+      humidity: "",
+      temperature: "",
+      sampleReensayed: false,
+      balanceId: "",
+      ovenId: "",
+      thermometerId: "",
+      chronometerId: "",
       moisture1: { capsule: "", wetTare: 0, dryTare: 0, tare: 0 },
       moisture2: { capsule: "", wetTare: 0, dryTare: 0, tare: 0 },
       moisture3: { capsule: "", wetTare: 0, dryTare: 0, tare: 0 },
@@ -116,8 +144,22 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
         registrationNumber: testData.registrationNumber || "",
         date: testData.date || new Date().toISOString().split('T')[0],
         operator: testData.operator || "",
+        technicalResponsible: testData.technicalResponsible || "",
+        verifier: testData.verifier || "",
         material: testData.material || "",
         origin: testData.origin || "",
+        north: testData.north || "",
+        east: testData.east || "",
+        cota: testData.cota || "",
+        local: testData.local || "",
+        weatherCondition: testData.weatherCondition || "SOL FORTE",
+        humidity: testData.humidity || "",
+        temperature: testData.temperature || "",
+        sampleReensayed: testData.sampleReensayed || false,
+        balanceId: testData.balanceId || "",
+        ovenId: testData.ovenId || "",
+        thermometerId: testData.thermometerId || "",
+        chronometerId: testData.chronometerId || "",
         moisture1: testData.moisture1 || { capsule: "", wetTare: 0, dryTare: 0, tare: 0 },
         moisture2: testData.moisture2 || { capsule: "", wetTare: 0, dryTare: 0, tare: 0 },
         moisture3: testData.moisture3 || { capsule: "", wetTare: 0, dryTare: 0, tare: 0 },
@@ -389,8 +431,22 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
       registrationNumber: "",
       date: new Date().toISOString().split('T')[0],
       operator: "",
+      technicalResponsible: "",
+      verifier: "",
       material: "",
       origin: "",
+      north: "",
+      east: "",
+      cota: "",
+      local: "",
+      weatherCondition: "SOL FORTE",
+      humidity: "",
+      temperature: "",
+      sampleReensayed: false,
+      balanceId: "",
+      ovenId: "",
+      thermometerId: "",
+      chronometerId: "",
       moisture1: { capsule: "", wetTare: 0, dryTare: 0, tare: 0 },
       moisture2: { capsule: "", wetTare: 0, dryTare: 0, tare: 0 },
       moisture3: { capsule: "", wetTare: 0, dryTare: 0, tare: 0 },

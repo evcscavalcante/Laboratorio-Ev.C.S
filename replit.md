@@ -251,6 +251,13 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - NBR 12004:2021 e NBR 12051:2021 - Índices de vazios máximo e mínimo
   - Títulos e descrições atualizados para nomenclatura técnica oficial
   - Documentação alinhada com versões atualizadas das normas ABNT
+- June 15, 2025: Identificação de ensaios padronizada conforme normas técnicas
+  - Modelo completo de identificação aplicado a todos os ensaios
+  - Campos técnicos: operador, responsável pelo cálculo, verificador
+  - Dados de localização: norte, este, cota, local, quadrante, camada
+  - Condições ambientais: tempo, umidade, temperatura
+  - Identificação de equipamentos: balança, estufa, termômetro, cronômetro
+  - Amostra reensaiada: controle de qualidade implementado
 
 ## User Preferences
 
