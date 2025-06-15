@@ -70,6 +70,11 @@ export default function Login() {
       }
     } catch (error: any) {
       console.error('Erro de autenticação:', error);
+      console.error('Erro detalhado:', {
+        code: error.code,
+        message: error.message,
+        stack: error.stack
+      });
       
       let message = 'Erro ao processar solicitação';
       if (error.code === 'auth/user-not-found') {

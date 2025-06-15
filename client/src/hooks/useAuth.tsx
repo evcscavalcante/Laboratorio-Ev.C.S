@@ -25,7 +25,15 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth deve ser usado dentro de AuthProvider');
+    console.warn('useAuth sendo usado fora do AuthProvider, retornando valores padrão');
+    return {
+      user: null,
+      isLoading: false,
+      signIn: async () => {},
+      signUp: async () => {},
+      signOut: async () => {},
+      sendPasswordReset: async () => {}
+    };
   }
   return context;
 };

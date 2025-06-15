@@ -13,6 +13,14 @@ const firebaseConfig = {
   appId: cleanEnvVar(import.meta.env.VITE_FIREBASE_APP_ID)
 };
 
+// Debug: Verificar se as variáveis estão carregadas
+console.log('🔥 Firebase Config Debug:', {
+  hasApiKey: !!firebaseConfig.apiKey,
+  hasProjectId: !!firebaseConfig.projectId,
+  hasAppId: !!firebaseConfig.appId,
+  authDomain: firebaseConfig.authDomain
+});
+
 // Inicializar Firebase evitando duplicação
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 export const auth = getAuth(app);
