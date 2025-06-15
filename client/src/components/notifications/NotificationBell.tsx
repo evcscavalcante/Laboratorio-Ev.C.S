@@ -63,7 +63,7 @@ export function NotificationBell({ userRole }: NotificationBellProps) {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('firebaseToken')}`,
+          'Authorization': `Bearer ${token}`,
         },
       });
       if (!response.ok) throw new Error('Falha ao marcar notificação');
@@ -81,7 +81,7 @@ export function NotificationBell({ userRole }: NotificationBellProps) {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('firebaseToken')}`,
+          'Authorization': `Bearer ${token}`,
         },
       });
       if (!response.ok) throw new Error('Falha ao marcar todas');

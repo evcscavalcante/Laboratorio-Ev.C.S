@@ -516,6 +516,16 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Atualização automática da lista após exclusão (sem reload manual)
   - Interface fluida com contadores atualizados em tempo real
   - Todas as funcionalidades operacionais: criar, visualizar, buscar, filtrar e excluir ensaios
+- June 15, 2025: Sistema de notificações completamente corrigido e funcional
+  - Problema de autenticação 401/403 resolvido para usuários ADMIN
+  - Permissões ajustadas: endpoints de notificações acessíveis para ADMIN e DEVELOPER
+  - Correção do middleware requireRole para suportar múltiplos roles corretamente
+  - Componente NotificationBell usando tokens Firebase corretos em todas as chamadas API
+  - Hooks useAuth corrigidos com propriedades token, hasRole, hasAnyRole no fallback
+  - Sistema de notificação visual operacional com sino na sidebar
+  - API /api/notifications retornando status 200 (sucesso)
+  - Funcionalidades completas: visualizar notificações, marcar como lida, marcar todas como lidas
+  - Integração perfeita entre autenticação híbrida Firebase-PostgreSQL e sistema de notificações
 
 ## User Preferences
 
