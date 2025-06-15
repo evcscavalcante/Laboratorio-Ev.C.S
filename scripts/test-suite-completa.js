@@ -5,6 +5,8 @@
 
 import EnsaiosSavingTester from './test-ensaios-salvamento.js';
 import PDFGenerationTester from './test-pdf-generation.js';
+import HierarchyRolesTester from './test-hierarquia-roles.js';
+import SpecificPermissionsTester from './test-permissoes-especificas.js';
 
 class CompletTestSuite {
   constructor(baseUrl = 'http://localhost:5000') {
@@ -12,6 +14,8 @@ class CompletTestSuite {
     this.results = {
       saving: null,
       pdf: null,
+      hierarchy: null,
+      permissions: null,
       overall: { passed: 0, total: 0 }
     };
   }
@@ -30,6 +34,20 @@ class CompletTestSuite {
     // Teste de geração de PDF
     console.log('\n2️⃣ EXECUTANDO TESTES DE GERAÇÃO DE PDF...');
     await this.runPDFTests();
+
+    // Aguardar um pouco entre testes
+    await this.sleep(2000);
+
+    // Teste de hierarquia de roles
+    console.log('\n3️⃣ EXECUTANDO TESTES DE HIERARQUIA...');
+    await this.runHierarchyTests();
+
+    // Aguardar um pouco entre testes
+    await this.sleep(2000);
+
+    // Teste de permissões específicas
+    console.log('\n4️⃣ EXECUTANDO TESTES DE PERMISSÕES...');
+    await this.runPermissionsTests();
 
     // Relatório final
     this.generateFinalReport();
@@ -129,6 +147,100 @@ class CompletTestSuite {
     }
   }
 
+  async runHierarchyTests() {
+    try {
+      const hierarchyTester = new HierarchyRolesTester(this.baseUrl);
+      
+      // Capturar resultado sem sair do processo
+      const originalExit = process.exit;
+      let exitCode = 0;
+      process.exit = (code) => { exitCode = code; };
+
+      // Redirecionar console.log para capturar saída
+      const originalLog = console.log;
+      let output = '';
+      console.log = (...args) => {
+        output += args.join(' ') + '\n';
+        originalLog(...args);
+      };
+
+      try {
+        await hierarchyTester.runTests();
+      } catch (error) {
+        exitCode = 1;
+      }
+
+      // Restaurar funções originais
+      process.exit = originalExit;
+      console.log = originalLog;
+
+      this.results.hierarchy = {
+        passed: exitCode === 0,
+        output: output
+      };
+
+      if (exitCode === 0) {
+        this.results.overall.passed++;
+      }
+      this.results.overall.total++;
+
+    } catch (error) {
+      console.error('❌ Erro nos testes de hierarquia:', error.message);
+      this.results.hierarchy = {
+        passed: false,
+        output: `Erro: ${error.message}`
+      };
+      this.results.overall.total++;
+    }
+  }
+
+  async runPermissionsTests() {
+    try {
+      const permissionsTester = new SpecificPermissionsTester(this.baseUrl);
+      
+      // Capturar resultado sem sair do processo
+      const originalExit = process.exit;
+      let exitCode = 0;
+      process.exit = (code) => { exitCode = code; };
+
+      // Redirecionar console.log para capturar saída
+      const originalLog = console.log;
+      let output = '';
+      console.log = (...args) => {
+        output += args.join(' ') + '\n';
+        originalLog(...args);
+      };
+
+      try {
+        await permissionsTester.runTests();
+      } catch (error) {
+        exitCode = 1;
+      }
+
+      // Restaurar funções originais
+      process.exit = originalExit;
+      console.log = originalLog;
+
+      this.results.permissions = {
+        passed: exitCode === 0,
+        output: output
+      };
+
+      if (exitCode === 0) {
+        this.results.overall.passed++;
+      }
+      this.results.overall.total++;
+
+    } catch (error) {
+      console.error('❌ Erro nos testes de permissões:', error.message);
+      this.results.permissions = {
+        passed: false,
+        output: `Erro: ${error.message}`
+      };
+      this.results.overall.total++;
+    }
+  }
+
   generateFinalReport() {
     console.log('\n' + '='.repeat(70));
     console.log('📊 RELATÓRIO FINAL - SUÍTE COMPLETA DE TESTES');
@@ -137,6 +249,8 @@ class CompletTestSuite {
     console.log('\n🔍 RESUMO DOS TESTES:');
     console.log(`   • Salvamento de Ensaios: ${this.results.saving?.passed ? '✅ APROVADO' : '❌ FALHOU'}`);
     console.log(`   • Geração de PDFs: ${this.results.pdf?.passed ? '✅ APROVADO' : '❌ FALHOU'}`);
+    console.log(`   • Hierarquia de Roles: ${this.results.hierarchy?.passed ? '✅ APROVADO' : '❌ FALHOU'}`);
+    console.log(`   • Permissões Específicas: ${this.results.permissions?.passed ? '✅ APROVADO' : '❌ FALHOU'}`);
 
     console.log('\n📈 RESULTADO GERAL:');
     console.log(`   ${this.results.overall.passed}/${this.results.overall.total} suítes aprovadas`);
@@ -145,6 +259,7 @@ class CompletTestSuite {
       console.log('\n🎉 TODOS OS TESTES APROVADOS!');
       console.log('✅ Sistema pronto para futuras implementações');
       console.log('✅ Funcionalidades de salvamento e PDF validadas');
+      console.log('✅ Camadas hierárquicas e permissões funcionando');
     } else {
       console.log('\n⚠️ ALGUNS TESTES FALHARAM');
       console.log('❌ Corrigir problemas antes de novas implementações');
@@ -155,11 +270,19 @@ class CompletTestSuite {
       if (!this.results.pdf?.passed) {
         console.log('   - Problema na geração de PDFs');
       }
+      if (!this.results.hierarchy?.passed) {
+        console.log('   - Problema na hierarquia de roles');
+      }
+      if (!this.results.permissions?.passed) {
+        console.log('   - Problema nas permissões específicas');
+      }
     }
 
     console.log('\n📋 COMANDOS PARA TESTES INDIVIDUAIS:');
     console.log('   node scripts/test-ensaios-salvamento.js');
     console.log('   node scripts/test-pdf-generation.js');
+    console.log('   node scripts/test-hierarquia-roles.js');
+    console.log('   node scripts/test-permissoes-especificas.js');
     console.log('   node scripts/test-suite-completa.js');
 
     console.log('\n' + '='.repeat(70));
