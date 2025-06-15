@@ -53,7 +53,7 @@ async function startServer() {
   const server = createServer(app);
   
   // Configurar trust proxy para Replit
-  app.set('trust proxy', true);
+  app.set('trust proxy', 1); // Confiar apenas no primeiro proxy
   
   // Middleware de observabilidade
   app.use(observability.middleware());

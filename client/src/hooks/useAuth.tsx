@@ -18,6 +18,7 @@ interface AuthContextType {
   hasAnyRole: (roles: string[]) => boolean;
   syncUser: () => Promise<void>;
   logout: () => Promise<void>;
+  signOut?: () => Promise<void>; // Compatibilidade reversa
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -157,7 +158,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       hasRole,
       hasAnyRole,
       syncUser,
-      logout
+      logout,
+      signOut: logout // Alias para compatibilidade
     }}>
       {children}
     </AuthContext.Provider>

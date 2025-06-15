@@ -56,7 +56,7 @@ export default function Sidebar({ isOpen }: SidebarProps) {
   const [location] = useLocation();
   const [solosOpen, setSolosOpen] = useState(true);
   const [adminOpen, setAdminOpen] = useState(false);
-  const { user, signOut } = useAuth();
+  const { user, logout } = useAuth();
   const permissions = usePermissions();
 
   // Build simplified menu items
@@ -290,7 +290,7 @@ export default function Sidebar({ isOpen }: SidebarProps) {
           <Button
             variant="ghost"
             size="sm"
-            onClick={signOut}
+            onClick={logout}
             className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50"
           >
             <LogOut className="h-4 w-4 mr-2" />
