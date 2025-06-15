@@ -3,12 +3,12 @@ import { createServer } from "http";
 import session from "express-session";
 import cors from "cors";
 import path from "path";
-import hybridAuthRoutes, { verifyFirebaseToken } from "./auth-firebase-hybrid";
+import hybridAuthRoutes, { verifyFirebaseToken, requireRole } from "./auth-firebase-hybrid";
 // Rotas específicas removidas para simplificação
 import { registerPaymentRoutes } from "./payment-routes";
 import { setupVite, serveStatic } from "./vite";
 import MemoryStore from "memorystore";
-import { simpleOrgManager, requireRole } from "./simple-org-management";
+import { simpleOrgManager } from "./simple-org-management";
 import { db } from "./db";
 import { subscriptionPlans, users, notifications } from "@shared/schema";
 import { eq, desc } from "drizzle-orm";
@@ -277,7 +277,7 @@ async function startServer() {
   });
 
   // Admin users endpoint (ADMIN only)
-  app.get("/api/admin/users", verifyFirebaseToken, requireRole('ADMIN'), async (req: Request, res: Response) => {
+  app.get("/api/admin/users", verifyFirebaseToken, requireRole(['ADMIN']), async (req: Request, res: Response) => {
     try {
       const allUsers = await db.select().from(users);
       res.json(allUsers);
@@ -288,7 +288,7 @@ async function startServer() {
   });
 
   // Developer system info (DEVELOPER only) 
-  app.get("/api/developer/system-info", verifyFirebaseToken, requireRole('DEVELOPER'), (req: Request, res: Response) => {
+  app.get("/api/developer/system-info", verifyFirebaseToken, requireRole(['DEVELOPER']), (req: Request, res: Response) => {
     res.json({
       version: "1.0.0",
       environment: process.env.NODE_ENV || "development",
@@ -301,8 +301,8 @@ async function startServer() {
     });
   });
 
-  // Notification Routes (DEVELOPER only)
-  app.get('/api/notifications', verifyFirebaseToken, requireRole('DEVELOPER'), async (req: Request, res: Response) => {
+  // Notification Routes (ADMIN and DEVELOPER)
+  app.get('/api/notifications', verifyFirebaseToken, requireRole(['ADMIN', 'DEVELOPER']), async (req: Request, res: Response) => {
     try {
       const result = await db.select().from(notifications).orderBy(desc(notifications.createdAt)).limit(50);
       res.json(result);
@@ -312,7 +312,7 @@ async function startServer() {
     }
   });
 
-  app.patch('/api/notifications/:id/read', verifyFirebaseToken, requireRole('DEVELOPER'), async (req: Request, res: Response) => {
+  app.patch('/api/notifications/:id/read', verifyFirebaseToken, requireRole(['ADMIN', 'DEVELOPER']), async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
       await db.update(notifications)
@@ -325,7 +325,7 @@ async function startServer() {
     }
   });
 
-  app.patch('/api/notifications/mark-all-read', verifyFirebaseToken, requireRole('DEVELOPER'), async (req: Request, res: Response) => {
+  app.patch('/api/notifications/mark-all-read', verifyFirebaseToken, requireRole(['ADMIN', 'DEVELOPER']), async (req: Request, res: Response) => {
     try {
       await db.update(notifications)
         .set({ isRead: true, updatedAt: new Date() })
