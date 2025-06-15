@@ -1,6 +1,6 @@
 import { useAuth } from './useAuth';
 
-type UserRole = 'ADMIN' | 'MANAGER' | 'SUPERVISOR' | 'TECHNICIAN' | 'VIEWER';
+type UserRole = 'DEVELOPER' | 'ADMIN' | 'MANAGER' | 'SUPERVISOR' | 'TECHNICIAN' | 'VIEWER';
 
 interface Permissions {
   canCreate: boolean;
@@ -13,6 +13,15 @@ interface Permissions {
 }
 
 const ROLE_PERMISSIONS: Record<UserRole, Permissions> = {
+  DEVELOPER: {
+    canCreate: true,
+    canEdit: true,
+    canDelete: true,
+    canView: true,
+    canManageUsers: true,
+    canApproveTests: true,
+    canExportReports: true,
+  },
   ADMIN: {
     canCreate: true,
     canEdit: true,
@@ -71,6 +80,7 @@ export function usePermissions() {
   return {
     ...permissions,
     userRole,
+    isDeveloper: userRole === 'DEVELOPER',
     isAdmin: userRole === 'ADMIN',
     isManager: userRole === 'MANAGER',
     isSupervisor: userRole === 'SUPERVISOR',

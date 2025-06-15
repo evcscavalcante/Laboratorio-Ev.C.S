@@ -483,6 +483,17 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Teste de autenticação: 100% sucesso (5/5 após correção do endpoint sync-user)
   - Endpoint de sincronização Firebase-PostgreSQL registrado diretamente no servidor principal
   - Sistema completamente estável com 18 ensaios detectados no banco de dados
+- June 15, 2025: Sistema de notificação visual implementado para gerenciamento de novos usuários
+  - Sino de notificação integrado na sidebar (apenas DEVELOPER)
+  - Contador visual de notificações não lidas com badge vermelho
+  - Dropdown interativo com lista de notificações e botões de ação
+  - Notificações automáticas quando novos usuários se cadastram no Firebase
+  - Botões de promoção rápida (VIEWER → TECHNICIAN → MANAGER → ADMIN)
+  - Gerenciamento completo: marcar como lida, marcar todas como lidas
+  - Tabela notifications criada no PostgreSQL com schema completo
+  - Rotas API implementadas: GET /api/notifications, PATCH /api/notifications/:id/read
+  - Sistema elimina processo manual confuso de atribuição de roles
+  - Novos usuários sempre começam como VIEWER e DEVELOPER recebe notificação automática
 - June 15, 2025: Página de ensaios salvos implementada e funcional
   - Interface completa para visualizar e gerenciar todos os ensaios salvos
   - Sistema de busca e filtros por tipo de ensaio (densidade in-situ, real, máx/mín)
