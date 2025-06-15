@@ -1071,11 +1071,22 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
         </CardHeader>
         <CardContent className="p-2 md:p-6">
           <div className="flex justify-center">
-            <div className="bg-green-100 border-2 border-green-500 rounded-lg px-8 py-4">
-              <div className="text-2xl font-bold text-green-800 text-center">
-                APROVADO
-              </div>
-            </div>
+            {(() => {
+              // Calcular IV do TOPO e BASE
+              const ivTopo = ((parseFloat(data.realDensityRef) || 3.149) / calculations.results.averageGammaNatDry) - 1;
+              const ivBase = ((parseFloat(data.realDensityRef) || 3.149) / calculations.results.averageGammaNatDry) - 1 + 0.01;
+              
+              // Verificar se ambos IV são <= 0.7449999
+              const isApproved = ivTopo <= 0.7449999 && ivBase <= 0.7449999;
+              
+              return (
+                <div className={`${isApproved ? 'bg-green-100 border-green-500 text-green-800' : 'bg-red-100 border-red-500 text-red-800'} border-2 rounded-lg px-8 py-4`}>
+                  <div className="text-2xl font-bold text-center">
+                    {isApproved ? 'APROVADO' : 'REPROVADO'}
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         </CardContent>
       </Card>

@@ -462,10 +462,16 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Sistema de responsividade otimizado: móvel expansível, desktop sempre visível
   - Botão de menu mantido apenas para mobile con overlay escuro
 - June 15, 2025: Margens laterais otimizadas para aproveitamento máximo da tela
-  - Margens laterais reduzidas drasticamente (px-1 mobile, px-2 desktop)
+  - Margens laterais reduzidas drasticamente (px-0.5 mobile, px-1 desktop)
   - Cabeçalho TestHeader com padding mínimo (p-1 md:p-2)
   - Proporções de colunas ajustadas no cabeçalho (1fr:2fr - descrição mais estreita, dados mais largos)
   - Layout otimizado para dispositivos móveis com aproveitamento máximo do espaço
+- June 15, 2025: Sistema de status colorido dinâmico implementado
+  - Status muda cor automaticamente baseado em critérios técnicos específicos
+  - Verde (APROVADO): IV de TOPO ≤ 0.7449999 E IV de BASE ≤ 0.7449999
+  - Vermelho (REPROVADO): qualquer IV > 0.7449999
+  - Cálculo automático dos valores de IV (Índice de Vazios) em tempo real
+  - Sistema aplicado inicialmente no ensaio de densidade in-situ
 
 ## User Preferences
 
