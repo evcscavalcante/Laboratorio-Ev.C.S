@@ -74,7 +74,7 @@ export default function Laboratory() {
       type: 'density-in-situ',
       icon: '⚖️',
       name: 'Massa Específica Aparente In Situ',
-      description: 'Determinação com emprego do cilindro de cravação NBR 6457',
+      description: 'NBR 9813 - Com emprego do cilindro de cravação',
       count: allTests.filter(t => t.type === 'density-in-situ').length,
       route: '/solos/densidade-in-situ',
       color: 'blue'
@@ -82,8 +82,8 @@ export default function Laboratory() {
     {
       type: 'real-density',
       icon: '⚛️',
-      name: 'Massa Específica dos Agregados',
-      description: 'Agregados que passam na peneira 2,0 mm conforme NBR 6508',
+      name: 'Massa Específica dos Grãos',
+      description: 'NBR 6508 - Grãos que passam na peneira de 4,8 mm',
       count: allTests.filter(t => t.type === 'real-density').length,
       route: '/solos/densidade-real',
       color: 'green'
@@ -92,7 +92,7 @@ export default function Laboratory() {
       type: 'max-min-density',
       icon: '↕️',
       name: 'Índices de Vazios Máx/Mín',
-      description: 'Determinação dos índices de vazios máximo e mínimo NBR 12004',
+      description: 'NBR 12004 e NBR 12051 - Solos não coesivos',
       count: allTests.filter(t => t.type === 'max-min-density').length,
       route: '/solos/densidade-max-min',
       color: 'purple'
