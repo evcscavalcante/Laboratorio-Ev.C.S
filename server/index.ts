@@ -10,8 +10,8 @@ import { setupVite, serveStatic } from "./vite";
 import MemoryStore from "memorystore";
 import { simpleOrgManager, requireRole } from "./simple-org-management";
 import { db } from "./db";
-import { subscriptionPlans, users } from "@shared/schema";
-import { eq } from "drizzle-orm";
+import { subscriptionPlans, users, notifications } from "@shared/schema";
+import { eq, desc } from "drizzle-orm";
 import { initializeAdminUser } from "./init-admin";
 import { storage } from "./storage-corrected";
 import { observability } from "./observability-minimal";
@@ -214,9 +214,24 @@ async function startServer() {
           firebase_uid: user.uid,
           email: user.email,
           name: user.name,
-          role: user.role,
+          role: 'VIEWER', // Novos usuários sempre começam como VIEWER
           active: true
         });
+        
+        // Criar notificação para DEVELOPERS sobre novo usuário
+        console.log('🔔 Criando notificação para novo usuário...');
+        await db.insert(notifications).values({
+          type: 'new_user',
+          title: 'Novo usuário cadastrado',
+          message: `${user.name} (${user.email}) se registrou no sistema e precisa de aprovação de role.`,
+          userEmail: user.email,
+          userName: user.name,
+          currentRole: 'VIEWER',
+          targetRole: 'TECHNICIAN',
+          isRead: false
+        });
+        
+        finalRole = 'VIEWER';
       }
       
       console.log('✅ Sincronização concluída com sucesso');
@@ -284,6 +299,42 @@ async function startServer() {
         "Payment Integration"
       ]
     });
+  });
+
+  // Notification Routes (DEVELOPER only)
+  app.get('/api/notifications', verifyFirebaseToken, requireRole('DEVELOPER'), async (req: Request, res: Response) => {
+    try {
+      const result = await db.select().from(notifications).orderBy(desc(notifications.createdAt)).limit(50);
+      res.json(result);
+    } catch (error) {
+      console.error('Erro ao buscar notificações:', error);
+      res.status(500).json({ error: 'Falha ao buscar notificações' });
+    }
+  });
+
+  app.patch('/api/notifications/:id/read', verifyFirebaseToken, requireRole('DEVELOPER'), async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      await db.update(notifications)
+        .set({ isRead: true, updatedAt: new Date() })
+        .where(eq(notifications.id, parseInt(id)));
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Erro ao marcar notificação como lida:', error);
+      res.status(500).json({ error: 'Falha ao atualizar notificação' });
+    }
+  });
+
+  app.patch('/api/notifications/mark-all-read', verifyFirebaseToken, requireRole('DEVELOPER'), async (req: Request, res: Response) => {
+    try {
+      await db.update(notifications)
+        .set({ isRead: true, updatedAt: new Date() })
+        .where(eq(notifications.isRead, false));
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Erro ao marcar todas como lidas:', error);
+      res.status(500).json({ error: 'Falha ao atualizar notificações' });
+    }
   });
 
   // Payment configuration

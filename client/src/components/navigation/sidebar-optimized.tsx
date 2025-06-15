@@ -27,6 +27,7 @@ import { cn } from '@/lib/utils';
 import SyncStatus from '@/components/ui/sync-status';
 import { useAuth } from '@/hooks/useAuth';
 import { usePermissions } from '@/hooks/usePermissions';
+import { NotificationBell } from '@/components/notifications/NotificationBell';
 
 interface SidebarProps {
   isOpen: boolean;
