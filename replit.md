@@ -61,8 +61,8 @@ The system implements a hybrid authentication approach:
    - Cálculos de umidade e densidade aparente
    - Validação automática de resultados
    
-2. **Massa Específica dos Grãos** (NBR 6508:2020)
-   - Grãos que passam na peneira de 4,8 mm
+2. **Massa Específica dos Sólidos** (NBR 6508:2020)
+   - Fração passante na peneira de 2,0 mm
    - Método do picnômetro com correção de temperatura
    - Controle de diferenças entre determinações
    
@@ -247,7 +247,7 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Sistema elimina loop de manutenção ao adicionar novas funcionalidades
 - June 15, 2025: Nomenclaturas técnicas corrigidas
   - NBR 9813:2021 - Massa específica aparente in situ com cilindro de cravação
-  - NBR 6508:2020 - Grãos de solos que passam na peneira de 4,8 mm
+  - NBR 6508:2020 - Massa específica dos sólidos da fração passante na peneira de 2,0 mm
   - NBR 12004:2021 e NBR 12051:2021 - Índices de vazios máximo e mínimo
   - Títulos e descrições atualizados para nomenclatura técnica oficial
   - Documentação alinhada com versões atualizadas das normas ABNT

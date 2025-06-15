@@ -82,8 +82,8 @@ export default function Laboratory() {
     {
       type: 'real-density',
       icon: '⚛️',
-      name: 'Massa Específica dos Grãos',
-      description: 'NBR 6508 - Grãos que passam na peneira de 4,8 mm',
+      name: 'Massa Específica dos Sólidos',
+      description: 'NBR 6508 - Fração passante na peneira de 2,0 mm',
       count: allTests.filter(t => t.type === 'real-density').length,
       route: '/solos/densidade-real',
       color: 'green'
