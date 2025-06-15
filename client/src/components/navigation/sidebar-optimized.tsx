@@ -17,7 +17,9 @@ import {
   FileText,
   UserCog,
   LogOut,
-  User
+  User,
+  HelpCircle,
+  Book
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -116,6 +118,12 @@ export default function Sidebar({ isOpen }: SidebarProps) {
         icon: FileText,
         href: '/relatorios',
         active: location === '/relatorios'
+      },
+      {
+        label: 'Manual do Usuário',
+        icon: Book,
+        href: '/help/manual-usuario',
+        active: location === '/help/manual-usuario'
       }
     ];
 
@@ -151,6 +159,12 @@ export default function Sidebar({ isOpen }: SidebarProps) {
             icon: Building,
             href: '/admin/organizations',
             active: location === '/admin/organizations'
+          },
+          {
+            label: 'Manual Admin',
+            icon: HelpCircle,
+            href: '/help/manual-admin',
+            active: location === '/help/manual-admin'
           }
         ]
       });
