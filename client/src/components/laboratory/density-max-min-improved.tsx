@@ -161,10 +161,19 @@ export default function DensityMaxMinImproved() {
   // Mutations para salvar
   const saveTestMutation = useMutation({
     mutationFn: async (testData: any) => {
-      return apiRequest('/api/tests/densidade-max-min/temp', {
+      const response = await fetch('/api/tests/densidade-max-min/temp', {
         method: 'POST',
-        body: testData
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(testData)
       });
+      
+      if (!response.ok) {
+        throw new Error('Falha ao salvar ensaio');
+      }
+      
+      return response.json();
     },
     onSuccess: () => {
       toast({
@@ -190,7 +199,14 @@ export default function DensityMaxMinImproved() {
   const generatePDF = async () => {
     setIsGeneratingPDF(true);
     try {
-      await generateMaxMinDensityVerticalPDF(data);
+      // Preparar cálculos básicos para o PDF
+      const calculations = {
+        maxDensity: { average: 0, values: [] },
+        minDensity: { average: 0, values: [] },
+        moisture: { average: 0, values: [] }
+      };
+      
+      await generateMaxMinDensityVerticalPDF(data, calculations);
       toast({
         title: "PDF gerado com sucesso!",
         description: "O relatório foi gerado e baixado.",
