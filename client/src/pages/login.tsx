@@ -41,16 +41,27 @@ export default function Login() {
     e.preventDefault();
     setIsLoading(true);
 
+    // Validação básica no frontend
+    if (!email.trim() || !password.trim()) {
+      toast({
+        title: "Campos obrigatórios",
+        description: "Preencha email e senha.",
+        variant: "destructive",
+      });
+      setIsLoading(false);
+      return;
+    }
+
     try {
       if (isSignUp) {
-        await signUp(email, password);
+        await signUp(email.trim(), password);
         toast({
           title: "Conta criada com sucesso",
           description: "Você pode agora fazer login com suas credenciais.",
         });
         setIsSignUp(false);
       } else {
-        await signIn(email, password);
+        await signIn(email.trim(), password);
         toast({
           title: "Login realizado",
           description: "Bem-vindo ao sistema de laboratório geotécnico!",
@@ -66,7 +77,7 @@ export default function Login() {
       } else if (error.code === 'auth/wrong-password') {
         message = 'Senha incorreta';
       } else if (error.code === 'auth/invalid-credential') {
-        message = 'Credenciais inválidas. Verifique email e senha ou crie uma conta primeiro.';
+        message = 'Usuário não encontrado ou senha incorreta. Verifique os dados ou crie uma conta.';
       } else if (error.code === 'auth/email-already-in-use') {
         message = 'Este email já está em uso';
       } else if (error.code === 'auth/weak-password') {
@@ -167,7 +178,7 @@ export default function Login() {
             </Button>
           </form>
           
-          <div className="mt-4 text-center">
+          <div className="mt-4 text-center space-y-2">
             <Button
               variant="link"
               onClick={() => setIsSignUp(!isSignUp)}
@@ -179,6 +190,12 @@ export default function Login() {
                 : 'Não tem conta? Criar uma'
               }
             </Button>
+            
+            {!isSignUp && (
+              <div className="text-xs text-gray-600">
+                <p>Primeiro acesso? Use "Criar uma" para registrar-se no sistema.</p>
+              </div>
+            )}
           </div>
 
           <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">

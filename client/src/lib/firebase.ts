@@ -17,13 +17,39 @@ const firebaseConfig = {
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 export const auth = getAuth(app);
 
-// Funções de autenticação
+// Funções de autenticação com validação
 export const signIn = (email: string, password: string) => {
-  return signInWithEmailAndPassword(auth, email, password);
+  // Validação básica
+  if (!email || !password) {
+    throw new Error('Email e senha são obrigatórios');
+  }
+  
+  if (!email.includes('@')) {
+    throw new Error('Email inválido');
+  }
+  
+  if (password.length < 6) {
+    throw new Error('Senha deve ter pelo menos 6 caracteres');
+  }
+  
+  return signInWithEmailAndPassword(auth, email.trim(), password);
 };
 
 export const signUp = (email: string, password: string) => {
-  return createUserWithEmailAndPassword(auth, email, password);
+  // Validação básica
+  if (!email || !password) {
+    throw new Error('Email e senha são obrigatórios');
+  }
+  
+  if (!email.includes('@')) {
+    throw new Error('Email inválido');
+  }
+  
+  if (password.length < 6) {
+    throw new Error('Senha deve ter pelo menos 6 caracteres');
+  }
+  
+  return createUserWithEmailAndPassword(auth, email.trim(), password);
 };
 
 export const logout = () => {
