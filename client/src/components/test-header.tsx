@@ -88,7 +88,7 @@ export default function TestHeader({
   };
 
   return (
-    <div className="bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-lg p-4 mb-6 shadow-sm">
+    <div className="bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-lg p-2 md:p-3 mb-4 shadow-sm">
       {/* Cabeçalho otimizado para mobile */}
       <div className="flex flex-col md:grid md:grid-cols-3 items-center mb-4 pb-3 border-b border-blue-300">
         {/* Mobile: Logo centralizado */}
@@ -121,7 +121,7 @@ export default function TestHeader({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-6 mb-4">
         {/* Coluna 1 - Dados principais */}
         <div className="border border-blue-200 rounded-lg bg-white shadow-sm">
-          <div className="grid grid-cols-2 text-xs md:text-sm">
+          <div className="grid grid-cols-[1fr_2fr] text-xs md:text-sm">
             <div className="bg-blue-50 p-2 border-b border-r border-blue-200 font-medium text-blue-900">Registro:</div>
             <div className="p-2 border-b border-blue-200">
               <input 
@@ -185,7 +185,7 @@ export default function TestHeader({
 
         {/* Coluna 2 - Dados técnicos */}
         <div className="border border-blue-200 rounded-lg bg-white shadow-sm">
-          <div className="grid grid-cols-2 text-xs md:text-sm">
+          <div className="grid grid-cols-[1fr_2fr] text-xs md:text-sm">
             <div className="bg-blue-50 p-2 border-b border-r border-blue-200 font-medium text-blue-900">Material:</div>
             <div className="p-2 border-b border-blue-200">
               <input 
