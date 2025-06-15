@@ -118,21 +118,73 @@ const EnsaiosSalvos: React.FC = () => {
   };
 
   const handleViewTest = (test: SavedTest) => {
-    // Navegar para a calculadora correspondente com os dados carregados
-    const route = `/solos/${test.testType}?loadTest=${test.id}`;
+    // Navegar para a calculadora correspondente
+    let route = '';
+    switch (test.testType) {
+      case 'densidade-in-situ':
+        route = '/densidade-in-situ';
+        break;
+      case 'densidade-real':
+        route = '/densidade-real';
+        break;
+      case 'densidade-max-min':
+        route = '/densidade-max-min';
+        break;
+      default:
+        route = '/';
+    }
     window.location.href = route;
   };
 
   const handleDeleteTest = async (test: SavedTest) => {
-    if (confirm(`Tem certeza que deseja excluir o ensaio ${test.registro}?`)) {
-      // Implementar exclusão
-      console.log('Excluir ensaio:', test.id);
+    const registro = test.registrationNumber || test.registro || `Ensaio #${test.id}`;
+    if (confirm(`Tem certeza que deseja excluir o ensaio ${registro}?`)) {
+      try {
+        // Construir a URL correta para exclusão baseada no tipo
+        let deleteUrl = '';
+        switch (test.testType) {
+          case 'densidade-in-situ':
+            deleteUrl = `/api/tests/densidade-in-situ/temp/${test.id}`;
+            break;
+          case 'densidade-real':
+            deleteUrl = `/api/tests/densidade-real/temp/${test.id}`;
+            break;
+          case 'densidade-max-min':
+            deleteUrl = `/api/tests/densidade-max-min/temp/${test.id}`;
+            break;
+        }
+
+        if (deleteUrl) {
+          const response = await fetch(deleteUrl, {
+            method: 'DELETE',
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('firebase-token')}`
+            }
+          });
+
+          if (response.ok) {
+            alert('Ensaio excluído com sucesso!');
+            // Recarregar a página para atualizar a lista
+            window.location.reload();
+          } else {
+            alert('Erro ao excluir o ensaio. Tente novamente.');
+          }
+        }
+      } catch (error) {
+        console.error('Erro ao excluir ensaio:', error);
+        alert('Erro ao excluir o ensaio. Tente novamente.');
+      }
     }
   };
 
-  const handleDownloadPDF = (test: SavedTest) => {
-    // Implementar download do PDF
-    console.log('Download PDF:', test.id);
+  const handleDownloadPDF = async (test: SavedTest) => {
+    try {
+      // Implementar download do PDF específico para cada tipo
+      alert(`Download de PDF será implementado para ${test.testType}`);
+    } catch (error) {
+      console.error('Erro ao gerar PDF:', error);
+      alert('Erro ao gerar PDF. Tente novamente.');
+    }
   };
 
   return (
