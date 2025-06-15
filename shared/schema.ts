@@ -55,6 +55,23 @@ export const users = pgTable("users", {
   permissions: json("permissions").$type<string[]>(),
   active: boolean("active").default(true),
   lastLogin: timestamp("last_login"),
+  // LGPD Compliance Fields
+  termsAccepted: boolean("terms_accepted").default(false),
+  termsAcceptedAt: timestamp("terms_accepted_at"),
+  privacyPolicyAccepted: boolean("privacy_policy_accepted").default(false),
+  privacyPolicyAcceptedAt: timestamp("privacy_policy_accepted_at"),
+  dataProcessingConsent: boolean("data_processing_consent").default(false),
+  dataProcessingConsentAt: timestamp("data_processing_consent_at"),
+  marketingConsent: boolean("marketing_consent").default(false),
+  marketingConsentAt: timestamp("marketing_consent_at"),
+  dataRetentionConsent: boolean("data_retention_consent").default(false),
+  dataRetentionConsentAt: timestamp("data_retention_consent_at"),
+  // Data Subject Rights
+  dataExportRequested: boolean("data_export_requested").default(false),
+  dataExportRequestedAt: timestamp("data_export_requested_at"),
+  dataDeleteRequested: boolean("data_delete_requested").default(false),
+  dataDeleteRequestedAt: timestamp("data_delete_requested_at"),
+  dataDeleteExecutedAt: timestamp("data_delete_executed_at"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -521,3 +538,62 @@ export const ROLE_PERMISSIONS: Record<UserRole, Permission[]> = {
     PERMISSIONS.VIEW_ANALYTICS
   ]
 };
+
+// LGPD Audit Tables
+export const lgpdAuditLogs = pgTable("lgpd_audit_logs", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id),
+  action: varchar("action", { length: 100 }).notNull(), // "consent_given", "data_exported", "data_deleted", etc.
+  actionDetails: text("action_details"), // JSON string with additional details
+  ipAddress: varchar("ip_address", { length: 45 }),
+  userAgent: text("user_agent"),
+  legalBasis: varchar("legal_basis", { length: 100 }), // "consent", "legitimate_interest", etc.
+  dataCategories: json("data_categories").$type<string[]>(), // ["personal_data", "sensitive_data", etc.]
+  processingPurpose: varchar("processing_purpose", { length: 255 }),
+  createdAt: timestamp("created_at").defaultNow()
+});
+
+export const dataProcessingRecords = pgTable("data_processing_records", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id),
+  dataType: varchar("data_type", { length: 100 }).notNull(), // "ensaio_data", "personal_info", etc.
+  processingActivity: varchar("processing_activity", { length: 255 }).notNull(),
+  legalBasis: varchar("legal_basis", { length: 100 }).notNull(),
+  purpose: text("purpose").notNull(),
+  dataCategories: json("data_categories").$type<string[]>(),
+  recipients: json("recipients").$type<string[]>(), // who has access to the data
+  retentionPeriod: varchar("retention_period", { length: 100 }),
+  transferredToThirdCountries: boolean("transferred_to_third_countries").default(false),
+  safeguardsMeasures: text("safeguards_measures"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow()
+});
+
+export const consentManagement = pgTable("consent_management", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id),
+  consentType: varchar("consent_type", { length: 100 }).notNull(), // "data_processing", "marketing", "cookies", etc.
+  consentStatus: varchar("consent_status", { length: 20 }).notNull(), // "given", "withdrawn", "expired"
+  consentText: text("consent_text").notNull(), // actual consent text shown to user
+  consentVersion: varchar("consent_version", { length: 20 }).notNull(),
+  consentGivenAt: timestamp("consent_given_at"),
+  consentWithdrawnAt: timestamp("consent_withdrawn_at"),
+  ipAddress: varchar("ip_address", { length: 45 }),
+  userAgent: text("user_agent"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow()
+});
+
+// Create insert schemas for LGPD tables
+export const insertLgpdAuditLogSchema = createInsertSchema(lgpdAuditLogs);
+export const insertDataProcessingRecordSchema = createInsertSchema(dataProcessingRecords);
+export const insertConsentManagementSchema = createInsertSchema(consentManagement);
+
+// Types for LGPD tables
+export type LgpdAuditLog = typeof lgpdAuditLogs.$inferSelect;
+export type DataProcessingRecord = typeof dataProcessingRecords.$inferSelect;
+export type ConsentManagement = typeof consentManagement.$inferSelect;
+
+export type InsertLgpdAuditLog = z.infer<typeof insertLgpdAuditLogSchema>;
+export type InsertDataProcessingRecord = z.infer<typeof insertDataProcessingRecordSchema>;
+export type InsertConsentManagement = z.infer<typeof insertConsentManagementSchema>;

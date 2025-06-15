@@ -238,6 +238,23 @@ export class MemStorage implements IStorage {
       permissions: userData.permissions || null,
       active: userData.active !== false,
       lastLogin: null,
+      // LGPD Compliance Fields
+      termsAccepted: userData.termsAccepted || false,
+      termsAcceptedAt: userData.termsAcceptedAt || null,
+      privacyPolicyAccepted: userData.privacyPolicyAccepted || false,
+      privacyPolicyAcceptedAt: userData.privacyPolicyAcceptedAt || null,
+      dataProcessingConsent: userData.dataProcessingConsent || false,
+      dataProcessingConsentAt: userData.dataProcessingConsentAt || null,
+      marketingConsent: userData.marketingConsent || false,
+      marketingConsentAt: userData.marketingConsentAt || null,
+      dataRetentionConsent: userData.dataRetentionConsent || false,
+      dataRetentionConsentAt: userData.dataRetentionConsentAt || null,
+      // Data Subject Rights
+      dataExportRequested: userData.dataExportRequested || false,
+      dataExportRequestedAt: userData.dataExportRequestedAt || null,
+      dataDeleteRequested: userData.dataDeleteRequested || false,
+      dataDeleteRequestedAt: userData.dataDeleteRequestedAt || null,
+      dataDeleteExecutedAt: userData.dataDeleteExecutedAt || null,
       createdAt: new Date(),
       updatedAt: new Date()
     };
@@ -259,9 +276,26 @@ export class MemStorage implements IStorage {
       organizationId: userData.organizationId || null,
       permissions: userData.permissions || null,
       active: userData.active !== false,
+      lastLogin: existingUser?.lastLogin || null,
+      // LGPD Compliance Fields
+      termsAccepted: userData.termsAccepted || existingUser?.termsAccepted || false,
+      termsAcceptedAt: userData.termsAcceptedAt || existingUser?.termsAcceptedAt || null,
+      privacyPolicyAccepted: userData.privacyPolicyAccepted || existingUser?.privacyPolicyAccepted || false,
+      privacyPolicyAcceptedAt: userData.privacyPolicyAcceptedAt || existingUser?.privacyPolicyAcceptedAt || null,
+      dataProcessingConsent: userData.dataProcessingConsent || existingUser?.dataProcessingConsent || false,
+      dataProcessingConsentAt: userData.dataProcessingConsentAt || existingUser?.dataProcessingConsentAt || null,
+      marketingConsent: userData.marketingConsent || existingUser?.marketingConsent || false,
+      marketingConsentAt: userData.marketingConsentAt || existingUser?.marketingConsentAt || null,
+      dataRetentionConsent: userData.dataRetentionConsent || existingUser?.dataRetentionConsent || false,
+      dataRetentionConsentAt: userData.dataRetentionConsentAt || existingUser?.dataRetentionConsentAt || null,
+      // Data Subject Rights
+      dataExportRequested: userData.dataExportRequested || existingUser?.dataExportRequested || false,
+      dataExportRequestedAt: userData.dataExportRequestedAt || existingUser?.dataExportRequestedAt || null,
+      dataDeleteRequested: userData.dataDeleteRequested || existingUser?.dataDeleteRequested || false,
+      dataDeleteRequestedAt: userData.dataDeleteRequestedAt || existingUser?.dataDeleteRequestedAt || null,
+      dataDeleteExecutedAt: userData.dataDeleteExecutedAt || existingUser?.dataDeleteExecutedAt || null,
       createdAt: existingUser?.createdAt || new Date(),
-      updatedAt: new Date(),
-      lastLogin: existingUser?.lastLogin || null
+      updatedAt: new Date()
     };
     
     this.users.set(String(user.id), user);
