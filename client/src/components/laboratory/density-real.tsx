@@ -500,6 +500,15 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
           termometro: data.thermometerId,
           cronometro: data.chronometerId
         }}
+        onOperadorChange={(value) => updateData("operator", value)}
+        onResponsavelCalculoChange={(value) => updateData("technicalResponsible", value)}
+        onVerificadorChange={(value) => updateData("verifier", value)}
+        onDataChange={(value) => updateData("date", value)}
+        onMaterialChange={(value) => updateData("material", value)}
+        onOrigemChange={(value) => updateData("origin", value)}
+        onRegistroChange={(value) => updateData("registrationNumber", value)}
+        onNorteChange={(value) => updateData("north", value)}
+        onEsteChange={(value) => updateData("east", value)}
       />
 
       <div className="mb-6">
@@ -962,6 +971,32 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
               <div className="text-sm text-gray-600 mb-1">Critério de Aprovação</div>
               <div className="text-sm text-gray-500">Diferença ≤ 0.02 g/cm³</div>
             </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Status do Ensaio */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <BarChart className="mr-2 text-green-600" size={20} />
+            Status do Ensaio
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-2 md:p-6">
+          <div className="flex justify-center">
+            {(() => {
+              // Lógica para densidade real: diferença ≤ 0.02 g/cm³
+              const isApproved = calculations.results.difference <= 0.02 && calculations.results.average > 0;
+              
+              return (
+                <div className={`${isApproved ? 'bg-green-100 border-green-500 text-green-800' : 'bg-red-100 border-red-500 text-red-800'} border-2 rounded-lg px-8 py-4`}>
+                  <div className="text-2xl font-bold text-center">
+                    {isApproved ? 'APROVADO' : 'REPROVADO'}
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         </CardContent>
       </Card>

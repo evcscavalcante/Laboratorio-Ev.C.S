@@ -466,12 +466,15 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Cabeçalho TestHeader com padding mínimo (p-1 md:p-2)
   - Proporções de colunas ajustadas no cabeçalho (1fr:2fr - descrição mais estreita, dados mais largos)
   - Layout otimizado para dispositivos móveis com aproveitamento máximo do espaço
-- June 15, 2025: Sistema de status colorido dinâmico implementado
-  - Status muda cor automaticamente baseado em critérios técnicos específicos
-  - Verde (APROVADO): IV de TOPO ≤ 0.7449999 E IV de BASE ≤ 0.7449999
-  - Vermelho (REPROVADO): qualquer IV > 0.7449999
-  - Cálculo automático dos valores de IV (Índice de Vazios) em tempo real
-  - Sistema aplicado inicialmente no ensaio de densidade in-situ
+- June 15, 2025: Sistema de status colorido dinâmico implementado em todos os ensaios
+  - Status muda cor automaticamente baseado em critérios técnicos específicos por ensaio
+  - Densidade In-Situ: Verde (APROVADO) se IV de TOPO ≤ 0.7449999 E IV de BASE ≤ 0.7449999
+  - Densidade Real: Verde (APROVADO) se diferença ≤ 0.02 g/cm³ e média > 0
+  - Densidade Máx/Mín: Verde (APROVADO) se diferença entre max/min > 0.1 e ambos > 0
+  - Cálculo automático em tempo real conforme dados são inseridos
+  - Cabeçalhos TestHeader padronizados com callbacks funcionais em todos os ensaios
+  - Margens laterais minimizadas (px-0.5 mobile, px-1 desktop) para aproveitamento máximo
+  - Proporções de colunas otimizadas (1fr:2fr) em todos os cabeçalhos
 
 ## User Preferences
 

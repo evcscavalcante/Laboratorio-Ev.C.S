@@ -653,6 +653,17 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
           termometro: "",
           cronometro: ""
         }}
+        onOperadorChange={(value) => updateData("operator", value)}
+        onResponsavelCalculoChange={(value) => updateData("technicalResponsible", value)}
+        onVerificadorChange={(value) => updateData("verifier", value)}
+        onDataChange={(value) => updateData("date", value)}
+        onMaterialChange={(value) => updateData("material", value)}
+        onOrigemChange={(value) => updateData("origin", value)}
+        onRegistroChange={(value) => updateData("registrationNumber", value)}
+        onNorteChange={(value) => updateData("north", value)}
+        onEsteChange={(value) => updateData("east", value)}
+        onHoraChange={(value) => updateData("time", value)}
+        onQuadranteChange={(value) => updateData("quadrant", value)}
       />
 
       <div className="mb-6">
@@ -1378,6 +1389,33 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
               <div className="text-sm text-gray-600 mb-1">emin</div>
               <div className="text-xl font-bold text-gray-900 font-mono">{calculations.results.emin.toFixed(3)}</div>
             </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Status do Ensaio */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <BarChart className="mr-2 text-green-600" size={20} />
+            Status do Ensaio
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-2 md:p-6">
+          <div className="flex justify-center">
+            {(() => {
+              // Lógica para densidade máx/mín: diferença razoável entre max e min
+              const isApproved = (calculations.results.gammaDMax - calculations.results.gammaDMin) > 0.1 && 
+                                calculations.results.gammaDMax > 0 && calculations.results.gammaDMin > 0;
+              
+              return (
+                <div className={`${isApproved ? 'bg-green-100 border-green-500 text-green-800' : 'bg-red-100 border-red-500 text-red-800'} border-2 rounded-lg px-8 py-4`}>
+                  <div className="text-2xl font-bold text-center">
+                    {isApproved ? 'APROVADO' : 'REPROVADO'}
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         </CardContent>
       </Card>
