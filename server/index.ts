@@ -813,23 +813,176 @@ async function startServer() {
     }
   });
 
-  app.post('/api/equipamentos', verifyFirebaseToken, async (req: Request, res: Response) => {
+  // Endpoint temporário para criação sem autenticação
+  app.post('/api/equipamentos/temp', async (req: Request, res: Response) => {
     try {
-      // Simular salvamento bem-sucedido
-      const equipamento = { ...req.body, id: req.body.id || crypto.randomUUID() };
-      res.status(201).json(equipamento);
+      console.log('📥 Recebendo dados do equipamento (temp):', JSON.stringify(req.body, null, 2));
+      
+      const { tipo, codigo, descricao, peso, volume, altura, diametro, material, fabricante, status, localizacao, observacoes, tipoEspecifico } = req.body;
+      
+      if (!codigo || !tipo || !peso) {
+        return res.status(400).json({ message: 'Código, tipo e peso são obrigatórios' });
+      }
+
+      let savedEquipamento;
+
+      if (tipo === 'capsula') {
+        // Salvar na tabela capsulas
+        const [newCapsula] = await db.insert(capsulas).values({
+          codigo,
+          descricao: descricao || `Cápsula ${tipoEspecifico || 'padrão'}`,
+          peso: parseFloat(peso),
+          material: material || 'Alumínio',
+          fabricante: fabricante || '',
+          status: status || 'ativo',
+          localizacao: localizacao || '',
+          observacoes: observacoes || '',
+          data_aquisicao: new Date()
+        }).returning();
+
+        savedEquipamento = {
+          ...newCapsula,
+          tipo: 'capsula',
+          tipoEspecifico,
+          createdAt: newCapsula.created_at,
+          updatedAt: newCapsula.updated_at
+        };
+
+      } else if (tipo === 'cilindro') {
+        // Salvar na tabela cilindros
+        const [newCilindro] = await db.insert(cilindros).values({
+          codigo,
+          tipo: tipoEspecifico || 'biselado',
+          descricao: descricao || `Cilindro ${tipoEspecifico || 'biselado'}`,
+          peso: parseFloat(peso),
+          volume: parseFloat(volume) || 0,
+          altura: parseFloat(altura) || 0,
+          diametro: parseFloat(diametro) || 0,
+          material: material || 'Aço',
+          fabricante: fabricante || '',
+          status: status || 'ativo',
+          localizacao: localizacao || '',
+          observacoes: observacoes || '',
+          data_aquisicao: new Date()
+        }).returning();
+
+        savedEquipamento = {
+          ...newCilindro,
+          tipo: 'cilindro',
+          tipoEspecifico: newCilindro.tipo,
+          createdAt: newCilindro.created_at,
+          updatedAt: newCilindro.updated_at
+        };
+      }
+
+      console.log('✅ Equipamento salvo com sucesso:', savedEquipamento);
+      res.status(201).json(savedEquipamento);
+
     } catch (error) {
-      console.error('Error creating equipamento:', error);
+      console.error('Erro ao criar equipamento:', error);
       res.status(500).json({ message: 'Failed to create equipamento' });
     }
   });
 
-  app.delete('/api/equipamentos/:id', verifyFirebaseToken, async (req: Request, res: Response) => {
+  // Endpoint temporário para edição sem autenticação
+  app.put('/api/equipamentos/temp/:id', async (req: Request, res: Response) => {
     try {
-      // Simular exclusão bem-sucedida
-      res.status(204).send();
+      const { id } = req.params;
+      const { tipo, codigo, descricao, peso, volume, altura, diametro, material, fabricante, status, localizacao, observacoes, tipoEspecifico } = req.body;
+      
+      console.log(`📝 Atualizando equipamento ${tipo} ID: ${id}`);
+
+      let updatedEquipamento;
+
+      if (tipo === 'capsula') {
+        const [updated] = await db.update(capsulas)
+          .set({
+            codigo,
+            descricao,
+            peso: parseFloat(peso),
+            material,
+            fabricante,
+            status,
+            localizacao,
+            observacoes,
+            updated_at: new Date()
+          })
+          .where(eq(capsulas.id, parseInt(id)))
+          .returning();
+
+        updatedEquipamento = {
+          ...updated,
+          tipo: 'capsula',
+          tipoEspecifico,
+          createdAt: updated.created_at,
+          updatedAt: updated.updated_at
+        };
+
+      } else if (tipo === 'cilindro') {
+        const [updated] = await db.update(cilindros)
+          .set({
+            codigo,
+            tipo: tipoEspecifico || 'biselado',
+            descricao,
+            peso: parseFloat(peso),
+            volume: parseFloat(volume) || 0,
+            altura: parseFloat(altura) || 0,
+            diametro: parseFloat(diametro) || 0,
+            material,
+            fabricante,
+            status,
+            localizacao,
+            observacoes,
+            updated_at: new Date()
+          })
+          .where(eq(cilindros.id, parseInt(id)))
+          .returning();
+
+        updatedEquipamento = {
+          ...updated,
+          tipo: 'cilindro',
+          tipoEspecifico: updated.tipo,
+          createdAt: updated.created_at,
+          updatedAt: updated.updated_at
+        };
+      }
+
+      if (!updatedEquipamento) {
+        return res.status(404).json({ message: 'Equipamento não encontrado' });
+      }
+
+      console.log('✅ Equipamento atualizado:', updatedEquipamento);
+      res.json(updatedEquipamento);
+
     } catch (error) {
-      console.error('Error deleting equipamento:', error);
+      console.error('Erro ao atualizar equipamento:', error);
+      res.status(500).json({ message: 'Failed to update equipamento' });
+    }
+  });
+
+  // Endpoint temporário para exclusão sem autenticação
+  app.delete('/api/equipamentos/temp/:id', async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const { tipo } = req.query;
+
+      console.log(`🗑️ Excluindo equipamento ${tipo} ID: ${id}`);
+
+      if (tipo === 'capsula') {
+        await db.delete(capsulas).where(eq(capsulas.id, parseInt(id)));
+      } else if (tipo === 'cilindro') {
+        await db.delete(cilindros).where(eq(cilindros.id, parseInt(id)));
+      } else {
+        // Tentar excluir de ambas as tabelas se tipo não especificado
+        await db.delete(capsulas).where(eq(capsulas.id, parseInt(id)));
+        await db.delete(cilindros).where(eq(cilindros.id, parseInt(id)));
+      }
+
+      console.log(`✅ Equipamento ${id} excluído com sucesso`);
+      res.status(204).send();
+
+    } catch (error) {
+      console.error('Erro ao excluir equipamento:', error);
       res.status(500).json({ message: 'Failed to delete equipamento' });
     }
   });

@@ -585,6 +585,15 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Documentação cobre: arquitetura, tecnologias, autenticação, banco de dados, APIs, testes, troubleshooting
   - Guias específicos por perfil: desenvolvedores, deploy, qualidade, implementação de funcionalidades
   - Sistema completamente documentado permitindo qualquer programador entender e desenvolver
+- June 15, 2025: Sistema de equipamentos completo implementado com tipos técnicos corretos
+  - Tipos de cápsulas: pequena, média, grande conforme necessidades do laboratório
+  - Tipos de cilindros: biselado, proctor, cbr, vazios_minimos conforme normas NBR
+  - Interface completa: botão "Novo Equipamento", "Editar" e "Excluir" funcionais
+  - Modal de criação/edição com todos os campos técnicos necessários
+  - Endpoints API completos: POST, PUT, DELETE para /api/equipamentos/temp
+  - Salvamento direto nas tabelas PostgreSQL corretas (capsulas/cilindros)
+  - Sistema detectando 2 equipamentos: 1 cápsula (CAP-TEST-001) + 1 cilindro (CIL-BIS-001)
+  - Funcionalidade completa de gestão de equipamentos operacional
 
 ## User Preferences
 
