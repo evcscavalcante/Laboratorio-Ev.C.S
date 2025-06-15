@@ -648,6 +648,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                   <TableHead className="text-center">Determinação 1</TableHead>
                   <TableHead className="text-center">Determinação 2</TableHead>
                   <TableHead className="text-center">Determinação 3</TableHead>
+                  <TableHead className="text-center bg-yellow-50">Média</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -795,6 +796,15 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                       value={calculations.moistureTop3.toFixed(2)}
                       readOnly
                       className="bg-blue-50 border-blue-200 font-mono"
+                    />
+                  </TableCell>
+                  <TableCell className="bg-yellow-100">
+                    <Input
+                      type="number"
+                      step="0.01"
+                      value={((calculations.moistureTop1 + calculations.moistureTop2 + calculations.moistureTop3) / 3).toFixed(2)}
+                      readOnly
+                      className="bg-yellow-100 border-yellow-300 font-mono font-bold"
                     />
                   </TableCell>
                 </TableRow>
@@ -977,112 +987,60 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
         </CardContent>
       </Card>
 
-      {/* Massa Específica Real dos Grãos - MASSA ESPECÍFICA REAL DOS GRÃOS (g/cm³) */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center text-sm font-bold">
-            <Beaker className="mr-2 text-purple-600" size={16} />
-            MASSA ESPECÍFICA REAL DOS GRÃOS (g/cm³)
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="p-2">
-          <div className="border border-gray-300 p-4">
-            <div className="grid grid-cols-4 gap-2 text-xs">
-              <div className="text-center border p-2">
-                <div className="font-mono font-bold text-purple-900">≤6(3+2+1)×(9841÷7)</div>
-                <div className="text-purple-600 mt-1">=</div>
-              </div>
-              <div className="text-center border p-2">
-                <div className="font-mono font-bold text-purple-900">≤6(3+2+1)×(9841÷7)</div>
-                <div className="text-purple-600 mt-1">=</div>
-              </div>
-              <div className="text-center border p-2">
-                <div className="font-mono font-bold text-purple-900">X</div>
-              </div>
-              <div className="text-center border p-2">
-                <div className="font-mono font-bold text-purple-900">=</div>
-              </div>
-            </div>
-            <div className="grid grid-cols-4 gap-2 text-xs mt-2">
-              <div className="text-center border p-2">
-                <div className="font-mono font-bold text-purple-900">≤6(3+2+1)×(9841÷7)</div>
-                <div className="text-purple-600 mt-1">=</div>
-              </div>
-              <div className="text-center border p-2">
-                <div className="font-mono font-bold text-purple-900">≤6(3+2+1)×(9841÷7)</div>
-                <div className="text-purple-600 mt-1">=</div>
-              </div>
-              <div className="text-center border p-2">
-                <div className="font-mono font-bold text-purple-900">X</div>
-              </div>
-              <div className="text-center border p-2">
-                <div className="font-mono font-bold text-purple-900">=</div>
-              </div>
-            </div>
-            <div className="text-center mt-4 p-2 bg-purple-50 border border-purple-200">
-              <div className="text-sm text-purple-600">REGISTRO 930.556</div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
 
-      {/* Cálculos TOPO */}
+
+      {/* Cálculos TOPO e BASE */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center">
-            <Calculator className="mr-2 text-blue-600" size={20} />
-            TOPO
+            <Calculator className="mr-2 text-purple-600" size={20} />
+            RESULTADOS TOPO E BASE
           </CardTitle>
         </CardHeader>
         <CardContent className="p-2 md:p-6">
-          <div className="flex justify-center">
-            <div className="border border-gray-300 p-6 w-full max-w-md">
-              <div className="bg-blue-50 p-3 mb-4 text-center font-mono text-sm border border-blue-200 rounded">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* TOPO */}
+            <div className="border border-blue-300 p-6 rounded-lg bg-blue-50">
+              <div className="text-center mb-4">
+                <h3 className="text-lg font-bold text-blue-700">TOPO</h3>
+              </div>
+              <div className="bg-blue-100 p-3 mb-4 text-center font-mono text-xs border border-blue-200 rounded">
                 ( {calculations.results.averageGammaNatDry.toFixed(3)} - {data.realDensityRef || '3.149'} ) × {calculations.results.averageGammaNatDry.toFixed(3)} = {((calculations.results.averageGammaNatDry - (parseFloat(data.realDensityRef) || 3.149)) * calculations.results.averageGammaNatDry).toFixed(3)}
               </div>
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-2 gap-4">
                 <div className="text-center">
                   <Label className="text-sm font-medium text-blue-700">CR</Label>
-                  <div className="text-3xl font-bold font-mono text-blue-600">
+                  <div className="text-2xl font-bold font-mono text-blue-600">
                     {(((calculations.results.averageGammaNatDry - (parseFloat(data.realDensityRef) || 3.149)) * calculations.results.averageGammaNatDry) * 100).toFixed(1)}%
                   </div>
                 </div>
                 <div className="text-center">
                   <Label className="text-sm font-medium text-blue-700">IV</Label>
-                  <div className="text-3xl font-bold font-mono text-blue-600">
+                  <div className="text-2xl font-bold font-mono text-blue-600">
                     {(((parseFloat(data.realDensityRef) || 3.149) / calculations.results.averageGammaNatDry) - 1).toFixed(2)}
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </CardContent>
-      </Card>
 
-      {/* Cálculos BASE */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center">
-            <Calculator className="mr-2 text-green-600" size={20} />
-            BASE
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="p-2 md:p-6">
-          <div className="flex justify-center">
-            <div className="border border-gray-300 p-6 w-full max-w-md">
-              <div className="bg-green-50 p-3 mb-4 text-center font-mono text-sm border border-green-200 rounded">
+            {/* BASE */}
+            <div className="border border-green-300 p-6 rounded-lg bg-green-50">
+              <div className="text-center mb-4">
+                <h3 className="text-lg font-bold text-green-700">BASE</h3>
+              </div>
+              <div className="bg-green-100 p-3 mb-4 text-center font-mono text-xs border border-green-200 rounded">
                 ( {calculations.results.averageGammaNatDry.toFixed(3)} - {data.realDensityRef || '3.149'} ) × {calculations.results.averageGammaNatDry.toFixed(3)} = {((calculations.results.averageGammaNatDry - (parseFloat(data.realDensityRef) || 3.149)) * calculations.results.averageGammaNatDry).toFixed(3)}
               </div>
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-2 gap-4">
                 <div className="text-center">
                   <Label className="text-sm font-medium text-green-700">CR</Label>
-                  <div className="text-3xl font-bold font-mono text-green-600">
+                  <div className="text-2xl font-bold font-mono text-green-600">
                     {(((calculations.results.averageGammaNatDry - (parseFloat(data.realDensityRef) || 3.149)) * calculations.results.averageGammaNatDry) * 100 * 0.97).toFixed(1)}%
                   </div>
                 </div>
                 <div className="text-center">
                   <Label className="text-sm font-medium text-green-700">IV</Label>
-                  <div className="text-3xl font-bold font-mono text-green-600">
+                  <div className="text-2xl font-bold font-mono text-green-600">
                     {(((parseFloat(data.realDensityRef) || 3.149) / calculations.results.averageGammaNatDry) - 1 + 0.01).toFixed(2)}
                   </div>
                 </div>
