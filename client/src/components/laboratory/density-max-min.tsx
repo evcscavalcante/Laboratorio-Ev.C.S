@@ -15,9 +15,21 @@ import { localDataManager } from "@/lib/local-storage";
 interface MaxMinDensityData {
   registrationNumber: string;
   date: string;
+  time: string;
   operator: string;
+  technicalResponsible: string;
+  verifier: string;
   material: string;
   origin: string;
+  north: string;
+  east: string;
+  coordinates: string;
+  quadrant: string;
+  layer: string;
+  balanceId: string;
+  ovenId: string;
+  compactionMethod: string;
+  compactionEnergy: string;
   
   // Moisture determinations
   moisture1: { capsule: string; wetTare: number; dryTare: number; tare: number; };
@@ -78,9 +90,21 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
     return {
       registrationNumber: "",
       date: new Date().toISOString().split('T')[0],
+      time: new Date().toTimeString().slice(0, 5),
       operator: "",
+      technicalResponsible: "",
+      verifier: "",
       material: "",
       origin: "",
+      north: "",
+      east: "",
+      coordinates: "",
+      quadrant: "",
+      layer: "",
+      balanceId: "",
+      ovenId: "",
+      compactionMethod: "",
+      compactionEnergy: "",
       moisture1: { capsule: "", wetTare: 0, dryTare: 0, tare: 0 },
       moisture2: { capsule: "", wetTare: 0, dryTare: 0, tare: 0 },
       moisture3: { capsule: "", wetTare: 0, dryTare: 0, tare: 0 },
