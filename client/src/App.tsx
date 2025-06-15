@@ -18,7 +18,7 @@ import DensidadeMaxMinPage from "@/pages/solos/densidade-max-min";
 import BalancaVerificacao from "@/pages/balanca-verificacao";
 import Configuracoes from "@/pages/configuracoes";
 import Relatorios from "@/pages/relatorios";
-import EquipamentosGestao from "@/pages/equipamentos-gestao";
+import EquipamentosFixed from "@/pages/equipamentos-fixed";
 import AdminDashboard from "@/pages/admin/dashboard";
 import UserManagement from "@/pages/admin/user-management";
 import UserRoles from "@/pages/admin/user-roles";
@@ -62,7 +62,7 @@ function Router() {
         <Route path="/densidade-real" component={DensidadeRealPage} />
         <Route path="/densidade-max-min" component={DensidadeMaxMinPage} />
         <Route path="/balanca-verificacao" component={BalancaVerificacao} />
-        <Route path="/equipamentos" component={EquipamentosGestao} />
+        <Route path="/equipamentos" component={EquipamentosFixed} />
         <Route path="/ensaios-salvos" component={EnsaiosSalvos} />
         <Route path="/configuracoes" component={Configuracoes} />
         <Route path="/relatorios" component={Relatorios} />

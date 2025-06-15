@@ -12,18 +12,22 @@ import { useToast } from '@/hooks/use-toast';
 import { firebaseSyncManager } from '@/lib/firebase-sync';
 
 interface Equipamento {
-  id: string;
+  id: string | number;
   codigo: string;
   tipo: 'capsula' | 'cilindro';
   subtipo?: string;
   peso?: number;
   volume?: number;
   altura?: number;
+  diametro?: number;
+  material?: string;
+  fabricante?: string;
+  localizacao?: string;
   status: 'ativo' | 'inativo';
   observacoes?: string;
   createdAt: string;
   updatedAt: string;
-  userId: string;
+  userId?: string;
 }
 
 const statusColors = {
@@ -81,6 +85,11 @@ export default function Equipamentos() {
       });
     }
   };
+
+  // Carregar equipamentos automaticamente quando a página for carregada
+  useEffect(() => {
+    carregarEquipamentos();
+  }, []);
 
   // Autenticar no Firebase
   const autenticarFirebase = async () => {
