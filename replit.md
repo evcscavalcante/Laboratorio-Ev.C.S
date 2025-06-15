@@ -395,6 +395,20 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Cabeçalho integrado em todas as três calculadoras (densidade in-situ, real, máx/mín)
   - Ferramenta check-duplicates.js criada para verificar redundância antes de implementações
   - Sistema livre de overhead desnecessário e funcionando otimizado
+- June 15, 2025: Melhorias significativas de UX implementadas nos ensaios laboratoriais
+  - Sistema de navegação por seções com âncoras automáticas para ensaios complexos
+  - Indicador de progresso visual em tempo real (header fixo com percentual)
+  - Campos obrigatórios destacados visualmente (bordas laranja quando vazios, verdes quando preenchidos)
+  - Navegação lateral responsiva com status de completude por seção
+  - Layout otimizado mobile-first com botões de ação fixos na parte inferior
+  - Componentes UI avançados: ProgressIndicator, TestNavigation, SmartInput, TestLayout
+  - Validação em tempo real com feedback visual instantâneo
+  - Sistema de scroll suave e detecção automática de seção ativa
+  - Headers fixos durante rolagem para manter contexto do ensaio
+  - Design system consistente aplicado a todos os três tipos de ensaios
+  - Densidade máx/mín otimizada com versão melhorada (density-max-min-improved.tsx)
+  - Densidade in-situ otimizada baseada no modelo NBR 9813:2016 (density-in-situ-improved.tsx)
+  - Sistema pronto para produção com todas funcionalidades de UX implementadas
 
 ## User Preferences
 
