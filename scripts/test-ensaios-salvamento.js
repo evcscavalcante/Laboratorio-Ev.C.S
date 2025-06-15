@@ -75,7 +75,7 @@ class EnsaiosSavingTester {
         umidadeBaseTara2: 20.0
       };
 
-      const response = await fetch(`${this.baseUrl}/api/tests/densidade-in-situ/temp`, {
+      const response = await fetch(`${this.baseUrl}/api/tests/density-in-situ`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -125,7 +125,7 @@ class EnsaiosSavingTester {
         }
       };
 
-      const response = await fetch(`${this.baseUrl}/api/tests/densidade-real/temp`, {
+      const response = await fetch(`${this.baseUrl}/api/tests/real-density`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -167,7 +167,7 @@ class EnsaiosSavingTester {
         origin: 'Laboratório MaxMin'
       };
 
-      const response = await fetch(`${this.baseUrl}/api/tests/densidade-max-min/temp`, {
+      const response = await fetch(`${this.baseUrl}/api/tests/max-min-density`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
