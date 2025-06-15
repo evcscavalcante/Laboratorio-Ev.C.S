@@ -28,10 +28,13 @@ export const useAuth = () => {
     console.warn('useAuth sendo usado fora do AuthProvider, retornando valores padrão');
     return {
       user: null,
+      userProfile: null,
       isLoading: false,
+      loading: false,
       signIn: async () => {},
       signUp: async () => {},
       signOut: async () => {},
+      logout: async () => {},
       sendPasswordReset: async () => {}
     };
   }

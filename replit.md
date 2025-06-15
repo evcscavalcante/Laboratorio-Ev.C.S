@@ -328,6 +328,13 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Pipeline GitHub Actions completo com relatórios automáticos em PRs
   - Scripts de análise de qualidade executáveis localmente
   - Documentação completa de padrões e melhores práticas
+- June 15, 2025: Problema crítico de CSP identificado e corrigido
+  - Erro de Content Security Policy bloqueava autenticação Firebase
+  - Lacuna nos testes detectada: não verificavam configurações de frontend críticas
+  - CSP atualizado para permitir domínios Firebase (identitytoolkit.googleapis.com, etc)
+  - Suíte de testes melhorada com verificação específica de CSP e Firebase
+  - Análise de gap documentada para prevenir problemas similares
+  - Sistema agora detecta proativamente problemas de conectividade externa
 
 ## User Preferences
 
