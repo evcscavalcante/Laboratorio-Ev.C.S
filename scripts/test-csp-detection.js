@@ -3,7 +3,7 @@
  * Valida se o sistema consegue detectar problemas de Content Security Policy
  */
 
-const { execSync } = require('child_process');
+import { execSync } from 'child_process';
 
 class CSPTester {
   constructor() {
@@ -155,7 +155,7 @@ class CSPTester {
 }
 
 // Executar se chamado diretamente
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   const tester = new CSPTester();
   tester.runTests().then(success => {
     process.exit(success ? 0 : 1);
@@ -165,4 +165,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = CSPTester;
+export default CSPTester;
