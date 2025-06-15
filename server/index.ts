@@ -10,7 +10,7 @@ import { setupVite, serveStatic } from "./vite";
 import MemoryStore from "memorystore";
 import { simpleOrgManager } from "./simple-org-management";
 import { db } from "./db";
-import { subscriptionPlans, users, notifications } from "@shared/schema";
+import { subscriptionPlans, users, notifications, equipamentos } from "@shared/schema";
 import { eq, desc } from "drizzle-orm";
 import { initializeAdminUser } from "./init-admin";
 import { storage } from "./storage-corrected";
@@ -634,10 +634,27 @@ async function startServer() {
   // Equipamentos API endpoints
   app.get('/api/equipamentos', verifyFirebaseToken, async (req: Request, res: Response) => {
     try {
-      // Por enquanto, retornar array vazio até implementar no storage
-      res.json([]);
+      // Buscar equipamentos do banco PostgreSQL
+      const equipamentosList = await db.select().from(equipamentos);
+      
+      console.log(`📦 Equipamentos encontrados: ${equipamentosList.length}`);
+      res.json(equipamentosList);
     } catch (error) {
       console.error('Error fetching equipamentos:', error);
+      res.status(500).json({ message: 'Failed to fetch equipamentos' });
+    }
+  });
+
+  // Endpoint temporário sem autenticação para teste
+  app.get('/api/equipamentos/temp', async (req: Request, res: Response) => {
+    try {
+      // Buscar equipamentos do banco PostgreSQL
+      const equipamentosList = await db.select().from(equipamentos);
+      
+      console.log(`📦 Equipamentos encontrados (temp): ${equipamentosList.length}`);
+      res.json(equipamentosList);
+    } catch (error) {
+      console.error('Error fetching equipamentos (temp):', error);
       res.status(500).json({ message: 'Failed to fetch equipamentos' });
     }
   });
