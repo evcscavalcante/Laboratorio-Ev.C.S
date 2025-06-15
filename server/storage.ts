@@ -208,59 +208,49 @@ export class MemStorage implements IStorage {
 
   async getUserByUsername(username: string): Promise<User | undefined> {
     return Array.from(this.users.values()).find(user => 
-      user.username === username || user.email === username
+      user.email === username
     );
   }
 
   async createUser(userData: any): Promise<User> {
-    const userId = userData.id || String(Date.now());
+    const userId = userData.id || Date.now();
     const user: User = {
       id: userId,
-      username: userData.username || userData.email?.split('@')[0] || 'user',
-      name: userData.name || `${userData.firstName || ''} ${userData.lastName || ''}`.trim(),
+      firebase_uid: userData.firebase_uid || null,
       email: userData.email || null,
-      password: userData.password || '',
+      name: userData.name || `${userData.firstName || ''} ${userData.lastName || ''}`.trim(),
       role: userData.role || 'VIEWER',
       organizationId: userData.organizationId || null,
-      firstName: userData.firstName || null,
-      lastName: userData.lastName || null,
-      profileImageUrl: userData.profileImageUrl || null,
-      isActive: userData.isActive !== undefined ? userData.isActive : true,
-      active: userData.active !== undefined ? userData.active : true,
       permissions: userData.permissions || null,
+      active: userData.active !== false,
+      lastLogin: null,
       createdAt: new Date(),
-      updatedAt: new Date(),
-      lastLogin: null
+      updatedAt: new Date()
     };
     
-    this.users.set(user.id, user);
+    this.users.set(String(user.id), user);
     return user;
   }
 
   async upsertUser(userData: any): Promise<User> {
-    const existingUser = userData.id ? this.users.get(userData.id) : null;
-    const userId = userData.id || String(Date.now());
+    const existingUser = userData.id ? this.users.get(String(userData.id)) : null;
+    const userId = userData.id || Date.now();
     
     const user: User = {
       id: userId,
-      username: userData.username || userData.email?.split('@')[0] || 'user',
-      name: userData.name || `${userData.firstName || ''} ${userData.lastName || ''}`.trim(),
+      firebase_uid: userData.firebase_uid || null,
       email: userData.email || null,
-      password: userData.password || '',
+      name: userData.name || `${userData.firstName || ''} ${userData.lastName || ''}`.trim(),
       role: userData.role || 'VIEWER',
       organizationId: userData.organizationId || null,
-      firstName: userData.firstName || null,
-      lastName: userData.lastName || null,
-      profileImageUrl: userData.profileImageUrl || null,
-      isActive: userData.isActive !== undefined ? userData.isActive : true,
-      active: userData.active !== undefined ? userData.active : true,
       permissions: userData.permissions || null,
+      active: userData.active !== false,
       createdAt: existingUser?.createdAt || new Date(),
       updatedAt: new Date(),
       lastLogin: existingUser?.lastLogin || null
     };
     
-    this.users.set(user.id, user);
+    this.users.set(String(user.id), user);
     return user;
   }
 }

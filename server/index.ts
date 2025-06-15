@@ -229,7 +229,7 @@ async function startServer() {
 
   // Current user endpoint (protected by Firebase token)
   app.get('/api/auth/user', verifyFirebaseToken, (req: Request, res: Response) => {
-    res.json({ user: req.user });
+    res.json({ user: (req as any).user });
   });
 
   // Sync user endpoint (protected by Firebase token)
@@ -310,7 +310,7 @@ async function startServer() {
 
   // User permissions (protected route)
   app.get("/api/user/permissions", verifyFirebaseToken, (req: Request, res: Response) => {
-    const user = req.user as any;
+    const user = (req as any).user;
     if (!user) {
       return res.status(401).json({ message: "User not authenticated" });
     }
@@ -466,7 +466,7 @@ async function startServer() {
   app.post('/api/tests/density-in-situ', verifyFirebaseToken, async (req: Request, res: Response) => {
     try {
       console.log('📥 Recebendo dados do ensaio:', JSON.stringify(req.body, null, 2));
-      console.log('👤 Usuário autenticado:', req.user);
+      console.log('👤 Usuário autenticado:', (req as any).user);
       
       // Adicionar userId padrão para desenvolvimento
       const testData = {
