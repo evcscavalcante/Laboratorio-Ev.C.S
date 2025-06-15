@@ -21,6 +21,32 @@ This is a comprehensive geotechnical laboratory management system built with Rea
 - **Neon Database** for managed PostgreSQL hosting
 - **Session management** with PostgreSQL-based storage
 
+### Regression Prevention System (Critical Innovation)
+**Problem Solved:** Eliminates the maintenance loop where adding new features breaks existing ones.
+
+**Components:**
+1. **Component Registry** (`client/src/lib/component-registry.ts`)
+   - Tracks critical components with version numbers
+   - Defines required features for each component
+   - Prevents accidental removal of essential functionality
+
+2. **Development Hooks** (`client/src/lib/development-hooks.ts`)
+   - Runs automatic checks during development
+   - Shows real-time alerts when regressions are detected
+   - Integrates with Vite's hot reload system
+
+3. **Regression Test Suite** (`client/src/test/regression-tests.ts`)
+   - Comprehensive tests for core functionality
+   - Validates navigation, authentication, and UI components
+   - Generates detailed failure reports
+
+4. **Verification Script** (`check-regressions.js`)
+   - Manual validation command: `node check-regressions.js`
+   - Checks file existence and required features
+   - Returns exit code 0 (success) or 1 (failure) for CI/CD
+
+**Usage:** Run `node check-regressions.js` before any deployment or major changes.
+
 ### Authentication Strategy
 The system implements a hybrid authentication approach:
 - **Firebase Authentication** for user login/logout and token verification
