@@ -336,6 +336,11 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Suíte de testes melhorada para verificar CSP do servidor (não apenas HTML)
   - Sistema de testes agora detecta problemas de CSP em tempo real
   - Lição aprendida: verificar tanto HTML quanto headers HTTP do servidor
+- June 15, 2025: Problemas pós-login corrigidos
+  - CSP corrigido permitiu login Firebase, mas sync-user falhava com erro 500
+  - Configurado trust proxy no Express para resolver erro de rate limiting
+  - Adicionados logs detalhados na verificação de token Firebase
+  - Sistema de sincronização usuário-banco funcionando corretamente
 
 ## User Preferences
 
