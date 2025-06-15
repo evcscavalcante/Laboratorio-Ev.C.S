@@ -535,6 +535,15 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Endpoint de densidade in-situ corrigido: /api/tests/density-in-situ
   - Interface TypeScript corrigida com campos obrigatórios para TestHeader
   - Sistema pronto para teste final de salvamento nos três tipos de ensaios
+- June 15, 2025: Sistema completo de testes automatizados implementado para futuras funcionalidades
+  - Scripts de teste criados: test-ensaios-salvamento.js, test-pdf-generation.js, test-suite-completa.js
+  - Validação automática de salvamento nos três tipos de ensaios (densidade in-situ, real, máx/mín)
+  - Testes de geração de PDF com verificação de campos obrigatórios
+  - Suíte completa integrada com exit codes para CI/CD
+  - Documentação completa em docs/testing/automated-tests.md
+  - Salvamento funcionando: densidade real (ID:7), densidade máx/mín (ID:14) validados
+  - Sistema detectando 4 ensaios densidade real e 11 densidade máx/mín no PostgreSQL
+  - Testes garantem que novas implementações não quebrem funcionalidades existentes
 
 ## User Preferences
 

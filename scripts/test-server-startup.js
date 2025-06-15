@@ -139,9 +139,9 @@ class ServerStartupTester {
 }
 
 // Executar teste
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   const tester = new ServerStartupTester();
   tester.runTest().catch(console.error);
 }
 
-module.exports = ServerStartupTester;
+export default ServerStartupTester;

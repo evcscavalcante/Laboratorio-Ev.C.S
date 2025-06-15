@@ -28,6 +28,8 @@ class EnsaiosSavingTester {
     
     try {
       const testData = {
+        registrationNumber: 'TEST-IN-SITU-001',
+        date: '2025-06-15',
         operador: 'Operador Teste',
         responsavelCalculo: 'Responsável Teste',
         verificador: 'Verificador Teste',
@@ -285,9 +287,9 @@ class EnsaiosSavingTester {
 }
 
 // Executar testes
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   const tester = new EnsaiosSavingTester();
   tester.runTests().catch(console.error);
 }
 
-module.exports = EnsaiosSavingTester;
+export default EnsaiosSavingTester;

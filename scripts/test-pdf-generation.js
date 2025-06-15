@@ -226,9 +226,9 @@ class PDFGenerationTester {
 }
 
 // Executar testes
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   const tester = new PDFGenerationTester();
   tester.runTests().catch(console.error);
 }
 
-module.exports = PDFGenerationTester;
+export default PDFGenerationTester;

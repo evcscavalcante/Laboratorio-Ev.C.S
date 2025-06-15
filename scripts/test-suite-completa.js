@@ -3,8 +3,8 @@
  * Executa todos os testes automatizados do sistema
  */
 
-const EnsaiosSavingTester = require('./test-ensaios-salvamento.js');
-const PDFGenerationTester = require('./test-pdf-generation.js');
+import EnsaiosSavingTester from './test-ensaios-salvamento.js';
+import PDFGenerationTester from './test-pdf-generation.js';
 
 class CompletTestSuite {
   constructor(baseUrl = 'http://localhost:5000') {
@@ -175,9 +175,9 @@ class CompletTestSuite {
 }
 
 // Executar suíte completa
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   const suite = new CompletTestSuite();
   suite.runAllTests().catch(console.error);
 }
 
-module.exports = CompletTestSuite;
+export default CompletTestSuite;
