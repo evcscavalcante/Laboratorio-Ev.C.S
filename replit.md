@@ -594,6 +594,14 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Salvamento direto nas tabelas PostgreSQL corretas (capsulas/cilindros)
   - Sistema detectando 2 equipamentos: 1 cápsula (CAP-TEST-001) + 1 cilindro (CIL-BIS-001)
   - Funcionalidade completa de gestão de equipamentos operacional
+- June 15, 2025: VULNERABILIDADES CRÍTICAS DE SEGURANÇA CORRIGIDAS
+  - REMOVIDOS TODOS os endpoints temporários /temp que permitiam acesso sem autenticação
+  - Sistema de equipamentos convertido para autenticação Firebase obrigatória
+  - Endpoints seguros implementados: GET, POST, PUT, DELETE /api/equipamentos com tokens
+  - Frontend atualizado com headers de autenticação em todas as operações
+  - Proteção hierárquica: DELETE requer role MANAGER+ para maior segurança
+  - Implementação PostgreSQL direta substitui interface MemStorage vulnerável
+  - Sistema completamente seguro sem pontos de acesso não autenticados
 
 ## User Preferences
 
