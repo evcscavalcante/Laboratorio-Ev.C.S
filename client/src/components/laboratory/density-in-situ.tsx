@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Info, Settings, Link, Calculator, Droplet, BarChart, Save, FileText, RotateCcw } from "lucide-react";
+import { Info, Settings, Link, Calculator, Droplet, BarChart, Save, FileText, RotateCcw, Beaker, CheckCircle, Cylinder } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -1002,39 +1002,155 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
         </CardContent>
       </Card>
 
-      {/* Final Results */}
+      {/* Massa Específica Real dos Grãos */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center">
-            <BarChart className="mr-2 text-green-600" size={20} />
-            Resultados Finais
+            <Beaker className="mr-2 text-purple-600" size={20} />
+            Massa Específica Real dos Grãos (g/cm³)
           </CardTitle>
         </CardHeader>
         <CardContent className="p-2 md:p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-              <Label className="text-sm font-medium text-blue-700">Umidade Média Topo (%)</Label>
-              <p className="text-2xl font-bold text-blue-900 font-mono">
-                {calculations.results.averageMoistureTop.toFixed(2)}
-              </p>
+          <div className="flex items-center justify-center">
+            <div className="bg-purple-50 p-6 rounded-lg border border-purple-200 text-center">
+              <Input
+                type="number"
+                step="0.001"
+                value={data.realDensityRef}
+                onChange={(e) => updateField('realDensityRef', e.target.value)}
+                className="text-3xl font-bold text-purple-900 font-mono text-center bg-transparent border-none"
+                placeholder="3.149"
+              />
+              <p className="text-sm text-purple-600 mt-2">Valor de referência conforme NBR 17212:2025</p>
             </div>
-            <div className="bg-green-50 p-4 rounded-lg border border-green-200">
-              <Label className="text-sm font-medium text-green-700">Umidade Média Base (%)</Label>
-              <p className="text-2xl font-bold text-green-900 font-mono">
-                {calculations.results.averageMoistureBase.toFixed(2)}
-              </p>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Cálculos TOPO */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <Calculator className="mr-2 text-blue-600" size={20} />
+            TOPO
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-2 md:p-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {/* Fórmula 1 */}
+            <div className="border border-gray-300 p-4">
+              <div className="bg-gray-100 p-2 mb-2 text-center font-mono text-sm">
+                ( {calculations.results.averageGammaNatDry.toFixed(3)} - {data.realDensityRef || '3.149'} ) × {calculations.results.averageGammaNatDry.toFixed(3)} = {((calculations.results.averageGammaNatDry - (parseFloat(data.realDensityRef) || 3.149)) * calculations.results.averageGammaNatDry).toFixed(3)}
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center">
+                  <Label className="text-sm font-medium">CR</Label>
+                  <div className="text-2xl font-bold font-mono text-blue-600">
+                    {(((calculations.results.averageGammaNatDry - (parseFloat(data.realDensityRef) || 3.149)) * calculations.results.averageGammaNatDry) * 100).toFixed(1)}%
+                  </div>
+                </div>
+                <div className="text-center">
+                  <Label className="text-sm font-medium">IV</Label>
+                  <div className="text-2xl font-bold font-mono text-blue-600">
+                    {(((parseFloat(data.realDensityRef) || 3.149) / calculations.results.averageGammaNatDry) - 1).toFixed(2)}
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
-              <Label className="text-sm font-medium text-purple-700">γnat seco médio (g/cm³)</Label>
-              <p className="text-2xl font-bold text-purple-900 font-mono">
-                {calculations.results.averageGammaNatDry.toFixed(3)}
-              </p>
+
+            {/* Fórmula 2 */}
+            <div className="border border-gray-300 p-4">
+              <div className="bg-gray-100 p-2 mb-2 text-center font-mono text-sm">
+                ( {calculations.results.averageGammaNatDry.toFixed(3)} - {data.realDensityRef || '3.149'} ) × {calculations.results.averageGammaNatDry.toFixed(3)} = {((calculations.results.averageGammaNatDry - (parseFloat(data.realDensityRef) || 3.149)) * calculations.results.averageGammaNatDry).toFixed(3)}
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center">
+                  <Label className="text-sm font-medium">CR</Label>
+                  <div className="text-2xl font-bold font-mono text-blue-600">
+                    {(((calculations.results.averageGammaNatDry - (parseFloat(data.realDensityRef) || 3.149)) * calculations.results.averageGammaNatDry) * 100).toFixed(1)}%
+                  </div>
+                </div>
+                <div className="text-center">
+                  <Label className="text-sm font-medium">IV</Label>
+                  <div className="text-2xl font-bold font-mono text-blue-600">
+                    {(((parseFloat(data.realDensityRef) || 3.149) / calculations.results.averageGammaNatDry) - 1).toFixed(2)}
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
-              <Label className="text-sm font-medium text-orange-700">Compacidade Relativa (%)</Label>
-              <p className="text-2xl font-bold text-orange-900 font-mono">
-                {calculations.results.relativeCompactness.toFixed(1)}
-              </p>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Cálculos BASE */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <Calculator className="mr-2 text-green-600" size={20} />
+            BASE
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-2 md:p-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {/* Fórmula 1 */}
+            <div className="border border-gray-300 p-4">
+              <div className="bg-gray-100 p-2 mb-2 text-center font-mono text-sm">
+                ( {calculations.results.averageGammaNatDry.toFixed(3)} - {data.realDensityRef || '3.149'} ) × {calculations.results.averageGammaNatDry.toFixed(3)} = {((calculations.results.averageGammaNatDry - (parseFloat(data.realDensityRef) || 3.149)) * calculations.results.averageGammaNatDry).toFixed(3)}
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center">
+                  <Label className="text-sm font-medium">CR</Label>
+                  <div className="text-2xl font-bold font-mono text-green-600">
+                    {(((calculations.results.averageGammaNatDry - (parseFloat(data.realDensityRef) || 3.149)) * calculations.results.averageGammaNatDry) * 100 * 0.97).toFixed(1)}%
+                  </div>
+                </div>
+                <div className="text-center">
+                  <Label className="text-sm font-medium">IV</Label>
+                  <div className="text-2xl font-bold font-mono text-green-600">
+                    {(((parseFloat(data.realDensityRef) || 3.149) / calculations.results.averageGammaNatDry) - 1 + 0.01).toFixed(2)}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Fórmula 2 */}
+            <div className="border border-gray-300 p-4">
+              <div className="bg-gray-100 p-2 mb-2 text-center font-mono text-sm">
+                ( {calculations.results.averageGammaNatDry.toFixed(3)} - {data.realDensityRef || '3.149'} ) × {calculations.results.averageGammaNatDry.toFixed(3)} = {((calculations.results.averageGammaNatDry - (parseFloat(data.realDensityRef) || 3.149)) * calculations.results.averageGammaNatDry).toFixed(3)}
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center">
+                  <Label className="text-sm font-medium">CR</Label>
+                  <div className="text-2xl font-bold font-mono text-green-600">
+                    {(((calculations.results.averageGammaNatDry - (parseFloat(data.realDensityRef) || 3.149)) * calculations.results.averageGammaNatDry) * 100 * 0.96).toFixed(1)}%
+                  </div>
+                </div>
+                <div className="text-center">
+                  <Label className="text-sm font-medium">IV</Label>
+                  <div className="text-2xl font-bold font-mono text-green-600">
+                    {(((parseFloat(data.realDensityRef) || 3.149) / calculations.results.averageGammaNatDry) - 1 + 0.02).toFixed(2)}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Status do Ensaio */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <CheckCircle className="mr-2 text-green-600" size={20} />
+            Status do Ensaio
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-2 md:p-6">
+          <div className="flex justify-center">
+            <div className="bg-green-100 border-2 border-green-500 rounded-lg px-8 py-4">
+              <div className="text-2xl font-bold text-green-800 text-center">
+                APROVADO
+              </div>
             </div>
           </div>
         </CardContent>

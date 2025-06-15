@@ -17,7 +17,6 @@ interface TestHeaderProps {
   registro?: string;
   norte?: string;
   este?: string;
-  cota?: string;
   quadrante?: string;
   camada?: string;
   fvs?: string;
