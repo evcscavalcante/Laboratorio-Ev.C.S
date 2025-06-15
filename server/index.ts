@@ -3,18 +3,66 @@ import { createServer } from "http";
 import session from "express-session";
 import cors from "cors";
 import path from "path";
-import hybridAuthRoutes, { verifyFirebaseToken, requireRole } from "./auth-firebase-hybrid";
-// Rotas específicas removidas para simplificação
 import { registerPaymentRoutes } from "./payment-routes";
 import { setupVite, serveStatic } from "./vite";
 import MemoryStore from "memorystore";
-import { simpleOrgManager } from "./simple-org-management";
 import { db } from "./db";
 import { subscriptionPlans, users, notifications, equipamentos, capsulas, cilindros } from "@shared/schema";
 import { eq, desc } from "drizzle-orm";
 import { initializeAdminUser } from "./init-admin";
-import { storage } from "./storage-corrected";
+import { storage } from "./storage";
 import { observability } from "./observability-minimal";
+import admin from 'firebase-admin';
+
+// Initialize Firebase Admin
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.applicationDefault(),
+  });
+}
+
+// Firebase Authentication Middleware
+export const verifyFirebaseToken = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'Token de autorização necessário' });
+    }
+
+    const idToken = authHeader.split('Bearer ')[1];
+    const decodedToken = await admin.auth().verifyIdToken(idToken);
+    
+    // Add user to request object
+    (req as any).user = {
+      uid: decodedToken.uid,
+      email: decodedToken.email,
+      role: decodedToken.role || 'VIEWER',
+      name: decodedToken.name || decodedToken.email
+    };
+    
+    next();
+  } catch (error) {
+    console.error('Erro na verificação do token Firebase:', error);
+    res.status(401).json({ error: 'Token inválido' });
+  }
+};
+
+// Role-based access control middleware
+export const requireRole = (allowedRoles: string[]) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const user = (req as any).user;
+    if (!user) {
+      return res.status(401).json({ error: 'Usuário não autenticado' });
+    }
+    
+    if (!allowedRoles.includes(user.role)) {
+      return res.status(403).json({ error: 'Acesso negado' });
+    }
+    
+    next();
+  };
+};
+
 // Sistema de segurança simplificado removido para otimização
 
 // Importar middlewares de segurança
@@ -176,8 +224,7 @@ async function startServer() {
 
   // Rotas de segurança otimizadas
 
-  // Firebase Authentication routes com rate limiting
-  app.use('/api/auth', authRateLimit, hybridAuthRoutes);
+  // API rate limiting
   app.use('/api', apiRateLimit);
 
   // Current user endpoint (protected by Firebase token)
