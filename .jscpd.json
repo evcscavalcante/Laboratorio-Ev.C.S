@@ -1,0 +1,27 @@
+{
+  "threshold": 5,
+  "reporters": ["html", "json", "console"],
+  "output": "./reports/duplicates",
+  "gitignore": true,
+  "ignore": [
+    "node_modules/**",
+    "dist/**",
+    "build/**",
+    "coverage/**",
+    "**/*.min.js",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx"
+  ],
+  "formats": ["typescript", "javascript", "jsx", "tsx"],
+  "minLines": 5,
+  "minTokens": 100,
+  "maxLines": 1000,
+  "maxSize": "100kb",
+  "xslHref": "jscpd-report.xsl",
+  "blame": true,
+  "silent": false,
+  "verbose": false,
+  "config": ".jscpd.json"
+}

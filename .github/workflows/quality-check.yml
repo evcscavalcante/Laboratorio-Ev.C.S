@@ -1,0 +1,162 @@
+name: Verificação Automática de Qualidade
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  quality-check:
+    name: Verificação de Qualidade de Código
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: ESLint com regras de segurança
+        run: npm run lint:security
+
+      - name: Verificação TypeScript
+        run: npm run check
+
+      - name: Análise de vulnerabilidades
+        run: npm audit --audit-level=high
+
+      - name: Verificação automática de qualidade
+        run: npm run quality:check
+
+      - name: Análise de complexidade ciclomática
+        run: npm run quality:complexity
+
+      - name: Detecção de código duplicado
+        run: npm run quality:duplicates
+
+      - name: Upload relatórios de qualidade
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: quality-reports
+          path: reports/
+
+      - name: Comentar PR com resultados
+        uses: actions/github-script@v6
+        if: github.event_name == 'pull_request'
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            // Ler relatório de qualidade se existir
+            const reportsDir = 'reports/quality';
+            if (fs.existsSync(reportsDir)) {
+              const files = fs.readdirSync(reportsDir);
+              const latestReport = files
+                .filter(f => f.startsWith('quality-report-'))
+                .sort()
+                .reverse()[0];
+              
+              if (latestReport) {
+                const reportPath = path.join(reportsDir, latestReport);
+                const report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+                
+                const comment = `
+            ## 📊 Relatório de Qualidade de Código
+            
+            ### Resumo
+            - **Status**: ${report.summary?.status || 'N/A'}
+            - **Problemas encontrados**: ${report.summary?.totalIssues || 0}
+            - **Verificações**: ${report.summary?.passed || 0}/${report.summary?.checks || 0} passaram
+            
+            ### Detalhes
+            ${report.summary?.recommendations?.map(rec => `- ${rec}`).join('\n') || 'Nenhuma recomendação específica.'}
+            
+            ### ESLint
+            - **Erros**: ${report.eslint?.stats?.errors || 0}
+            - **Avisos**: ${report.eslint?.stats?.warnings || 0}
+            - **Problemas de segurança**: ${report.eslint?.stats?.securityIssues || 0}
+            
+            ### Vulnerabilidades
+            - **Críticas**: ${report.vulnerabilities?.stats?.critical || 0}
+            - **Total**: ${report.vulnerabilities?.stats?.total || 0}
+            
+            ### Complexidade
+            - **Funções complexas**: ${report.complexity?.stats?.highComplexityFiles || 0}
+            - **Complexidade média**: ${report.complexity?.stats?.averageComplexity || 'N/A'}
+            
+            ---
+            *Relatório gerado automaticamente pela verificação de qualidade*
+                `;
+                
+                github.rest.issues.createComment({
+                  issue_number: context.issue.number,
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  body: comment
+                });
+              }
+            }
+
+  security-scan:
+    name: Verificação de Segurança
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Verificar secrets no código
+        run: |
+          # Buscar por padrões de secrets comuns
+          echo "🔍 Verificando vazamento de secrets..."
+          
+          # Padrões de API keys
+          if grep -r -E "(api[_-]?key|secret|password)\s*[:=]\s*['\"][a-zA-Z0-9]{20,}['\"]" --include="*.ts" --include="*.js" --include="*.tsx" --include="*.jsx" src/ server/ 2>/dev/null; then
+            echo "❌ Possível vazamento de secrets detectado!"
+            exit 1
+          fi
+          
+          # Padrões de URLs de banco de dados
+          if grep -r -E "postgres://[^'\"]*:[^'\"]*@" --include="*.ts" --include="*.js" src/ server/ 2>/dev/null; then
+            echo "❌ String de conexão de banco detectada no código!"
+            exit 1
+          fi
+          
+          echo "✅ Nenhum vazamento de secrets detectado"
+
+      - name: Verificar dependências obsoletas
+        run: |
+          echo "📦 Verificando dependências obsoletas..."
+          OUTDATED=$(npm outdated --json || echo '{}')
+          CRITICAL_OUTDATED=$(echo "$OUTDATED" | jq 'to_entries | map(select(.value.current | split(".")[0] != .value.wanted | split(".")[0])) | length')
+          
+          if [ "$CRITICAL_OUTDATED" -gt 0 ]; then
+            echo "⚠️ $CRITICAL_OUTDATED dependências com major versions desatualizadas"
+            echo "$OUTDATED" | jq -r 'to_entries[] | select(.value.current | split(".")[0] != .value.wanted | split(".")[0]) | "- \(.key): \(.value.current) → \(.value.wanted)"'
+          else
+            echo "✅ Todas as dependências estão atualizadas"
+          fi
+
+      - name: Análise de licenças
+        run: |
+          echo "📄 Verificando licenças das dependências..."
+          npx license-checker --summary --onlyAllow "MIT;Apache-2.0;BSD-2-Clause;BSD-3-Clause;ISC;CC0-1.0" || echo "⚠️ Algumas dependências podem ter licenças restritivas"
