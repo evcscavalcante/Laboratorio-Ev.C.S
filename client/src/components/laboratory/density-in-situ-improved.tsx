@@ -522,7 +522,7 @@ export default function DensityInSituImproved() {
             responsavelCalculo={data.technicalResponsible}
             verificador={data.verifier}
             data={data.date}
-            norte=""
+            norte={data.coordinates}
             este=""
             cota=""
             quadrante={data.quadrant}
@@ -548,6 +548,21 @@ export default function DensityInSituImproved() {
               termometro: "",
               cronometro: ""
             }}
+            onOperadorChange={(value) => updateData("operator", value)}
+            onResponsavelCalculoChange={(value) => updateData("technicalResponsible", value)}
+            onVerificadorChange={(value) => updateData("verifier", value)}
+            onDataChange={(value) => updateData("date", value)}
+            onHoraChange={(value) => updateData("time", value)}
+            onNorteChange={(value) => updateData("coordinates", value)}
+            onQuadranteChange={(value) => updateData("quadrant", value)}
+            onCamadaChange={(value) => updateData("layer", value)}
+            onMaterialChange={(value) => updateData("material", value)}
+            onOrigemChange={(value) => updateData("origin", value)}
+            onRegistroChange={(value) => updateData("registrationNumber", value)}
+            onDispositivosPrecisaoChange={(dispositivos) => {
+              updateData("balanceId", dispositivos.balanca || "");
+              updateData("ovenId", dispositivos.estufa || "");
+            }}
           />
 
           {/* Informações Gerais */}
@@ -570,56 +585,14 @@ export default function DensityInSituImproved() {
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <RequiredInput
-                  id="registrationNumber"
-                  label="Registro"
-                  value={data.registrationNumber}
-                  onChange={(value: string) => updateData("registrationNumber", value)}
-                  placeholder="Ex: MRG-022"
-                  helpText="Número de registro do ensaio"
+                  id="realDensityRef"
+                  label="Referência Densidade Real (γs)"
+                  value={data.realDensityRef}
+                  onChange={(value: string) => updateData("realDensityRef", value)}
+                  placeholder="Ex: 2.67"
+                  unit="g/cm³"
+                  helpText="Densidade real dos grãos para cálculo de CR"
                 />
-                <RequiredInput
-                  id="date"
-                  label="Data do Ensaio"
-                  type="date"
-                  value={data.date}
-                  onChange={(value: string) => updateData("date", value)}
-                />
-                <div>
-                  <Label htmlFor="time" className="text-sm font-medium text-gray-900">Horário</Label>
-                  <Input
-                    id="time"
-                    type="time"
-                    value={data.time}
-                    onChange={(e) => updateData("time", e.target.value)}
-                    className="mt-1"
-                  />
-                </div>
-                <RequiredInput
-                  id="operator"
-                  label="Operador"
-                  value={data.operator}
-                  onChange={(value: string) => updateData("operator", value)}
-                  placeholder="Nome do operador"
-                  helpText="Responsável pela execução do ensaio"
-                />
-                <RequiredInput
-                  id="technicalResponsible"
-                  label="Responsável Técnico"
-                  value={data.technicalResponsible}
-                  onChange={(value: string) => updateData("technicalResponsible", value)}
-                  placeholder="Responsável pelo cálculo"
-                />
-                <div>
-                  <Label htmlFor="verifier" className="text-sm font-medium text-gray-900">Verificador</Label>
-                  <Input
-                    id="verifier"
-                    value={data.verifier}
-                    onChange={(e) => updateData("verifier", e.target.value)}
-                    placeholder="Nome do verificador"
-                    className="mt-1"
-                  />
-                  <p className="text-xs text-gray-500 mt-1">Profissional que conferiu os resultados</p>
-                </div>
               </div>
             </CardContent>
           </Card>
