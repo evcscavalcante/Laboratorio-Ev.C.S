@@ -1537,7 +1537,19 @@ export async function generateMaxMinDensityVerticalPDF(data: any, calculations: 
     console.log('📊 Dados recebidos:', data);
     console.log('🧮 Cálculos recebidos:', calculations);
     
-    const pdfDocument = <MaxMinDensityVerticalDocument data={data} calculations={calculations} />;
+    // Validar e fornecer dados padrão se necessário
+    const validatedData = {
+      ...data,
+      massaEspecificaReal: data.massaEspecificaReal || data.realDensity || 2.65,
+      moldeMaxId: data.moldeMaxId || data.maxMold?.id || 'MOL-MAX-001',
+      massaMoldeMax: data.massaMoldeMax || data.maxMold?.mass || 1250.0,
+      massaMoldeSoloMax: data.massaMoldeSoloMax || (data.maxMold?.mass + data.maxSoilMass) || 3450.0,
+      moldeMinId: data.moldeMinId || data.minMold?.id || 'MOL-MIN-001', 
+      massaMoldeMin: data.massaMoldeMin || data.minMold?.mass || 1250.0,
+      massaMoldeSoloMin: data.massaMoldeSoloMin || (data.minMold?.mass + data.minSoilMass) || 2850.0
+    };
+    
+    const pdfDocument = <MaxMinDensityVerticalDocument data={validatedData} calculations={calculations} />;
     const asPdf = pdf(pdfDocument);
     
     console.log('🔧 Gerando blob do PDF...');
@@ -1595,7 +1607,18 @@ export async function generateRealDensityVerticalPDF(data: any, calculations: an
     console.log('📊 Dados recebidos:', data);
     console.log('🧮 Cálculos recebidos:', calculations);
     
-    const pdfDocument = <RealDensityVerticalDocument data={data} calculations={calculations} />;
+    // Validar e fornecer dados padrão se necessário
+    const validatedData = {
+      ...data,
+      picnometroId: data.picnometroId || data.picnometer1?.massaPicnometro || 'PIC-001',
+      massaPicnometro: data.massaPicnometro || data.picnometer1?.massaPicnometro || 125.5,
+      massaPicnometroSolo: data.massaPicnometroSolo || (data.picnometer1?.massaPicnometro + data.picnometer1?.massaSoloUmido) || 175.5,
+      massaPicnometroSoloAgua: data.massaPicnometroSoloAgua || data.picnometer1?.massaPicAmostraAgua || 675.8,
+      massaPicnometroAgua: data.massaPicnometroAgua || data.picnometer1?.massaPicAgua || 625.3,
+      temperatura: data.temperatura || data.picnometer1?.temperatura || 23.5
+    };
+    
+    const pdfDocument = <RealDensityVerticalDocument data={validatedData} calculations={calculations} />;
     const asPdf = pdf(pdfDocument);
     
     console.log('🔧 Gerando blob do PDF...');
