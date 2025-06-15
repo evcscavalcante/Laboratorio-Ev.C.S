@@ -10,7 +10,7 @@ import https from 'https';
 import { execSync } from 'child_process';
 
 class ObservabilityTester {
-  constructor(baseUrl = 'http://localhost:5173') {
+  constructor(baseUrl = 'http://localhost:5000') {
     this.baseUrl = baseUrl;
     this.testResults = [];
   }
