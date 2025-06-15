@@ -50,19 +50,19 @@ const EnsaiosSalvos: React.FC = () => {
 
   // Buscar ensaios de densidade in-situ
   const { data: densityInSituTests = [] } = useQuery<SavedTest[]>({
-    queryKey: ['/api/tests/densidade-in-situ/temp'],
+    queryKey: ['/api/tests/density-in-situ'],
     enabled: true
   });
 
   // Buscar ensaios de densidade real
   const { data: densityRealTests = [] } = useQuery<SavedTest[]>({
-    queryKey: ['/api/tests/densidade-real/temp'],
+    queryKey: ['/api/tests/real-density'],
     enabled: true
   });
 
   // Buscar ensaios de densidade máx/mín
   const { data: densityMaxMinTests = [] } = useQuery<SavedTest[]>({
-    queryKey: ['/api/tests/densidade-max-min/temp'],
+    queryKey: ['/api/tests/max-min-density'],
     enabled: true
   });
 
@@ -145,13 +145,13 @@ const EnsaiosSalvos: React.FC = () => {
         let deleteUrl = '';
         switch (test.testType) {
           case 'densidade-in-situ':
-            deleteUrl = `/api/tests/densidade-in-situ/temp/${test.id}`;
+            deleteUrl = `/api/tests/density-in-situ/${test.id}`;
             break;
           case 'densidade-real':
-            deleteUrl = `/api/tests/densidade-real/temp/${test.id}`;
+            deleteUrl = `/api/tests/real-density/${test.id}`;
             break;
           case 'densidade-max-min':
-            deleteUrl = `/api/tests/densidade-max-min/temp/${test.id}`;
+            deleteUrl = `/api/tests/max-min-density/${test.id}`;
             break;
         }
 
@@ -159,15 +159,16 @@ const EnsaiosSalvos: React.FC = () => {
           const response = await fetch(deleteUrl, {
             method: 'DELETE',
             headers: {
-              'Authorization': `Bearer ${localStorage.getItem('firebase-token')}`
+              'Authorization': `Bearer ${localStorage.getItem('firebase-token')}`,
+              'Content-Type': 'application/json'
             }
           });
 
           if (response.ok) {
             // Invalidar cache para atualizar automaticamente a lista
-            queryClient.invalidateQueries({ queryKey: ['/api/tests/densidade-in-situ/temp'] });
-            queryClient.invalidateQueries({ queryKey: ['/api/tests/densidade-real/temp'] });
-            queryClient.invalidateQueries({ queryKey: ['/api/tests/densidade-max-min/temp'] });
+            queryClient.invalidateQueries({ queryKey: ['/api/tests/density-in-situ'] });
+            queryClient.invalidateQueries({ queryKey: ['/api/tests/real-density'] });
+            queryClient.invalidateQueries({ queryKey: ['/api/tests/max-min-density'] });
             alert('Ensaio excluído com sucesso!');
           } else {
             alert('Erro ao excluir o ensaio. Tente novamente.');
