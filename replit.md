@@ -56,18 +56,20 @@ The system implements a hybrid authentication approach:
 ## Key Components
 
 ### Laboratory Test Modules
-1. **Density In-Situ Testing** (NBR 9813:2016)
-   - Sand cone method implementation
-   - Moisture content calculations
-   - Automatic density and compaction calculations
+1. **Massa Específica Aparente In Situ** (NBR 9813:2021)
+   - Determinação com emprego do cilindro de cravação
+   - Cálculos de umidade e densidade aparente
+   - Validação automática de resultados
    
-2. **Real Density Testing** (NBR 6508:1984)
-   - Pycnometer method for grain density
-   - Temperature correction factors
+2. **Massa Específica dos Grãos** (NBR 6508:2020)
+   - Grãos que passam na peneira de 4,8 mm
+   - Método do picnômetro com correção de temperatura
+   - Controle de diferenças entre determinações
    
-3. **Max/Min Density Testing** (NBR 12004:1990)
-   - Maximum and minimum void index calculations
-   - Relative compactness determination
+3. **Índices de Vazios Máximo e Mínimo** (NBR 12004:2021 e NBR 12051:2021)
+   - Determinação para solos não coesivos
+   - Cálculo de compacidade relativa
+   - Análise de estado de compactação
 
 ### Equipment Management
 - Equipment catalog with calibration tracking
@@ -243,6 +245,12 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Alertas visuais: notificações automáticas quando regressões são detectadas
   - Manual do usuário restaurado na sidebar após otimizações
   - Sistema elimina loop de manutenção ao adicionar novas funcionalidades
+- June 15, 2025: Nomenclaturas técnicas corrigidas
+  - NBR 9813:2021 - Massa específica aparente in situ com cilindro de cravação
+  - NBR 6508:2020 - Grãos de solos que passam na peneira de 4,8 mm
+  - NBR 12004:2021 e NBR 12051:2021 - Índices de vazios máximo e mínimo
+  - Títulos e descrições atualizados para nomenclatura técnica oficial
+  - Documentação alinhada com versões atualizadas das normas ABNT
 
 ## User Preferences
 

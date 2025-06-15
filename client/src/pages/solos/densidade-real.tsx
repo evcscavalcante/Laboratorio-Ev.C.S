@@ -21,7 +21,7 @@ export default function DensidadeRealPage() {
     <div className="p-6">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900 mb-2">Determinação da Massa Específica dos Grãos de Solos</h1>
-        <p className="text-gray-600">ABNT NBR 6508:1984 - Grãos de solos que passam na peneira de 4,8 mm - Determinação da massa específica</p>
+        <p className="text-gray-600">ABNT NBR 6508:2020 - Grãos de solos que passam na peneira de 4,8 mm - Determinação da massa específica</p>
       </div>
       <DensityReal />
     </div>
