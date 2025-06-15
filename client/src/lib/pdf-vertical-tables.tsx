@@ -131,119 +131,201 @@ const styles = StyleSheet.create({
   },
 });
 
-// Componente para cabeçalho em duas colunas
-const TwoColumnHeader: React.FC<{ data: any }> = ({ data }) => (
-  <View style={{ flexDirection: 'row', marginBottom: 12 }}>
-    {/* Coluna 1 */}
-    <View style={{ width: '48%', marginRight: '2%' }}>
-      <View style={styles.verticalTable}>
-        <View style={styles.tableRow}>
-          <View style={[styles.labelCell, { width: '45%' }]}>
-            <Text style={styles.labelText}>Registro:</Text>
+// Componente de cabeçalho completo com todos os dados técnicos
+const CompleteTestHeader: React.FC<{ data: any }> = ({ data }) => (
+  <View style={{ marginBottom: 10 }}>
+    {/* Linha 1 - Dados básicos */}
+    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 6 }}>
+      <View style={{ width: '48%' }}>
+        <View style={styles.verticalTable}>
+          <View style={styles.tableRow}>
+            <View style={[styles.labelCell, { width: '45%' }]}>
+              <Text style={styles.labelText}>Registro:</Text>
+            </View>
+            <View style={[styles.dataCell, { width: '55%' }]}>
+              <Text style={styles.dataText}>{data.registrationNumber || '-'}</Text>
+            </View>
           </View>
-          <View style={[styles.dataCell, { width: '55%' }]}>
-            <Text style={styles.dataText}>{data.registrationNumber || '-'}</Text>
+          <View style={styles.tableRow}>
+            <View style={[styles.labelCell, { width: '45%' }]}>
+              <Text style={styles.labelText}>Data:</Text>
+            </View>
+            <View style={[styles.dataCell, { width: '55%' }]}>
+              <Text style={styles.dataText}>{data.date || '-'}</Text>
+            </View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={[styles.labelCell, { width: '45%' }]}>
+              <Text style={styles.labelText}>Horário:</Text>
+            </View>
+            <View style={[styles.dataCell, { width: '55%' }]}>
+              <Text style={styles.dataText}>{data.time || '-'}</Text>
+            </View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={[styles.labelCell, { width: '45%' }]}>
+              <Text style={styles.labelText}>Operador:</Text>
+            </View>
+            <View style={[styles.dataCell, { width: '55%' }]}>
+              <Text style={styles.dataText}>{data.operator || '-'}</Text>
+            </View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={[styles.labelCell, { width: '45%' }]}>
+              <Text style={styles.labelText}>Resp. Técnico:</Text>
+            </View>
+            <View style={[styles.dataCell, { width: '55%' }]}>
+              <Text style={styles.dataText}>{data.technicalResponsible || '-'}</Text>
+            </View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={[styles.labelCell, { width: '45%' }]}>
+              <Text style={styles.labelText}>Verificador:</Text>
+            </View>
+            <View style={[styles.dataCell, { width: '55%' }]}>
+              <Text style={styles.dataText}>{data.verifier || '-'}</Text>
+            </View>
           </View>
         </View>
-        <View style={styles.tableRow}>
-          <View style={[styles.labelCell, { width: '45%' }]}>
-            <Text style={styles.labelText}>Data:</Text>
+      </View>
+
+      <View style={{ width: '48%', marginLeft: '2%' }}>
+        <View style={styles.verticalTable}>
+          <View style={styles.tableRow}>
+            <View style={[styles.labelCell, { width: '45%' }]}>
+              <Text style={styles.labelText}>Material:</Text>
+            </View>
+            <View style={[styles.dataCell, { width: '55%' }]}>
+              <Text style={styles.dataText}>{data.material || '-'}</Text>
+            </View>
           </View>
-          <View style={[styles.dataCell, { width: '55%' }]}>
-            <Text style={styles.dataText}>{data.date || '-'}</Text>
+          <View style={styles.tableRow}>
+            <View style={[styles.labelCell, { width: '45%' }]}>
+              <Text style={styles.labelText}>Origem:</Text>
+            </View>
+            <View style={[styles.dataCell, { width: '55%' }]}>
+              <Text style={styles.dataText}>{data.origin || '-'}</Text>
+            </View>
           </View>
-        </View>
-        <View style={styles.tableRow}>
-          <View style={[styles.labelCell, { width: '45%' }]}>
-            <Text style={styles.labelText}>Horário:</Text>
+          <View style={styles.tableRow}>
+            <View style={[styles.labelCell, { width: '45%' }]}>
+              <Text style={styles.labelText}>Norte:</Text>
+            </View>
+            <View style={[styles.dataCell, { width: '55%' }]}>
+              <Text style={styles.dataText}>{data.north || data.coordinates || '-'}</Text>
+            </View>
           </View>
-          <View style={[styles.dataCell, { width: '55%' }]}>
-            <Text style={styles.dataText}>{data.time || '-'}</Text>
+          <View style={styles.tableRow}>
+            <View style={[styles.labelCell, { width: '45%' }]}>
+              <Text style={styles.labelText}>Este:</Text>
+            </View>
+            <View style={[styles.dataCell, { width: '55%' }]}>
+              <Text style={styles.dataText}>{data.east || '-'}</Text>
+            </View>
           </View>
-        </View>
-        <View style={styles.tableRow}>
-          <View style={[styles.labelCell, { width: '45%' }]}>
-            <Text style={styles.labelText}>Operador:</Text>
+          <View style={styles.tableRow}>
+            <View style={[styles.labelCell, { width: '45%' }]}>
+              <Text style={styles.labelText}>Cota:</Text>
+            </View>
+            <View style={[styles.dataCell, { width: '55%' }]}>
+              <Text style={styles.dataText}>{data.cota || data.elevation || '-'}</Text>
+            </View>
           </View>
-          <View style={[styles.dataCell, { width: '55%' }]}>
-            <Text style={styles.dataText}>{data.operator || '-'}</Text>
-          </View>
-        </View>
-        <View style={styles.tableRow}>
-          <View style={[styles.labelCell, { width: '45%' }]}>
-            <Text style={styles.labelText}>Resp. Técnico:</Text>
-          </View>
-          <View style={[styles.dataCell, { width: '55%' }]}>
-            <Text style={styles.dataText}>{data.technicalResponsible || '-'}</Text>
-          </View>
-        </View>
-        <View style={styles.tableRow}>
-          <View style={[styles.labelCell, { width: '45%' }]}>
-            <Text style={styles.labelText}>Verificador:</Text>
-          </View>
-          <View style={[styles.dataCell, { width: '55%' }]}>
-            <Text style={styles.dataText}>{data.verifier || '-'}</Text>
+          <View style={styles.tableRow}>
+            <View style={[styles.labelCell, { width: '45%' }]}>
+              <Text style={styles.labelText}>Quadrante:</Text>
+            </View>
+            <View style={[styles.dataCell, { width: '55%' }]}>
+              <Text style={styles.dataText}>{data.quadrant || '-'}</Text>
+            </View>
           </View>
         </View>
       </View>
     </View>
 
-    {/* Coluna 2 */}
-    <View style={{ width: '48%', marginLeft: '2%' }}>
-      <View style={styles.verticalTable}>
-        <View style={styles.tableRow}>
-          <View style={[styles.labelCell, { width: '45%' }]}>
-            <Text style={styles.labelText}>Material:</Text>
+    {/* Linha 2 - Condições ambientais e equipamentos */}
+    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 }}>
+      <View style={{ width: '48%' }}>
+        <View style={styles.verticalTable}>
+          <Text style={[styles.sectionTitle, { fontSize: 8, marginBottom: 2 }]}>CONDIÇÕES AMBIENTAIS</Text>
+          <View style={styles.tableRow}>
+            <View style={[styles.labelCell, { width: '45%' }]}>
+              <Text style={styles.labelText}>Tempo:</Text>
+            </View>
+            <View style={[styles.dataCell, { width: '55%' }]}>
+              <Text style={styles.dataText}>{data.weatherCondition || data.weather || 'Sol forte'}</Text>
+            </View>
           </View>
-          <View style={[styles.dataCell, { width: '55%' }]}>
-            <Text style={styles.dataText}>{data.material || '-'}</Text>
+          <View style={styles.tableRow}>
+            <View style={[styles.labelCell, { width: '45%' }]}>
+              <Text style={styles.labelText}>Umidade:</Text>
+            </View>
+            <View style={[styles.dataCell, { width: '55%' }]}>
+              <Text style={styles.dataText}>{data.humidity || '-'}</Text>
+            </View>
           </View>
-        </View>
-        <View style={styles.tableRow}>
-          <View style={[styles.labelCell, { width: '45%' }]}>
-            <Text style={styles.labelText}>Origem:</Text>
+          <View style={styles.tableRow}>
+            <View style={[styles.labelCell, { width: '45%' }]}>
+              <Text style={styles.labelText}>Temperatura:</Text>
+            </View>
+            <View style={[styles.dataCell, { width: '55%' }]}>
+              <Text style={styles.dataText}>{data.temperature || '-'}</Text>
+            </View>
           </View>
-          <View style={[styles.dataCell, { width: '55%' }]}>
-            <Text style={styles.dataText}>{data.origin || '-'}</Text>
-          </View>
-        </View>
-        <View style={styles.tableRow}>
-          <View style={[styles.labelCell, { width: '45%' }]}>
-            <Text style={styles.labelText}>Coordenadas:</Text>
-          </View>
-          <View style={[styles.dataCell, { width: '55%' }]}>
-            <Text style={styles.dataText}>{data.coordinates || '-'}</Text>
-          </View>
-        </View>
-        <View style={styles.tableRow}>
-          <View style={[styles.labelCell, { width: '45%' }]}>
-            <Text style={styles.labelText}>Quadrante:</Text>
-          </View>
-          <View style={[styles.dataCell, { width: '55%' }]}>
-            <Text style={styles.dataText}>{data.quadrant || '-'}</Text>
-          </View>
-        </View>
-        <View style={styles.tableRow}>
-          <View style={[styles.labelCell, { width: '45%' }]}>
-            <Text style={styles.labelText}>Camada:</Text>
-          </View>
-          <View style={[styles.dataCell, { width: '55%' }]}>
-            <Text style={styles.dataText}>{data.layer || '-'}</Text>
+          <View style={styles.tableRow}>
+            <View style={[styles.labelCell, { width: '45%' }]}>
+              <Text style={styles.labelText}>Amostra Reensaiada:</Text>
+            </View>
+            <View style={[styles.dataCell, { width: '55%' }]}>
+              <Text style={styles.dataText}>{data.sampleReensayed || data.resampled ? 'Sim' : 'Não'}</Text>
+            </View>
           </View>
         </View>
-        <View style={styles.tableRow}>
-          <View style={[styles.labelCell, { width: '45%' }]}>
-            <Text style={styles.labelText}>Equipamentos:</Text>
-          </View>
-          <View style={[styles.dataCell, { width: '55%' }]}>
-            <Text style={styles.dataText}>{[data.balanceId, data.ovenId].filter(Boolean).join(', ') || '-'}</Text>
-          </View>
-        </View>
+      </View>
 
+      <View style={{ width: '48%', marginLeft: '2%' }}>
+        <View style={styles.verticalTable}>
+          <Text style={[styles.sectionTitle, { fontSize: 8, marginBottom: 2 }]}>EQUIPAMENTOS DE PRECISÃO</Text>
+          <View style={styles.tableRow}>
+            <View style={[styles.labelCell, { width: '45%' }]}>
+              <Text style={styles.labelText}>Balança:</Text>
+            </View>
+            <View style={[styles.dataCell, { width: '55%' }]}>
+              <Text style={styles.dataText}>{data.balanceId || '-'}</Text>
+            </View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={[styles.labelCell, { width: '45%' }]}>
+              <Text style={styles.labelText}>Estufa:</Text>
+            </View>
+            <View style={[styles.dataCell, { width: '55%' }]}>
+              <Text style={styles.dataText}>{data.ovenId || '-'}</Text>
+            </View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={[styles.labelCell, { width: '45%' }]}>
+              <Text style={styles.labelText}>Termômetro:</Text>
+            </View>
+            <View style={[styles.dataCell, { width: '55%' }]}>
+              <Text style={styles.dataText}>{data.thermometerId || '-'}</Text>
+            </View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={[styles.labelCell, { width: '45%' }]}>
+              <Text style={styles.labelText}>Cronômetro:</Text>
+            </View>
+            <View style={[styles.dataCell, { width: '55%' }]}>
+              <Text style={styles.dataText}>{data.chronometerId || '-'}</Text>
+            </View>
+          </View>
+        </View>
       </View>
     </View>
   </View>
 );
+
+// Manter compatibilidade com código existente
+const TwoColumnHeader = CompleteTestHeader;
 
 // Componente para dados de densidade in situ (2 Determinações)
 const DensityInSituTable: React.FC<{ data: any; calculations: any }> = ({ data, calculations }) => (
