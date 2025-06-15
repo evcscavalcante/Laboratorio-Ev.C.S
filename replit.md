@@ -335,6 +335,7 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Suíte de testes melhorada com verificação específica de CSP e Firebase
   - Análise de gap documentada para prevenir problemas similares
   - Sistema agora detecta proativamente problemas de conectividade externa
+  - Correção aplicada em client/src/index.html (arquivo HTML principal usado pelo Vite)
 
 ## User Preferences
 
