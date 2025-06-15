@@ -3,6 +3,7 @@ import { Bell, User, UserCheck, Clock } from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/hooks/useAuth';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -37,6 +38,7 @@ export function NotificationBell({ userRole }: NotificationBellProps) {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
+  const { token } = useAuth();
 
   // Buscar notificações (hooks devem vir antes de qualquer return condicional)
   const { data: notifications = [], isLoading } = useQuery({
@@ -45,7 +47,7 @@ export function NotificationBell({ userRole }: NotificationBellProps) {
       const response = await fetch('/api/notifications', {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('firebaseToken')}`,
+          'Authorization': `Bearer ${token}`,
         },
       });
       if (!response.ok) throw new Error('Falha ao carregar notificações');
