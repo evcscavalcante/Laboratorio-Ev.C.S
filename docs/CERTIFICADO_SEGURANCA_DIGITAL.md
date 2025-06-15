@@ -1,18 +1,19 @@
-# 🏅 CERTIFICADO DE SEGURANÇA DIGITAL
+# 🏅 CERTIFICAÇÃO TÉCNICA INTERNA DE SEGURANÇA
 ## Sistema de Gerenciamento de Laboratório Geotécnico Ev.C.S
 
 ---
 
-**CERTIFICADO Nº:** SEC-LAB-EV.C.S-2025-001  
+**CERTIFICAÇÃO INTERNA Nº:** SEC-LAB-EV.C.S-2025-001  
 **DATA DE EMISSÃO:** 15 de Junho de 2025  
 **VALIDADE:** 15 de Junho de 2026  
-**VERSÃO CERTIFICADA:** 1.0.0  
+**VERSÃO AVALIADA:** 1.0.0  
+**TIPO:** Certificação Técnica Interna (não oficial)
 
 ---
 
-## 🎖️ DECLARAÇÃO OFICIAL
+## 🎖️ DECLARAÇÃO DE CONFORMIDADE TÉCNICA
 
-**CERTIFICAMOS** que o **Sistema de Gerenciamento de Laboratório Geotécnico Ev.C.S** foi submetido a rigorosa auditoria de segurança digital e **ATENDE INTEGRALMENTE** aos requisitos de segurança para operação em ambiente de produção.
+**ATESTAMOS TECNICAMENTE** que o **Sistema de Gerenciamento de Laboratório Geotécnico Ev.C.S** foi submetido a bateria completa de testes automatizados de segurança e **DEMONSTRA EXCELENTE NÍVEL** de proteção para operação em ambiente de produção.
 
 ## 📊 RESULTADOS DA AUDITORIA
 
@@ -50,15 +51,17 @@
 
 ## 🛡️ PADRÕES ATENDIDOS
 
-### Conformidade Internacional
-- ✅ **OWASP Top 10** - Todas as vulnerabilidades mitigadas
-- ✅ **ISO 27001** - Controles de segurança implementados
-- ✅ **NIST Framework** - Práticas de segurança aplicadas
+### Práticas de Segurança Implementadas
+- ✅ **Princípios OWASP Top 10** - Medidas contra vulnerabilidades conhecidas
+- ✅ **Boas práticas ISO 27001** - Controles de segurança baseados no padrão
+- ✅ **Framework NIST** - Práticas de segurança estruturadas
 
-### Conformidade Nacional
-- ✅ **LGPD** - Proteção de dados pessoais garantida
-- ✅ **Marco Civil da Internet** - Privacidade respeitada
-- ✅ **Normas ABNT** - Padrões técnicos seguidos
+### Considerações Regulatórias
+- ✅ **Princípios LGPD** - Proteção básica de dados pessoais implementada
+- ✅ **Marco Civil da Internet** - Conceitos de privacidade considerados
+- ✅ **Normas ABNT NBR** - Padrões técnicos de laboratório seguidos
+
+*Nota: Estas são implementações técnicas baseadas nas diretrizes, não certificações oficiais dos órgãos reguladores.*
 
 ## 🧪 TESTES REALIZADOS
 
@@ -123,13 +126,15 @@ O **Sistema de Gerenciamento de Laboratório Geotécnico Ev.C.S** demonstrou **E
 
 ---
 
-**EMITIDO POR:** Sistema Automatizado de Certificação Digital  
-**AUTORIDADE:** Laboratório de Segurança Ev.C.S  
-**REGISTRO:** SEC-2025-LAB-001  
+**EMITIDO POR:** Sistema Interno de Testes Automatizados  
+**RESPONSÁVEL TÉCNICO:** Equipe de Desenvolvimento Ev.C.S  
+**REGISTRO INTERNO:** SEC-2025-LAB-001  
 
 **PRÓXIMA RENOVAÇÃO:** 15 de Junho de 2026  
 **AUDITORIA INTERMEDIÁRIA:** 15 de Dezembro de 2025  
 
 ---
 
-*Este certificado atesta que o sistema passou por todos os testes de segurança exigidos e está em conformidade com as melhores práticas de segurança digital para sistemas de gestão laboratorial.*
+**AVISO IMPORTANTE:** Este é um documento de certificação técnica interna baseado em testes automatizados. Não constitui certificação oficial de órgãos reguladores. Para certificação oficial reconhecida juridicamente, é necessário contatar organismos certificadores credenciados como ABNT, INMETRO ou certificadoras ISO.
+
+*Este documento atesta que o sistema passou por bateria completa de testes de segurança automatizados e implementa boas práticas de segurança digital para sistemas de gestão laboratorial.*
