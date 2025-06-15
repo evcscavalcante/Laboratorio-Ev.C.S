@@ -38,12 +38,7 @@ export function NotificationBell({ userRole }: NotificationBellProps) {
   const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
 
-  // Apenas DEVELOPER vê notificações
-  if (userRole !== 'DEVELOPER') {
-    return null;
-  }
-
-  // Buscar notificações
+  // Buscar notificações (hooks devem vir antes de qualquer return condicional)
   const { data: notifications = [], isLoading } = useQuery({
     queryKey: ['/api/notifications'],
     queryFn: async () => {
@@ -155,6 +150,11 @@ export function NotificationBell({ userRole }: NotificationBellProps) {
       return 'há alguns momentos';
     }
   };
+
+  // Apenas DEVELOPER e ADMIN veem notificações (check após todos os hooks)
+  if (userRole !== 'DEVELOPER' && userRole !== 'ADMIN') {
+    return null;
+  }
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
