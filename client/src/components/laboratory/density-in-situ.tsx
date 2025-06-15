@@ -831,6 +831,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                   <TableHead className="text-center">Determinação 1</TableHead>
                   <TableHead className="text-center">Determinação 2</TableHead>
                   <TableHead className="text-center">Determinação 3</TableHead>
+                  <TableHead className="text-center bg-yellow-100">Média</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -859,6 +860,9 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                       onChange={(e) => updateData("moistureBase3", { ...data.moistureBase3, capsule: e.target.value })}
                       placeholder="Ex: CAP-B03"
                     />
+                  </TableCell>
+                  <TableCell className="bg-gray-100">
+                    <span className="text-xs text-gray-500">-</span>
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -890,6 +894,9 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                       placeholder="0.00"
                     />
                   </TableCell>
+                  <TableCell className="bg-gray-100">
+                    <span className="text-xs text-gray-500">-</span>
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell className="font-medium">Seco + Tara (g)</TableCell>
@@ -919,6 +926,9 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                       onChange={(e) => updateData("moistureBase3", { ...data.moistureBase3, dryTare: parseFloat(e.target.value) || 0 })}
                       placeholder="0.00"
                     />
+                  </TableCell>
+                  <TableCell className="bg-gray-100">
+                    <span className="text-xs text-gray-500">-</span>
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -950,6 +960,9 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                       placeholder="0.00"
                     />
                   </TableCell>
+                  <TableCell className="bg-gray-100">
+                    <span className="text-xs text-gray-500">-</span>
+                  </TableCell>
                 </TableRow>
                 <TableRow className="bg-blue-50">
                   <TableCell className="font-medium">Umidade (%) <Calculator className="inline ml-1" size={12} /></TableCell>
@@ -978,6 +991,15 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                       value={calculations.moistureBase3.toFixed(2)}
                       readOnly
                       className="bg-blue-50 border-blue-200 font-mono"
+                    />
+                  </TableCell>
+                  <TableCell className="bg-yellow-100">
+                    <Input
+                      type="number"
+                      step="0.01"
+                      value={((calculations.moistureBase1 + calculations.moistureBase2 + calculations.moistureBase3) / 3).toFixed(2)}
+                      readOnly
+                      className="bg-yellow-100 border-yellow-300 font-mono font-bold"
                     />
                   </TableCell>
                 </TableRow>

@@ -429,6 +429,15 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Densidade máx/mín otimizada com versão melhorada (density-max-min-improved.tsx)
   - Densidade in-situ otimizada baseada no modelo NBR 9813:2016 (density-in-situ-improved.tsx)
   - Sistema pronto para produção com todas funcionalidades de UX implementadas
+- June 15, 2025: Interface de resultados densidade in-situ reformulada completamente
+  - Cards de resultados TOPO e BASE redesenhados com layout compacto lado a lado
+  - Fórmula específica ( 0.000 - 3.149 ) × 0.000 = 0.000 removida conforme solicitação
+  - Resultados unificados em card único centralizado para fácil comparação visual
+  - Padding reduzido (p-4 vs p-6) e layout max-w-2xl para interface mais enxuta
+  - Colunas "Média" implementadas em todas as tabelas de umidade (TOPO e BASE)
+  - Design responsivo mobile-first mantido com grid adaptativo
+  - Sistema mais limpo focado nos valores CR (Compacidade Relativa) e IV (Índice de Vazios)
+  - Interface otimizada para laboratório com melhor aproveitamento do espaço de tela
 
 ## User Preferences
 
