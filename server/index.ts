@@ -14,17 +14,7 @@ import { subscriptionPlans, users } from "@shared/schema";
 import { eq } from "drizzle-orm";
 import { initializeAdminUser } from "./init-admin";
 import { storage } from "./storage-corrected";
-// Importar sistema de observabilidade
-import { 
-  initializeObservability,
-  observabilityMiddleware,
-  globalErrorHandler,
-  createObservabilityRoutes,
-  serverLogger,
-  performanceMonitor,
-  errorMonitor,
-  alertingSystem
-} from "./observability";
+import { observability } from "./observability-simple";
 
 // Importar middlewares de segurança
 import { 
@@ -54,6 +44,9 @@ import {
 async function startServer() {
   const app = express();
   const server = createServer(app);
+  
+  // Middleware de observabilidade
+  app.use(observability.middleware());
   
   // Inicializar usuário administrador
   await initializeAdminUser();
@@ -110,8 +103,16 @@ async function startServer() {
     },
   }));
 
-  // Rotas de observabilidade
-  createObservabilityRoutes(app);
+  // Endpoints de observabilidade
+  app.get('/api/health', (req, res) => {
+    const health = observability.getHealthStatus();
+    res.json(health);
+  });
+
+  app.get('/api/metrics', (req, res) => {
+    const metrics = observability.getMetrics();
+    res.json(metrics);
+  });
 
   // Firebase Authentication routes com rate limiting
   app.use('/api/auth', authRateLimit, hybridAuthRoutes);

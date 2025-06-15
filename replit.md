@@ -302,6 +302,8 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Dashboard de observabilidade para monitoramento centralizado
   - Integração completa com servidor Express para captura automática
   - Alertas configurados para falhas críticas com escalation automático
+  - Sistema simplificado funcionando: health check (/api/health), métricas (/api/metrics)
+  - Interface de monitoramento em /system-monitoring com métricas de sistema e uptime
 
 ## User Preferences
 
