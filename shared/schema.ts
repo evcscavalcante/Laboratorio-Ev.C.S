@@ -241,7 +241,7 @@ export const maxMinDensityTestsRelations = relations(maxMinDensityTests, ({ one 
   })
 }));
 
-// Equipment Management Tables
+// Equipment Management Tables (Legacy - unified table)
 export const equipamentos = pgTable("equipamentos", {
   id: serial("id").primaryKey(),
   codigo: varchar("codigo", { length: 50 }).notNull(),
@@ -256,6 +256,43 @@ export const equipamentos = pgTable("equipamentos", {
   organizationId: integer("organization_id").references(() => organizations.id),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow()
+});
+
+// Separate Equipment Tables (Current Implementation)
+export const capsulas = pgTable("capsulas", {
+  id: serial("id").primaryKey(),
+  codigo: varchar("codigo", { length: 50 }).notNull(),
+  descricao: text("descricao"),
+  peso: real("peso").notNull(),
+  material: varchar("material", { length: 100 }),
+  fabricante: varchar("fabricante", { length: 100 }),
+  data_aquisicao: timestamp("data_aquisicao"),
+  status: varchar("status", { length: 50 }).notNull().default("ativo"),
+  localizacao: varchar("localizacao", { length: 100 }),
+  observacoes: text("observacoes"),
+  proxima_conferencia: timestamp("proxima_conferencia"),
+  created_at: timestamp("created_at").defaultNow(),
+  updated_at: timestamp("updated_at").defaultNow()
+});
+
+export const cilindros = pgTable("cilindros", {
+  id: serial("id").primaryKey(),
+  codigo: varchar("codigo", { length: 50 }).notNull(),
+  tipo: varchar("tipo", { length: 50 }).notNull(), // 'biselado', 'proctor', 'cbr', 'vazios_minimos'
+  descricao: text("descricao"),
+  peso: real("peso").notNull(),
+  volume: real("volume").notNull(),
+  altura: real("altura"),
+  diametro: real("diametro"),
+  material: varchar("material", { length: 100 }),
+  fabricante: varchar("fabricante", { length: 100 }),
+  data_aquisicao: timestamp("data_aquisicao"),
+  status: varchar("status", { length: 50 }).notNull().default("ativo"),
+  localizacao: varchar("localizacao", { length: 100 }),
+  observacoes: text("observacoes"),
+  proxima_conferencia: timestamp("proxima_conferencia"),
+  created_at: timestamp("created_at").defaultNow(),
+  updated_at: timestamp("updated_at").defaultNow()
 });
 
 export const conferenciaEquipamentos = pgTable("conferencia_equipamentos", {

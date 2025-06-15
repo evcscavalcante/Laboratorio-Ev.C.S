@@ -10,7 +10,7 @@ import { setupVite, serveStatic } from "./vite";
 import MemoryStore from "memorystore";
 import { simpleOrgManager } from "./simple-org-management";
 import { db } from "./db";
-import { subscriptionPlans, users, notifications, equipamentos } from "@shared/schema";
+import { subscriptionPlans, users, notifications, equipamentos, capsulas, cilindros } from "@shared/schema";
 import { eq, desc } from "drizzle-orm";
 import { initializeAdminUser } from "./init-admin";
 import { storage } from "./storage-corrected";
@@ -634,11 +634,47 @@ async function startServer() {
   // Equipamentos API endpoints
   app.get('/api/equipamentos', verifyFirebaseToken, async (req: Request, res: Response) => {
     try {
-      // Buscar equipamentos do banco PostgreSQL
-      const equipamentosList = await db.select().from(equipamentos);
+      // Buscar cápsulas e cilindros do banco PostgreSQL
+      const capsulasList = await db.select().from(capsulas);
+      const cilindrosList = await db.select().from(cilindros);
       
-      console.log(`📦 Equipamentos encontrados: ${equipamentosList.length}`);
-      res.json(equipamentosList);
+      // Combinar e padronizar formato
+      const equipamentos = [
+        ...capsulasList.map(cap => ({
+          id: cap.id,
+          codigo: cap.codigo,
+          tipo: 'capsula',
+          descricao: cap.descricao,
+          peso: cap.peso,
+          material: cap.material,
+          fabricante: cap.fabricante,
+          status: cap.status,
+          localizacao: cap.localizacao,
+          observacoes: cap.observacoes,
+          createdAt: cap.created_at,
+          updatedAt: cap.updated_at
+        })),
+        ...cilindrosList.map(cil => ({
+          id: cil.id,
+          codigo: cil.codigo,
+          tipo: 'cilindro',
+          descricao: cil.descricao,
+          peso: cil.peso,
+          volume: cil.volume,
+          altura: cil.altura,
+          diametro: cil.diametro,
+          material: cil.material,
+          fabricante: cil.fabricante,
+          status: cil.status,
+          localizacao: cil.localizacao,
+          observacoes: cil.observacoes,
+          createdAt: cil.created_at,
+          updatedAt: cil.updated_at
+        }))
+      ];
+      
+      console.log(`📦 Equipamentos encontrados: ${equipamentos.length} (${capsulasList.length} cápsulas, ${cilindrosList.length} cilindros)`);
+      res.json(equipamentos);
     } catch (error) {
       console.error('Error fetching equipamentos:', error);
       res.status(500).json({ message: 'Failed to fetch equipamentos' });
@@ -648,11 +684,47 @@ async function startServer() {
   // Endpoint temporário sem autenticação para teste
   app.get('/api/equipamentos/temp', async (req: Request, res: Response) => {
     try {
-      // Buscar equipamentos do banco PostgreSQL
-      const equipamentosList = await db.select().from(equipamentos);
+      // Buscar cápsulas e cilindros do banco PostgreSQL
+      const capsulasList = await db.select().from(capsulas);
+      const cilindrosList = await db.select().from(cilindros);
       
-      console.log(`📦 Equipamentos encontrados (temp): ${equipamentosList.length}`);
-      res.json(equipamentosList);
+      // Combinar e padronizar formato
+      const equipamentos = [
+        ...capsulasList.map(cap => ({
+          id: cap.id,
+          codigo: cap.codigo,
+          tipo: 'capsula',
+          descricao: cap.descricao,
+          peso: cap.peso,
+          material: cap.material,
+          fabricante: cap.fabricante,
+          status: cap.status,
+          localizacao: cap.localizacao,
+          observacoes: cap.observacoes,
+          createdAt: cap.created_at,
+          updatedAt: cap.updated_at
+        })),
+        ...cilindrosList.map(cil => ({
+          id: cil.id,
+          codigo: cil.codigo,
+          tipo: 'cilindro',
+          descricao: cil.descricao,
+          peso: cil.peso,
+          volume: cil.volume,
+          altura: cil.altura,
+          diametro: cil.diametro,
+          material: cil.material,
+          fabricante: cil.fabricante,
+          status: cil.status,
+          localizacao: cil.localizacao,
+          observacoes: cil.observacoes,
+          createdAt: cil.created_at,
+          updatedAt: cil.updated_at
+        }))
+      ];
+      
+      console.log(`📦 Equipamentos encontrados (temp): ${equipamentos.length} (${capsulasList.length} cápsulas, ${cilindrosList.length} cilindros)`);
+      res.json(equipamentos);
     } catch (error) {
       console.error('Error fetching equipamentos (temp):', error);
       res.status(500).json({ message: 'Failed to fetch equipamentos' });
