@@ -285,7 +285,7 @@ export default function Sidebar({ isOpen }: SidebarProps) {
           <div className="flex items-center gap-2 text-sm">
             <User className="h-4 w-4 text-gray-600" />
             <div className="min-w-0 flex-1">
-              <div className="font-medium text-gray-700 truncate">{user?.displayName || user?.email?.split('@')[0] || 'Usuário'}</div>
+              <div className="font-medium text-gray-700 truncate">{user?.displayName || permissions.userRole || 'Usuário'}</div>
               <div className="text-xs text-gray-500">
                 {permissions.userRole === 'DEVELOPER' && 'Desenvolvedor'}
                 {permissions.userRole === 'ADMIN' && 'Administrador'}

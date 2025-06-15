@@ -235,7 +235,7 @@ export function NotificationBell({ userRole }: NotificationBellProps) {
                           onClick={() => handlePromoteUser(notification.userEmail!, 'VIEWER')}
                           disabled={promoteUserMutation.isPending}
                         >
-                          VIEWER
+                          Visualizador
                         </Button>
                         <Button
                           size="sm"
@@ -244,7 +244,7 @@ export function NotificationBell({ userRole }: NotificationBellProps) {
                           onClick={() => handlePromoteUser(notification.userEmail!, 'TECHNICIAN')}
                           disabled={promoteUserMutation.isPending}
                         >
-                          TECHNICIAN
+                          Técnico
                         </Button>
                         <Button
                           size="sm"
@@ -253,7 +253,7 @@ export function NotificationBell({ userRole }: NotificationBellProps) {
                           onClick={() => handlePromoteUser(notification.userEmail!, 'MANAGER')}
                           disabled={promoteUserMutation.isPending}
                         >
-                          MANAGER
+                          Gerente
                         </Button>
                         <Button
                           size="sm"
@@ -262,7 +262,7 @@ export function NotificationBell({ userRole }: NotificationBellProps) {
                           onClick={() => handlePromoteUser(notification.userEmail!, 'ADMIN')}
                           disabled={promoteUserMutation.isPending}
                         >
-                          ADMIN
+                          Administrador
                         </Button>
                       </div>
                     )}
