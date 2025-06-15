@@ -32,6 +32,14 @@ interface DensityInSituData {
   realDensityRef: string;
   maxMinDensityRef: string;
   
+  // Additional required fields for TestHeader
+  north: string;
+  east: string;
+  elevation: string;
+  fvs: string;
+  weather: string;
+  resampled: boolean;
+  
   det1: {
     cylinderNumber: string;
     moldeSolo: number;
@@ -85,7 +93,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
   const saveTestMutation = useMutation({
     mutationFn: async (testData: any) => {
       console.log("🔄 Enviando dados do ensaio:", testData);
-      const response = await apiRequest("POST", "/api/ensaios/densidade-in-situ/temp", testData);
+      const response = await apiRequest("POST", "/api/tests/density-in-situ", testData);
       console.log("📡 Resposta da API:", response);
       return response;
     },
