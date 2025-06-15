@@ -102,15 +102,25 @@ export const firebaseAuthMiddleware = async (req: Request, res: Response, next: 
   try {
     const authHeader = req.headers.authorization;
     
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({ error: 'Token de autenticação necessário' });
+    // Verificação mais robusta do header de autorização
+    if (!authHeader) {
+      return res.status(401).json({ error: 'Header de autorização ausente' });
+    }
+    
+    if (!authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'Formato de token inválido. Use Bearer <token>' });
     }
     
     const idToken = authHeader.split('Bearer ')[1];
+    
+    if (!idToken || idToken.trim() === '') {
+      return res.status(401).json({ error: 'Token vazio fornecido' });
+    }
+    
     const firebaseUser = await verifyFirebaseToken(idToken);
     
     if (!firebaseUser) {
-      return res.status(401).json({ error: 'Token inválido' });
+      return res.status(401).json({ error: 'Token Firebase inválido ou expirado' });
     }
     
     // Sync user with database

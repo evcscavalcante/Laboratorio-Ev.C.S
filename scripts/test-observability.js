@@ -5,8 +5,9 @@
  * Valida funcionalidade completa de logs, erros, métricas e alertas
  */
 
-const http = require('http');
-const https = require('https');
+import http from 'http';
+import https from 'https';
+import { execSync } from 'child_process';
 
 class ObservabilityTester {
   constructor(baseUrl = 'http://localhost:5173') {
@@ -218,7 +219,7 @@ class ObservabilityTester {
 }
 
 // Executar testes se chamado diretamente
-if (require.main === module) {
+if (process.argv[1] === new URL(import.meta.url).pathname) {
   const tester = new ObservabilityTester();
   tester.runTests().catch(error => {
     console.error('❌ Erro fatal nos testes:', error);
@@ -226,4 +227,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = ObservabilityTester;
+export default ObservabilityTester;

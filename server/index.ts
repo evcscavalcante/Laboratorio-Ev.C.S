@@ -78,13 +78,14 @@ async function startServer() {
     limit: "10mb",
     verify: (req, res, buf) => {
       try {
-        // Só verificar se não for vazio
-        if (buf.length > 0) {
+        // Verificar apenas se há conteúdo e Content-Type é JSON
+        const contentType = req.headers['content-type'];
+        if (buf.length > 0 && contentType && contentType.includes('application/json')) {
           JSON.parse(buf.toString());
         }
       } catch (e) {
         const error = e as Error;
-        console.error('❌ Erro de parsing JSON:', error.message, 'Body:', buf.toString());
+        console.error('❌ Erro de parsing JSON:', error.message, 'Body:', buf.toString().substring(0, 100));
         throw new Error('JSON inválido');
       }
     }
