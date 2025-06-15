@@ -30,6 +30,8 @@ import UserCreation from "@/pages/admin/user-creation";
 import SystemStatus from "@/pages/system-status";
 import SystemMonitoring from "@/pages/system-monitoring";
 import EnsaiosSalvos from "@/pages/ensaios-salvos";
+import TermosUso from "@/pages/termos-uso";
+import ConfiguracoesLGPD from "@/pages/configuracoes-lgpd";
 
 function Router() {
   const { user, loading } = useAuth();
@@ -76,6 +78,8 @@ function Router() {
         <Route path="/test-access" component={TestAccess} />
         <Route path="/system-status" component={SystemStatus} />
         <Route path="/system-monitoring" component={SystemMonitoring} />
+        <Route path="/termos-uso" component={TermosUso} />
+        <Route path="/configuracoes-lgpd" component={ConfiguracoesLGPD} />
         <Route component={NotFound} />
       </Switch>
     </MainLayout>

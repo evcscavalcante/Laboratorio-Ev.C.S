@@ -202,6 +202,18 @@ export default function Sidebar({ isOpen }: SidebarProps) {
           icon: Shield,
           href: '/test-access',
           active: location === '/test-access'
+        },
+        {
+          label: 'Termos de Uso',
+          icon: FileText,
+          href: '/termos-uso',
+          active: location === '/termos-uso'
+        },
+        {
+          label: 'Configurações LGPD',
+          icon: Shield,
+          href: '/configuracoes-lgpd',
+          active: location === '/configuracoes-lgpd'
         }
       ]
     }

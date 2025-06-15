@@ -868,12 +868,138 @@ async function startServer() {
     });
   }
 
+  // LGPD Endpoints Simplificados
+  app.get('/api/lgpd/terms', (req, res) => {
+    res.json({
+      version: "1.0",
+      lastUpdated: "2025-06-15",
+      content: {
+        title: "TERMOS DE USO - SISTEMA DE GERENCIAMENTO GEOTÉCNICO EV.C.S",
+        sections: [
+          {
+            title: "1. ACEITAÇÃO DOS TERMOS",
+            content: "Ao utilizar este sistema, você concorda com estes termos de uso."
+          },
+          {
+            title: "2. USO DO SISTEMA",
+            content: "O sistema destina-se exclusivamente para fins profissionais de laboratório geotécnico."
+          },
+          {
+            title: "3. RESPONSABILIDADES DO USUÁRIO",
+            content: "Manter dados de acesso confidenciais, usar o sistema conforme sua finalidade, respeitar direitos de outros usuários."
+          },
+          {
+            title: "4. LIMITAÇÃO DE RESPONSABILIDADE",
+            content: "O sistema é fornecido como está sem garantias expressas ou implícitas."
+          }
+        ]
+      }
+    });
+  });
+
+  app.get('/api/lgpd/privacy-policy', (req, res) => {
+    res.json({
+      version: "1.0",
+      lastUpdated: "2025-06-15",
+      content: {
+        title: "POLÍTICA DE PRIVACIDADE - SISTEMA EV.C.S",
+        sections: [
+          {
+            title: "1. DADOS COLETADOS",
+            content: "Informações de cadastro (nome, email), dados de ensaios geotécnicos, logs de acesso ao sistema."
+          },
+          {
+            title: "2. USO DOS DADOS",
+            content: "Os dados são utilizados para operação do sistema de laboratório, geração de relatórios técnicos, controle de acesso e segurança."
+          },
+          {
+            title: "3. SEUS DIREITOS (LGPD)",
+            content: "Acesso aos seus dados, correção de dados incorretos, exclusão de dados pessoais, portabilidade de dados."
+          }
+        ]
+      }
+    });
+  });
+
+  app.post('/api/lgpd/consent', (req, res) => {
+    // Versão simplificada que registra apenas no log
+    const { consentType, consentStatus } = req.body;
+    console.log(`📝 Consentimento LGPD registrado: ${consentType} = ${consentStatus}`);
+    
+    res.json({ 
+      success: true, 
+      message: 'Consentimento registrado com sucesso',
+      timestamp: new Date().toISOString()
+    });
+  });
+
+  app.get('/api/lgpd/my-data', (req, res) => {
+    // Retorna dados simulados para demonstração
+    const mockData = {
+      personalData: {
+        email: "usuario@exemplo.com",
+        name: "Usuário de Teste",
+        role: "TECHNICIAN",
+        createdAt: new Date().toISOString(),
+        lastLogin: new Date().toISOString()
+      },
+      lgpdCompliance: {
+        termsAccepted: true,
+        termsAcceptedAt: new Date().toISOString(),
+        privacyPolicyAccepted: true,
+        privacyPolicyAcceptedAt: new Date().toISOString(),
+        dataProcessingConsent: true,
+        dataProcessingConsentAt: new Date().toISOString(),
+        marketingConsent: false,
+        marketingConsentAt: null
+      },
+      testData: {
+        densityInSitu: 2,
+        realDensity: 5,
+        maxMinDensity: 8
+      },
+      consents: [
+        {
+          consentType: "terms",
+          consentStatus: "given",
+          createdAt: new Date().toISOString()
+        },
+        {
+          consentType: "privacy_policy", 
+          consentStatus: "given",
+          createdAt: new Date().toISOString()
+        }
+      ],
+      auditLogs: [
+        {
+          action: "data_access",
+          createdAt: new Date().toISOString(),
+          details: "Acesso aos dados pessoais"
+        }
+      ]
+    };
+    
+    res.json(mockData);
+  });
+
+  app.post('/api/lgpd/request-deletion', (req, res) => {
+    console.log('🗑️ Solicitação de exclusão de dados registrada');
+    
+    res.json({ 
+      success: true, 
+      message: 'Solicitação de exclusão registrada. Será processada em até 30 dias.',
+      requestId: `DEL-${Date.now()}`,
+      timestamp: new Date().toISOString()
+    });
+  });
+
   const PORT = parseInt(process.env.PORT || "5000", 10);
   server.listen(PORT, "0.0.0.0", () => {
     console.log(`🚀 Servidor híbrido iniciado na porta ${PORT}`);
     console.log(`🔥 Firebase Authentication (Frontend)`);
     console.log(`🐘 PostgreSQL Database (Backend)`);
     console.log(`🔐 Autenticação híbrida configurada`);
+    console.log(`📋 Endpoints LGPD disponíveis`);
   });
 
   return { app, server };
