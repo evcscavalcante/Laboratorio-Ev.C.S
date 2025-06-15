@@ -20,8 +20,8 @@ export default function DensidadeRealPage() {
   return (
     <div className="p-6">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">Ensaio de Densidade Real dos Grãos</h1>
-        <p className="text-gray-600">ABNT NBR 6508 - Determinação da densidade real dos grãos pelo picnômetro</p>
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">Determinação da Massa Específica dos Agregados</h1>
+        <p className="text-gray-600">ABNT NBR 6508 - Determinação da massa específica dos agregados que passam na peneira 2,0 mm</p>
       </div>
       <DensityReal />
     </div>
