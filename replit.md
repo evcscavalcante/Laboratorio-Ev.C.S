@@ -275,6 +275,16 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Implementado em todas as calculadoras (densidade in-situ, real, máx/mín)
   - Ferramenta de verificação de duplicidade criada (scripts/check-duplicates.js)
   - Sistema segue nomenclatura técnica conforme NBR ABNT atualizadas
+- June 15, 2025: Cabeçalho otimizado para dispositivos móveis
+  - Layout mobile-first implementado com design responsivo
+  - Logo reduzido e centralizado em telas pequenas (h-8 mobile, h-16 desktop)
+  - Informações laterais ocultas no mobile para economizar espaço
+  - Texto reduzido (text-xs mobile, text-sm desktop) para melhor legibilidade
+  - Padding compacto (p-1 mobile, p-2 desktop) otimizando área útil
+  - Grid adaptativo: 1 coluna no mobile, 2 colunas no desktop
+  - Seção "Configurações do Ensaio" removida e integrada no cabeçalho funcional
+  - Callbacks totalmente funcionais conectando dados do registro, data e hora
+  - Interface otimizada para touch e uso em laboratório móvel
 - June 15, 2025: Sistema de análise automática de padrões implementado
   - Ferramenta de análise prévia: `node analyze-project-standards.js`
   - Documentação de padrões obrigatórios criada
