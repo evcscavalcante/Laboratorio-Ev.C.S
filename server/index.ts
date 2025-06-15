@@ -99,8 +99,9 @@ async function startServer() {
     },
   }));
 
-  // Firebase Authentication routes - API routes FIRST
-  app.use('/api', hybridAuthRoutes);
+  // Firebase Authentication routes com rate limiting
+  app.use('/api/auth', authRateLimit, hybridAuthRoutes);
+  app.use('/api', apiRateLimit);
 
   // Current user endpoint (protected by Firebase token)
   app.get('/api/auth/user', verifyFirebaseToken, (req: Request, res: Response) => {
@@ -321,10 +322,10 @@ async function startServer() {
 
   app.post('/api/tests/real-density', 
     verifyFirebaseToken,
-    validateRequest(realDensitySchema),
-    async (req: Request, res: Response) => {
+    validateRequest(realDensitySchema) as any,
+    async (req: any, res: Response) => {
       try {
-        const test = await storage.createRealDensityTest((req as any).validatedData);
+        const test = await storage.createRealDensityTest(req.validatedData);
         res.status(201).json(test);
       } catch (error) {
         console.error('Error creating real density test:', error);
@@ -383,10 +384,10 @@ async function startServer() {
 
   app.post('/api/tests/max-min-density', 
     verifyFirebaseToken,
-    validateRequest(maxMinDensitySchema),
-    async (req: Request, res: Response) => {
+    validateRequest(maxMinDensitySchema) as any,
+    async (req: any, res: Response) => {
       try {
-        const test = await storage.createMaxMinDensityTest((req as any).validatedData);
+        const test = await storage.createMaxMinDensityTest(req.validatedData);
         res.status(201).json(test);
       } catch (error) {
         console.error('Error creating max/min density test:', error);

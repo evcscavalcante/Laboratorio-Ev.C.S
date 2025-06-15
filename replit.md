@@ -270,6 +270,14 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Verificação automática de consistência arquitetural
   - Análise de nomenclatura técnica conforme NBR ABNT
   - Prevenção automática de desvios do escopo estabelecido
+- June 15, 2025: Sistema de validação rigorosa implementado
+  - Schemas Zod completos para todos os tipos de ensaios
+  - Middleware de validação server-side com sanitização
+  - Proteção contra SQL injection e XSS
+  - Rate limiting diferenciado (auth: 5/15min, API: 100/min)
+  - Hook useValidation para validação client-side em tempo real
+  - Componente ValidationFeedback para feedback visual
+  - Headers de segurança e logs estruturados implementados
 
 ## User Preferences
 
