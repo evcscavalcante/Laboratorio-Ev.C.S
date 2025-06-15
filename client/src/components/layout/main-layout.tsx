@@ -48,7 +48,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
       {/* Main content */}
       <div className="transition-all duration-300 lg:ml-64">
         <main className="min-h-screen">
-          <div className="p-4 lg:p-6">
+          <div className="p-2 lg:p-3">
             <Breadcrumb />
             {children}
           </div>
