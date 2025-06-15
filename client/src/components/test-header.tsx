@@ -190,25 +190,25 @@ const TestHeader: React.FC<TestHeaderProps> = ({
   );
 
   return (
-    <div className="bg-white border border-gray-300 p-3 sm:p-4 mb-6 print:mb-4">
-      {/* Cabeçalho com logo oficial e título - Mobile First */}
-      <div className="flex flex-col sm:grid sm:grid-cols-3 items-center mb-4 pb-3 border-b border-gray-300 gap-3 sm:gap-0">
-        <div className="flex items-center w-full sm:w-auto justify-center sm:justify-start">
+    <div className="bg-white border border-gray-300 p-4 mb-6 print:mb-4">
+      {/* Cabeçalho com logo oficial e título - Layout igual ao PDF */}
+      <div className="grid grid-cols-3 items-center mb-4 pb-3 border-b border-gray-300">
+        <div className="flex items-center">
           <img 
             src="/attached_assets/file_00000000233061f898ea05ffe6a1752e_1749721558008.png" 
             alt="Laboratório Ev.C.S" 
-            className="h-12 sm:h-16 w-auto"
+            className="h-16 w-auto"
           />
         </div>
         
         <div className="text-center">
-          <h1 className="text-base sm:text-lg font-bold text-gray-900 whitespace-pre-line leading-tight">
+          <h1 className="text-lg font-bold text-gray-900 whitespace-pre-line">
             {getTestTitle()}
           </h1>
         </div>
         
-        <div className="flex justify-center sm:justify-end w-full sm:w-auto">
-          <div className="text-center sm:text-right">
+        <div className="flex justify-end">
+          <div className="text-right">
             <div className="text-sm font-bold text-gray-900">LABORATÓRIO EV.C.S</div>
             <div className="text-xs text-gray-600">Sistema Geotécnico</div>
             <div className="text-xs text-gray-600">ABNT NBR Certificado</div>
@@ -216,48 +216,69 @@ const TestHeader: React.FC<TestHeaderProps> = ({
         </div>
       </div>
 
-      {/* Informações principais - Mobile First */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-        {/* Coluna 1 */}
-        <div className="space-y-3">
-          <div className="flex flex-col sm:grid sm:grid-cols-2 gap-1 sm:gap-2">
-            <span className="text-sm font-medium text-gray-700">OPERADOR:</span>
-            <input 
-              type="text" 
-              value={operador}
-              onChange={(e) => onOperadorChange?.(e.target.value)}
-              className="text-sm border-b border-gray-400 bg-transparent px-1 py-1 focus:outline-none focus:border-blue-500 min-h-[32px]"
-              placeholder="Nome do operador"
-            />
-          </div>
-          <div className="flex flex-col sm:grid sm:grid-cols-2 gap-1 sm:gap-2">
-            <span className="text-sm font-medium text-gray-700">RESPONSÁVEL:</span>
-            <input 
-              type="text" 
-              value={responsavelCalculo}
-              onChange={(e) => onResponsavelCalculoChange?.(e.target.value)}
-              className="text-sm border-b border-gray-400 bg-transparent px-1 py-1 focus:outline-none focus:border-blue-500 min-h-[32px]"
-              placeholder="Nome do responsável"
-            />
-          </div>
-          <div className="flex flex-col sm:grid sm:grid-cols-2 gap-1 sm:gap-2">
-            <span className="text-sm font-medium text-gray-700">VERIFICADOR:</span>
-            <input 
-              type="text" 
-              value={verificador}
-              onChange={(e) => onVerificadorChange?.(e.target.value)}
-              className="text-sm border-b border-gray-400 bg-transparent px-1 py-1 focus:outline-none focus:border-blue-500 min-h-[32px]"
-              placeholder="Nome do verificador"
-            />
-          </div>
-          <div className="flex flex-col sm:grid sm:grid-cols-2 gap-1 sm:gap-2">
-            <span className="text-sm font-medium text-gray-700">DATA:</span>
-            <input 
-              type="date" 
-              value={data}
-              onChange={(e) => onDataChange?.(e.target.value)}
-              className="text-sm border-b border-gray-400 bg-transparent px-1 py-1 focus:outline-none focus:border-blue-500 min-h-[32px]"
-            />
+      {/* Informações principais - Layout igual ao PDF (duas colunas) */}
+      <div className="grid grid-cols-2 gap-6 mb-4">
+        {/* Coluna 1 - Dados pessoais */}
+        <div className="border border-gray-300">
+          <div className="grid grid-cols-2 text-sm">
+            <div className="bg-gray-100 p-2 border-b border-r border-gray-300 font-medium">Registro:</div>
+            <div className="p-2 border-b border-gray-300">
+              <input 
+                type="text" 
+                value={registro}
+                onChange={(e) => onRegistroChange?.(e.target.value)}
+                className="w-full bg-transparent border-none outline-none"
+                placeholder="-"
+              />
+            </div>
+            <div className="bg-gray-100 p-2 border-b border-r border-gray-300 font-medium">Data:</div>
+            <div className="p-2 border-b border-gray-300">
+              <input 
+                type="date" 
+                value={data}
+                onChange={(e) => onDataChange?.(e.target.value)}
+                className="w-full bg-transparent border-none outline-none"
+              />
+            </div>
+            <div className="bg-gray-100 p-2 border-b border-r border-gray-300 font-medium">Horário:</div>
+            <div className="p-2 border-b border-gray-300">
+              <input 
+                type="time" 
+                value={hora}
+                onChange={(e) => onHoraChange?.(e.target.value)}
+                className="w-full bg-transparent border-none outline-none"
+              />
+            </div>
+            <div className="bg-gray-100 p-2 border-b border-r border-gray-300 font-medium">Operador:</div>
+            <div className="p-2 border-b border-gray-300">
+              <input 
+                type="text" 
+                value={operador}
+                onChange={(e) => onOperadorChange?.(e.target.value)}
+                className="w-full bg-transparent border-none outline-none"
+                placeholder="-"
+              />
+            </div>
+            <div className="bg-gray-100 p-2 border-b border-r border-gray-300 font-medium">Resp. Técnico:</div>
+            <div className="p-2 border-b border-gray-300">
+              <input 
+                type="text" 
+                value={responsavelCalculo}
+                onChange={(e) => onResponsavelCalculoChange?.(e.target.value)}
+                className="w-full bg-transparent border-none outline-none"
+                placeholder="-"
+              />
+            </div>
+            <div className="bg-gray-100 p-2 border-r border-gray-300 font-medium">Verificador:</div>
+            <div className="p-2">
+              <input 
+                type="text" 
+                value={verificador}
+                onChange={(e) => onVerificadorChange?.(e.target.value)}
+                className="w-full bg-transparent border-none outline-none"
+                placeholder="-"
+              />
+            </div>
           </div>
         </div>
 
