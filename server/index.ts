@@ -99,6 +99,9 @@ async function startServer() {
     },
   }));
 
+  // Rotas de observabilidade (antes das rotas de autenticação)
+  createObservabilityRoutes(app);
+
   // Firebase Authentication routes com rate limiting
   app.use('/api/auth', authRateLimit, hybridAuthRoutes);
   app.use('/api', apiRateLimit);
