@@ -407,13 +407,12 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
         }}
       />
 
-      {/* Header */}
+      {/* Configurações do Ensaio */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center">
-            <Info className="mr-2 text-blue-600" size={20} />
-            Ensaio de Densidade In Situ - Método do Cilindro de Cravação
-
+            <Settings className="mr-2 text-blue-600" size={20} />
+            Configurações do Ensaio
           </CardTitle>
         </CardHeader>
         <CardContent>

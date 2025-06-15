@@ -19,10 +19,6 @@ export default function DensidadeMaxMinPage() {
 
   return (
     <div className="p-6">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">Determinação dos Índices de Vazios Máximo e Mínimo</h1>
-        <p className="text-gray-600">ABNT NBR 12004:2021 e NBR 12051:2021 - Determinação dos índices de vazios máximo e mínimo de solos não coesivos</p>
-      </div>
       <DensityMaxMin />
     </div>
   );
