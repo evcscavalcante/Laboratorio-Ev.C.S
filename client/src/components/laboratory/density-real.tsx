@@ -56,10 +56,10 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
 
   // Query para buscar dados do ensaio específico
   const { data: testData, isLoading: loadingTest } = useQuery({
-    queryKey: ['/api/tests/real-density/temp', testId],
+    queryKey: ['/api/tests/density-real/temp', testId],
     queryFn: async () => {
       if (!testId) return null;
-      const response = await apiRequest('GET', `/api/tests/real-density/temp`);
+      const response = await apiRequest('GET', `/api/tests/density-real/temp`);
       const tests = await response.json();
       return tests.find((test: any) => test.id === testId) || null;
     },

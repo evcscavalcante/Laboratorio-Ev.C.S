@@ -121,13 +121,13 @@ async function startServer() {
     });
   });
 
-  // Density Tests API Endpoints
+  // Ensaios de Densidade API Endpoints
   
-  // Density In Situ Tests
-  app.get('/api/tests/density-in-situ', verifyFirebaseToken, async (req: Request, res: Response) => {
+  // Ensaios de Densidade In Situ
+  app.get('/api/ensaios/densidade-in-situ', verifyFirebaseToken, async (req: Request, res: Response) => {
     try {
       const tests = await storage.getDensityInSituTests();
-      console.log('📋 Ensaios density in-situ encontrados:', tests.length);
+      console.log('📋 Ensaios densidade in-situ encontrados:', tests.length);
       res.json(tests);
     } catch (error) {
       console.error('Erro ao buscar ensaios de densidade in situ:', error);
@@ -136,10 +136,10 @@ async function startServer() {
   });
 
   // Rota temporária para buscar ensaios sem autenticação
-  app.get('/api/tests/density-in-situ/temp', async (req: Request, res: Response) => {
+  app.get('/api/ensaios/densidade-in-situ/temp', async (req: Request, res: Response) => {
     try {
       const tests = await storage.getDensityInSituTests();
-      console.log('📋 Ensaios encontrados:', tests.length);
+      console.log('📋 Ensaios densidade in-situ encontrados:', tests.length);
       res.json(tests);
     } catch (error) {
       console.error('Erro ao buscar ensaios de densidade in situ:', error);
@@ -148,7 +148,7 @@ async function startServer() {
   });
 
   // Rota temporária sem autenticação para testes
-  app.post('/api/tests/density-in-situ/temp', async (req: Request, res: Response) => {
+  app.post('/api/ensaios/densidade-in-situ/temp', async (req: Request, res: Response) => {
     try {
       console.log('📥 Recebendo dados do ensaio (temp):', JSON.stringify(req.body, null, 2));
       

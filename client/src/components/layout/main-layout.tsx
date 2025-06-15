@@ -8,7 +8,16 @@ interface MainLayoutProps {
 }
 
 export default function MainLayout({ children }: MainLayoutProps) {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(() => {
+    const saved = localStorage.getItem('sidebar-open');
+    return saved ? JSON.parse(saved) : true;
+  });
+
+  const toggleSidebar = () => {
+    const newState = !sidebarOpen;
+    setSidebarOpen(newState);
+    localStorage.setItem('sidebar-open', JSON.stringify(newState));
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -17,7 +26,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
         <Button
           variant="outline"
           size="sm"
-          onClick={() => setSidebarOpen(!sidebarOpen)}
+          onClick={toggleSidebar}
           className="bg-white shadow-md"
         >
           {sidebarOpen ? <X size={16} /> : <Menu size={16} />}
@@ -28,7 +37,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
       {sidebarOpen && (
         <div 
           className="lg:hidden fixed inset-0 z-30 bg-black bg-opacity-50"
-          onClick={() => setSidebarOpen(false)}
+          onClick={toggleSidebar}
         />
       )}
 

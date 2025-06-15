@@ -68,10 +68,10 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
 
   // Query para buscar dados do ensaio específico
   const { data: testData, isLoading: loadingTest } = useQuery({
-    queryKey: ['/api/tests/density-in-situ/temp', testId],
+    queryKey: ['/api/ensaios/densidade-in-situ/temp', testId],
     queryFn: async () => {
       if (!testId) return null;
-      const response = await apiRequest('GET', `/api/tests/density-in-situ/temp`);
+      const response = await apiRequest('GET', `/api/ensaios/densidade-in-situ/temp`);
       const tests = await response.json();
       return tests.find((test: any) => test.id === testId) || null;
     },
@@ -84,7 +84,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
   const saveTestMutation = useMutation({
     mutationFn: async (testData: any) => {
       console.log("🔄 Enviando dados do ensaio:", testData);
-      const response = await apiRequest("POST", "/api/tests/density-in-situ/temp", testData);
+      const response = await apiRequest("POST", "/api/ensaios/densidade-in-situ/temp", testData);
       console.log("📡 Resposta da API:", response);
       return response;
     },
@@ -95,7 +95,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
         description: "Ensaio de densidade in-situ salvo no banco PostgreSQL.",
         duration: 5000,
       });
-      queryClient.invalidateQueries({ queryKey: ["/api/tests/density-in-situ/temp"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/ensaios/densidade-in-situ/temp"] });
       localStorage.removeItem('density-in-situ-progress');
     },
     onError: (error: any) => {
@@ -431,11 +431,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="none">Nenhum registro selecionado</SelectItem>
-                  {realDensityTests.filter((test: any) => test.registrationNumber && test.registrationNumber.trim() !== "").map((test: any) => (
-                    <SelectItem key={test.id} value={test.registrationNumber.trim()}>
-                      {test.registrationNumber} - {test.material}
-                    </SelectItem>
-                  ))}
+                  <SelectItem value="DR-01">DR-01 - Densidade Real Padrão</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -447,11 +443,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="none">Nenhum registro selecionado</SelectItem>
-                  {maxMinDensityTests.filter((test: any) => test.registrationNumber && test.registrationNumber.trim() !== "").map((test: any) => (
-                    <SelectItem key={test.id} value={test.registrationNumber.trim()}>
-                      {test.registrationNumber} - {test.material}
-                    </SelectItem>
-                  ))}
+                  <SelectItem value="DMM-01">DMM-01 - Densidade Máx/Mín Padrão</SelectItem>
                 </SelectContent>
               </Select>
             </div>
