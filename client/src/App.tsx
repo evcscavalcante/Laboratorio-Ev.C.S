@@ -6,7 +6,7 @@ import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import { DataSyncProvider } from "@/contexts/data-sync-context";
 import MainLayout from "@/components/layout/main-layout";
 import NotFound from "@/pages/not-found";
-import Dashboard from "@/pages/dashboard";
+import Dashboard from "@/pages/dashboard-simplified";
 import Analytics from "@/pages/analytics";
 import Login from "@/pages/login";
 import SubscriptionPage from "@/pages/subscription";
@@ -56,9 +56,9 @@ function Router() {
         <Route path="/subscription" component={SubscriptionPage} />
 
         <Route path="/solos" component={SolosPage} />
-        <Route path="/solos/densidade-in-situ" component={DensidadeInSituPage} />
-        <Route path="/solos/densidade-real" component={DensidadeRealPage} />
-        <Route path="/solos/densidade-max-min" component={DensidadeMaxMinPage} />
+        <Route path="/densidade-in-situ" component={DensidadeInSituPage} />
+        <Route path="/densidade-real" component={DensidadeRealPage} />
+        <Route path="/densidade-max-min" component={DensidadeMaxMinPage} />
         <Route path="/balanca-verificacao" component={BalancaVerificacao} />
         <Route path="/equipamentos" component={EquipamentosGestao} />
         <Route path="/configuracoes" component={Configuracoes} />

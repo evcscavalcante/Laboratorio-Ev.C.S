@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Sidebar from '@/components/navigation/sidebar';
+import Breadcrumb from '@/components/ui/breadcrumb';
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -47,7 +48,10 @@ export default function MainLayout({ children }: MainLayoutProps) {
       {/* Main content */}
       <div className={`transition-all duration-300 ${sidebarOpen ? 'lg:ml-64' : 'ml-0'}`}>
         <main className="min-h-screen">
-          {children}
+          <div className="p-4 lg:p-6">
+            <Breadcrumb />
+            {children}
+          </div>
         </main>
       </div>
     </div>

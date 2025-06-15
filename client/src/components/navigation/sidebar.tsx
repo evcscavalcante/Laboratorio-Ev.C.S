@@ -60,10 +60,7 @@ interface MenuItem {
 export default function Sidebar({ isOpen }: SidebarProps) {
   const [location] = useLocation();
   const [solosOpen, setSolosOpen] = useState(true);
-  const [asfaltoOpen, setAsfaltoOpen] = useState(false);
-  const [concretoOpen, setConcretoOpen] = useState(false);
   const [adminOpen, setAdminOpen] = useState(false);
-  const [helpOpen, setHelpOpen] = useState(false);
   const { user, logout } = useAuth();
   const permissions = usePermissions();
 
@@ -89,10 +86,22 @@ export default function Sidebar({ isOpen }: SidebarProps) {
       onToggle: () => setSolosOpen(!solosOpen),
       children: [
         {
-          label: 'Solos',
-          icon: Mountain,
-          href: '/solos',
-          active: location.includes('/solos')
+          label: 'Densidade In-Situ',
+          icon: Target,
+          href: '/densidade-in-situ',
+          active: location.includes('/densidade-in-situ')
+        },
+        {
+          label: 'Densidade Real',
+          icon: Layers,
+          href: '/densidade-real',
+          active: location.includes('/densidade-real')
+        },
+        {
+          label: 'Densidade Máx/Mín',
+          icon: Scale,
+          href: '/densidade-max-min',
+          active: location.includes('/densidade-max-min')
         },
         {
           label: 'Asfalto',
@@ -111,44 +120,23 @@ export default function Sidebar({ isOpen }: SidebarProps) {
       ]
     },
     {
-      label: 'Gestão de Equipamentos',
+      label: 'Equipamentos',
       icon: Package,
-      expandable: true,
-      expanded: asfaltoOpen,
-      onToggle: () => setAsfaltoOpen(!asfaltoOpen),
-      children: [
-        {
-          label: 'Equipamentos',
-          icon: FlaskRound,
-          href: '/equipamentos',
-          active: location === '/equipamentos'
-        },
-        {
-          label: 'Verificação de Balança',
-          icon: Scale,
-          href: '/balanca-verificacao',
-          active: location === '/balanca-verificacao'
-        }
-      ]
+      href: '/equipamentos',
+      active: location === '/equipamentos'
+    },
+    {
+      label: 'Verificação de Balança',
+      icon: Scale,
+      href: '/balanca-verificacao',
+      active: location === '/balanca-verificacao'
     },
     {
       label: 'Relatórios',
       icon: FileText,
       href: '/relatorios',
       active: location === '/relatorios'
-    },
-    {
-      label: 'Assinatura',
-      icon: CreditCard,
-      href: '/subscription',
-      active: location === '/subscription'
-    },
-    {
-      label: 'Configurações',
-      icon: Settings,
-      href: '/configuracoes',
-      active: location === '/configuracoes'
-    },
+
     // Admin section - only for authorized users
     ...(permissions.canManageUsers ? [{
       label: 'Administração',
