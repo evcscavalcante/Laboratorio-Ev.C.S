@@ -648,7 +648,6 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                   <TableHead className="text-center">Determinação 1</TableHead>
                   <TableHead className="text-center">Determinação 2</TableHead>
                   <TableHead className="text-center">Determinação 3</TableHead>
-                  <TableHead className="text-center bg-yellow-50">Média</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -798,18 +797,16 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                       className="bg-blue-50 border-blue-200 font-mono"
                     />
                   </TableCell>
-                  <TableCell className="bg-yellow-100">
-                    <Input
-                      type="number"
-                      step="0.01"
-                      value={((calculations.moistureTop1 + calculations.moistureTop2 + calculations.moistureTop3) / 3).toFixed(2)}
-                      readOnly
-                      className="bg-yellow-100 border-yellow-300 font-mono font-bold"
-                    />
-                  </TableCell>
+
                 </TableRow>
               </TableBody>
             </Table>
+          </div>
+          <div className="mt-4 p-4 bg-blue-50 rounded-lg">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-medium text-gray-700">Umidade Média TOPO (%):</span>
+              <span className="text-lg font-bold text-blue-600 font-mono">{calculations.results.averageMoistureTop.toFixed(2)}</span>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -831,7 +828,6 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                   <TableHead className="text-center">Determinação 1</TableHead>
                   <TableHead className="text-center">Determinação 2</TableHead>
                   <TableHead className="text-center">Determinação 3</TableHead>
-                  <TableHead className="text-center bg-yellow-100">Média</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -860,9 +856,6 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                       onChange={(e) => updateData("moistureBase3", { ...data.moistureBase3, capsule: e.target.value })}
                       placeholder="Ex: CAP-B03"
                     />
-                  </TableCell>
-                  <TableCell className="bg-gray-100">
-                    <span className="text-xs text-gray-500">-</span>
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -893,9 +886,6 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                       onChange={(e) => updateData("moistureBase3", { ...data.moistureBase3, wetTare: parseFloat(e.target.value) || 0 })}
                       placeholder="0.00"
                     />
-                  </TableCell>
-                  <TableCell className="bg-gray-100">
-                    <span className="text-xs text-gray-500">-</span>
                   </TableCell>
                 </TableRow>
                 <TableRow>
