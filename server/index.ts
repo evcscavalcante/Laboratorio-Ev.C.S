@@ -238,7 +238,7 @@ async function startServer() {
   });
 
   // Rota temporária para buscar ensaios de densidade real sem autenticação
-  app.get('/api/tests/real-density/temp', async (req: Request, res: Response) => {
+  app.get('/api/tests/densidade-real/temp', async (req: Request, res: Response) => {
     try {
       const tests = await storage.getRealDensityTests();
       console.log('📋 Ensaios densidade real encontrados:', tests.length);
@@ -250,7 +250,7 @@ async function startServer() {
   });
 
   // Rota temporária para salvar ensaios de densidade real sem autenticação
-  app.post('/api/tests/real-density/temp', async (req: Request, res: Response) => {
+  app.post('/api/tests/densidade-real/temp', async (req: Request, res: Response) => {
     try {
       console.log('📥 Recebendo dados do ensaio densidade real (temp):', JSON.stringify(req.body, null, 2));
       
@@ -296,7 +296,7 @@ async function startServer() {
   });
 
   // Rota temporária para buscar ensaios máx/mín sem autenticação
-  app.get('/api/tests/max-min-density/temp', async (req: Request, res: Response) => {
+  app.get('/api/tests/densidade-max-min/temp', async (req: Request, res: Response) => {
     try {
       const tests = await storage.getMaxMinDensityTests();
       console.log('📋 Ensaios máx/mín encontrados:', tests.length);
@@ -308,7 +308,7 @@ async function startServer() {
   });
 
   // Rota temporária para salvar ensaios máx/mín sem autenticação
-  app.post('/api/tests/max-min-density/temp', async (req: Request, res: Response) => {
+  app.post('/api/tests/densidade-max-min/temp', async (req: Request, res: Response) => {
     try {
       console.log('📥 Recebendo dados do ensaio máx/mín (temp):', JSON.stringify(req.body, null, 2));
       

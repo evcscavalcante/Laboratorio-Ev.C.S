@@ -188,6 +188,12 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Problema de salvamento em densidade in-situ corrigido (removido .json() duplicado)
   - Notificações toast melhoradas com feedback em tempo real
   - Sistema com 18 ensaios detectados funcionando perfeitamente
+- June 15, 2025: Sistema padronizado e otimizado para performance
+  - Endpoints API padronizados para nomenclatura em português (densidade-in-situ, densidade-real, densidade-max-min)
+  - Sidebar com persistência de estado usando localStorage - lembra preferências do usuário
+  - Queries React Query otimizadas - removidas requisições desnecessárias que causavam overhead
+  - Problemas críticos de variáveis não definidas corrigidos após limpeza de código
+  - Sistema funcionando com performance otimizada e interface limpa
 
 ## User Preferences
 
