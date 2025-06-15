@@ -475,6 +475,14 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Cabeçalhos TestHeader padronizados com callbacks funcionais em todos os ensaios
   - Margens laterais minimizadas (px-0.5 mobile, px-1 desktop) para aproveitamento máximo
   - Proporções de colunas otimizadas (1fr:2fr) em todos os cabeçalhos
+- June 15, 2025: Bateria completa de testes executada e problemas corrigidos
+  - Teste de regressões: 100% sucesso (8/8 validações aprovadas)
+  - Teste de observabilidade: 100% sucesso (5/5 endpoints funcionando)
+  - Teste de segurança CSP: 100% sucesso (4/4 verificações aprovadas)
+  - Teste de cálculos técnicos: 100% sucesso (9/9 fórmulas NBR validadas)
+  - Teste de autenticação: 100% sucesso (5/5 após correção do endpoint sync-user)
+  - Endpoint de sincronização Firebase-PostgreSQL registrado diretamente no servidor principal
+  - Sistema completamente estável com 18 ensaios detectados no banco de dados
 
 ## User Preferences
 

@@ -185,6 +185,56 @@ async function startServer() {
     res.json({ user: req.user });
   });
 
+  // Sync user endpoint (protected by Firebase token)
+  app.post('/api/auth/sync-user', verifyFirebaseToken, async (req: Request, res: Response) => {
+    try {
+      console.log('🔄 Sincronizando usuário Firebase com PostgreSQL...');
+      const user = (req as any).user;
+      
+      if (!user) {
+        console.log('❌ Usuário não encontrado na requisição');
+        return res.status(401).json({ error: 'Usuário não autenticado' });
+      }
+      
+      console.log('👤 Dados do usuário:', { uid: user.uid, email: user.email, role: user.role });
+      
+      // Buscar dados do usuário no PostgreSQL
+      const [dbUser] = await db.select().from(users).where(eq(users.email, user.email));
+      
+      let finalRole = user.role;
+      let finalName = user.name;
+      
+      if (dbUser) {
+        console.log('✅ Usuário encontrado no banco, atualizando dados...');
+        finalRole = dbUser.role;
+        finalName = dbUser.name;
+      } else {
+        console.log('📝 Criando novo usuário no banco de dados...');
+        await db.insert(users).values({
+          firebase_uid: user.uid,
+          email: user.email,
+          name: user.name,
+          role: user.role,
+          active: true
+        });
+      }
+      
+      console.log('✅ Sincronização concluída com sucesso');
+      res.json({
+        success: true,
+        user: {
+          uid: user.uid,
+          email: user.email,
+          name: finalName,
+          role: finalRole
+        }
+      });
+    } catch (error) {
+      console.error('Erro ao sincronizar usuário:', error);
+      res.status(500).json({ error: 'Erro interno do servidor' });
+    }
+  });
+
   // Subscription plans (public access)
   app.get("/api/subscription/plans", async (req: Request, res: Response) => {
     try {

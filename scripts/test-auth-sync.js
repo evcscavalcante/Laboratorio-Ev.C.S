@@ -129,6 +129,7 @@ class AuthSyncTester {
     console.log('   Testando headers de autorização...');
     
     try {
+      // Teste com token inválido
       const output = execSync(`curl -s -X POST ${this.baseUrl}/api/auth/sync-user -H "Authorization: Bearer test-token" -H "Content-Type: application/json" -d '{}'`, { encoding: 'utf8' });
       
       if (output.includes('Token inválido') || output.includes('Token de autorização')) {
@@ -136,7 +137,17 @@ class AuthSyncTester {
         return true;
       }
       
+      // Teste sem header de autorização
+      const outputNoAuth = execSync(`curl -s -X POST ${this.baseUrl}/api/auth/sync-user -H "Content-Type: application/json" -d '{}'`, { encoding: 'utf8' });
+      
+      if (outputNoAuth.includes('Token de autorização necessário') || outputNoAuth.includes('autorização')) {
+        console.log('     ✓ Sistema de autorização detecta ausência de token');
+        return true;
+      }
+      
       console.log('     ❌ Sistema de autorização não está funcionando corretamente');
+      console.log(`     Resposta com token: ${output.substring(0, 100)}`);
+      console.log(`     Resposta sem token: ${outputNoAuth.substring(0, 100)}`);
       return false;
       
     } catch (error) {
