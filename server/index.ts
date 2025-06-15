@@ -82,6 +82,12 @@ import {
   securityHeaders 
 } from "./middleware/sql-protection";
 import { 
+  enforceDataIsolation, 
+  sanitizeDataByRole, 
+  requirePermission, 
+  auditLog 
+} from "./middleware/data-isolation";
+import { 
   densityInSituSchema, 
   realDensitySchema, 
   maxMinDensitySchema, 
@@ -713,12 +719,35 @@ async function startServer() {
     }
   );
 
-  // Equipamentos API endpoints
-  app.get('/api/equipamentos', verifyFirebaseToken, async (req: Request, res: Response) => {
+  // Equipamentos API endpoints com proteção hierárquica
+  app.get('/api/equipamentos', 
+    verifyFirebaseToken, 
+    enforceDataIsolation, 
+    sanitizeDataByRole, 
+    requirePermission('view_equipment'),
+    auditLog('VIEW_EQUIPAMENTOS'),
+    async (req: Request, res: Response) => {
     try {
-      // Buscar cápsulas e cilindros do banco PostgreSQL
-      const capsulasList = await db.select().from(capsulas);
-      const cilindrosList = await db.select().from(cilindros);
+      const user = (req as any).user;
+      let capsulasList, cilindrosList;
+
+      // DEVELOPER vê todos os equipamentos do sistema
+      if (user.role === 'DEVELOPER') {
+        capsulasList = await db.select().from(capsulas);
+        cilindrosList = await db.select().from(cilindros);
+      } else {
+        // Outros roles só veem equipamentos da própria organização
+        if (!user.organizationId) {
+          return res.status(403).json({ 
+            error: 'Acesso negado: usuário não associado a uma organização' 
+          });
+        }
+        
+        capsulasList = await db.select().from(capsulas)
+          .where(eq(capsulas.organization_id, user.organizationId));
+        cilindrosList = await db.select().from(cilindros)
+          .where(eq(cilindros.organization_id, user.organizationId));
+      }
       
       // Combinar e padronizar formato
       const equipamentos = [
@@ -755,7 +784,7 @@ async function startServer() {
         }))
       ];
       
-      console.log(`📦 Equipamentos encontrados: ${equipamentos.length} (${capsulasList.length} cápsulas, ${cilindrosList.length} cilindros)`);
+      console.log(`📦 Equipamentos encontrados (${user.role}): ${equipamentos.length} (${capsulasList.length} cápsulas, ${cilindrosList.length} cilindros)`);
       res.json(equipamentos);
     } catch (error) {
       console.error('Error fetching equipamentos:', error);
