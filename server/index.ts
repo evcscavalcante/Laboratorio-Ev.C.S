@@ -844,31 +844,7 @@ async function startServer() {
   // Rotas específicas integradas diretamente no servidor principal
   await registerPaymentRoutes(app);
 
-  // Error handling middleware
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    console.error('Server error:', err);
-    res.status(500).json({ message: "Internal server error" });
-  });
-
-  // Setup Vite AFTER all API routes are defined
-  try {
-    if (process.env.NODE_ENV === "development") {
-      console.log('Tentando configurar Vite...');
-      await setupVite(app, server);
-      console.log('Vite configurado com sucesso');
-    } else {
-      serveStatic(app);
-    }
-  } catch (error) {
-    console.error('Erro ao configurar Vite, continuando sem ele:', error);
-    // Servir arquivos estáticos como fallback
-    app.use(express.static('dist'));
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(process.cwd(), 'dist', 'index.html'));
-    });
-  }
-
-  // LGPD Endpoints Simplificados
+  // LGPD Endpoints Simplificados (ANTES do Vite setup)
   app.get('/api/lgpd/terms', (req, res) => {
     res.json({
       version: "1.0",
@@ -922,7 +898,6 @@ async function startServer() {
   });
 
   app.post('/api/lgpd/consent', (req, res) => {
-    // Versão simplificada que registra apenas no log
     const { consentType, consentStatus } = req.body;
     console.log(`📝 Consentimento LGPD registrado: ${consentType} = ${consentStatus}`);
     
@@ -934,7 +909,6 @@ async function startServer() {
   });
 
   app.get('/api/lgpd/my-data', (req, res) => {
-    // Retorna dados simulados para demonstração
     const mockData = {
       personalData: {
         email: "usuario@exemplo.com",
@@ -992,6 +966,32 @@ async function startServer() {
       timestamp: new Date().toISOString()
     });
   });
+
+  // Error handling middleware
+  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+    console.error('Server error:', err);
+    res.status(500).json({ message: "Internal server error" });
+  });
+
+  // Setup Vite AFTER all API routes are defined
+  try {
+    if (process.env.NODE_ENV === "development") {
+      console.log('Tentando configurar Vite...');
+      await setupVite(app, server);
+      console.log('Vite configurado com sucesso');
+    } else {
+      serveStatic(app);
+    }
+  } catch (error) {
+    console.error('Erro ao configurar Vite, continuando sem ele:', error);
+    // Servir arquivos estáticos como fallback
+    app.use(express.static('dist'));
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(process.cwd(), 'dist', 'index.html'));
+    });
+  }
+
+
 
   const PORT = parseInt(process.env.PORT || "5000", 10);
   server.listen(PORT, "0.0.0.0", () => {
