@@ -88,7 +88,7 @@ export default function TestHeader({
   };
 
   return (
-    <div className="bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-lg p-2 md:p-3 mb-4 shadow-sm">
+    <div className="bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-lg p-1 md:p-2 mb-4 shadow-sm">
       {/* Cabeçalho otimizado para mobile */}
       <div className="flex flex-col md:grid md:grid-cols-3 items-center mb-4 pb-3 border-b border-blue-300">
         {/* Mobile: Logo centralizado */}
