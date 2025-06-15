@@ -37,27 +37,27 @@
 - **Rate limiting** anti-ataques configurado
 - **Tokens JWT** com expiração automática
 
-### Proteção de Dados
-- **Endpoints críticos** 100% protegidos (27/27)
-- **Vulnerabilidades antigas** completamente eliminadas
-- **Sanitização de entrada** para prevenir injeções
-- **Logs de auditoria** em tempo real
+### Proteção de Endpoints
+- **27 endpoints críticos** protegidos com autenticação Firebase
+- **4 endpoints temporários** bloqueados com status 410 Gone
+- **Validação de entrada** com schemas Zod implementada
+- **Rate limiting** configurado para prevenir ataques
 
-### Infraestrutura Segura
-- **PostgreSQL** com conexões criptografadas
-- **API REST** com validação completa
-- **Bloqueio automático** de tentativas maliciosas
-- **Monitoramento 24/7** implementado
+### Infraestrutura Atual
+- **PostgreSQL** como banco de dados principal
+- **Firebase Authentication** para controle de acesso
+- **Express.js** com middlewares de segurança
+- **Logs estruturados** para monitoramento básico
 
 ## 🛡️ PADRÕES ATENDIDOS
 
 ### Medidas de Segurança Implementadas
-- ✅ **Mitigação de vulnerabilidades** - Implementadas medidas contra ataques comuns (OWASP)
-- ✅ **Controles de segurança** - Estrutura baseada em frameworks reconhecidos
-- ✅ **Autenticação robusta** - Firebase com validação de tokens
-- ✅ **Proteção de dados** - Criptografia e controle de acesso implementados
-- ✅ **Logs de auditoria** - Rastreabilidade de operações críticas
-- ✅ **Padrões técnicos** - Normas brasileiras de laboratório geotécnico
+- ✅ **Autenticação Firebase** - Validação de tokens em 27 endpoints protegidos
+- ✅ **Controle de acesso** - Sistema hierárquico de 5 roles (VIEWER a DEVELOPER)
+- ✅ **Validação de entrada** - Schemas Zod para prevenir injeções
+- ✅ **Rate limiting** - Proteção contra ataques automatizados
+- ✅ **Logs estruturados** - Registro de tentativas de acesso e operações
+- ✅ **Bloqueio de vulnerabilidades** - Endpoints temporários removidos
 
 *Nota: Estas são implementações técnicas de segurança. Conformidade legal com regulamentações específicas requer avaliação jurídica especializada.*
 

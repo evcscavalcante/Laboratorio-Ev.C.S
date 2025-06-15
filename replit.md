@@ -333,14 +333,14 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - GitHub Actions workflow completo com quality gates e aprovações
   - Scripts de gerenciamento de deploy (deploy-manager.js, pre-deploy-checks.js)
   - Monitoramento pós-deploy automático com alertas configuráveis
-- June 15, 2025: Sistema completo de proteção de dados sensíveis implementado
-  - Criptografia AES-256-GCM para todos os dados críticos e pessoais
-  - Sistema de backup automático do PostgreSQL com criptografia e compressão
-  - Auditoria completa de operações sensíveis com logs estruturados e alertas
-  - Controle de acesso granular RBAC com 6 roles e 20+ permissões específicas
-  - Middleware de segurança integrado para proteção automática de rotas
-  - Conformidade LGPD com criptografia de dados pessoais e trilha de auditoria
-  - Sistema de recuperação de emergência com procedimentos documentados
+- June 15, 2025: Sistema básico de segurança implementado
+  - Autenticação Firebase com validação de tokens em 27 endpoints protegidos
+  - Sistema de backup manual do PostgreSQL sem criptografia automática
+  - Logs básicos de operações com middleware Express estruturado
+  - Controle de acesso RBAC com 5 roles hierárquicos (VIEWER a DEVELOPER)
+  - Middleware de validação com schemas Zod para sanitização de entrada
+  - Bloqueio de endpoints temporários vulneráveis com status 410 Gone
+  - Rate limiting básico para proteção contra ataques automatizados
 - June 15, 2025: Melhorias significativas de UX implementadas nos ensaios laboratoriais
   - Sistema de navegação por seções com âncoras automáticas para ensaios complexos
   - Indicador de progresso visual em tempo real (header fixo com percentual)

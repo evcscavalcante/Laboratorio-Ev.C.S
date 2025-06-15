@@ -1,50 +1,28 @@
-# Proteção de Dados Sensíveis - Sistema Geotécnico
+# Segurança do Sistema - Laboratório Geotécnico
 
 ## Visão Geral
 
-O sistema implementa proteção abrangente de dados sensíveis através de múltiplas camadas de segurança:
+O sistema implementa medidas básicas de segurança através de:
 
-- **Criptografia AES-256-GCM** para dados críticos
-- **Backup automático criptografado** do PostgreSQL
-- **Auditoria completa** de todas as operações sensíveis
+- **Autenticação Firebase** para controle de acesso
+- **Validação de entrada** com schemas Zod
 - **Controle de acesso granular** com RBAC (Role-Based Access Control)
+- **Rate limiting** para proteção contra ataques
 
-## 1. Sistema de Criptografia
+## 1. Sistema de Autenticação
 
-### Algoritmo
-- **AES-256-GCM** com autenticação integrada
-- **Chave mestra** de 256 bits configurável
-- **IV (Initialization Vector)** único por operação
-- **Tag de autenticação** para integridade
+### Firebase Authentication
+- **Tokens JWT** validados em todos os endpoints protegidos
+- **5 roles hierárquicos**: VIEWER, TECHNICIAN, MANAGER, ADMIN, DEVELOPER
+- **27 endpoints** protegidos com middleware de autenticação
+- **4 endpoints temporários** bloqueados com status 410
 
-### Configuração
-```bash
-# Variável de ambiente obrigatória
-ENCRYPTION_MASTER_KEY=64caracteres_hex_key_aqui
-
-# Gerar nova chave (desenvolvimento)
-node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
-```
-
-### Dados Criptografados
-- **Dados pessoais** (LGPD): nomes, emails, telefones
-- **Dados de ensaios**: localização, operador, observações
-- **Backups**: todos os backups são criptografados
-- **Logs sensíveis**: informações de auditoria críticas
-
-### Uso Programático
+### Validação de Dados
 ```typescript
-import { dataEncryption, SecurityUtils } from './security';
+// Exemplo de validação com Zod
+import { densityInSituSchema } from '../shared/validation-schemas';
 
-// Criptografar dados de ensaio
-const encryptedTest = SecurityUtils.encryptTestData({
-  operator: "João Silva",
-  location: "Canteiro A-15",
-  notes: "Observações confidenciais"
-});
-
-// Descriptografar quando necessário
-const decryptedTest = SecurityUtils.decryptTestData(encryptedTest);
+const validatedData = densityInSituSchema.parse(requestData);
 ```
 
 ## 2. Sistema de Backup Automático
