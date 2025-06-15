@@ -20,6 +20,7 @@ export enum AlertType {
   DATABASE_ERROR = 'database_error',
   SECURITY_THREAT = 'security_threat',
   CALCULATION_ERROR = 'calculation_error',
+  NETWORK_ERROR = 'network_error',
   SYSTEM_DOWN = 'system_down'
 }
 
@@ -305,7 +306,7 @@ export class AlertingSystem {
       [AlertType.DATABASE_ERROR]: 'Verificar conectividade e integridade do banco de dados',
       [AlertType.SECURITY_THREAT]: 'Bloquear IPs suspeitos e revisar logs de segurança',
       [AlertType.CALCULATION_ERROR]: 'Verificar dados de entrada e validar fórmulas NBR',
-      [AlertType.NETWORK]: 'Verificar conectividade de rede e dependências externas',
+      [AlertType.NETWORK_ERROR]: 'Verificar conectividade de rede e dependências externas',
       [AlertType.SYSTEM_DOWN]: 'Reiniciar serviços e verificar dependências externas'
     };
 
