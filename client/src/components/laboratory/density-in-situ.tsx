@@ -1035,43 +1035,21 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
           </CardTitle>
         </CardHeader>
         <CardContent className="p-2 md:p-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {/* Fórmula 1 */}
-            <div className="border border-gray-300 p-4">
-              <div className="bg-gray-100 p-2 mb-2 text-center font-mono text-sm">
+          <div className="flex justify-center">
+            <div className="border border-gray-300 p-6 w-full max-w-md">
+              <div className="bg-blue-50 p-3 mb-4 text-center font-mono text-sm border border-blue-200 rounded">
                 ( {calculations.results.averageGammaNatDry.toFixed(3)} - {data.realDensityRef || '3.149'} ) × {calculations.results.averageGammaNatDry.toFixed(3)} = {((calculations.results.averageGammaNatDry - (parseFloat(data.realDensityRef) || 3.149)) * calculations.results.averageGammaNatDry).toFixed(3)}
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-6">
                 <div className="text-center">
-                  <Label className="text-sm font-medium">CR</Label>
-                  <div className="text-2xl font-bold font-mono text-blue-600">
+                  <Label className="text-sm font-medium text-blue-700">CR</Label>
+                  <div className="text-3xl font-bold font-mono text-blue-600">
                     {(((calculations.results.averageGammaNatDry - (parseFloat(data.realDensityRef) || 3.149)) * calculations.results.averageGammaNatDry) * 100).toFixed(1)}%
                   </div>
                 </div>
                 <div className="text-center">
-                  <Label className="text-sm font-medium">IV</Label>
-                  <div className="text-2xl font-bold font-mono text-blue-600">
-                    {(((parseFloat(data.realDensityRef) || 3.149) / calculations.results.averageGammaNatDry) - 1).toFixed(2)}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Fórmula 2 */}
-            <div className="border border-gray-300 p-4">
-              <div className="bg-gray-100 p-2 mb-2 text-center font-mono text-sm">
-                ( {calculations.results.averageGammaNatDry.toFixed(3)} - {data.realDensityRef || '3.149'} ) × {calculations.results.averageGammaNatDry.toFixed(3)} = {((calculations.results.averageGammaNatDry - (parseFloat(data.realDensityRef) || 3.149)) * calculations.results.averageGammaNatDry).toFixed(3)}
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="text-center">
-                  <Label className="text-sm font-medium">CR</Label>
-                  <div className="text-2xl font-bold font-mono text-blue-600">
-                    {(((calculations.results.averageGammaNatDry - (parseFloat(data.realDensityRef) || 3.149)) * calculations.results.averageGammaNatDry) * 100).toFixed(1)}%
-                  </div>
-                </div>
-                <div className="text-center">
-                  <Label className="text-sm font-medium">IV</Label>
-                  <div className="text-2xl font-bold font-mono text-blue-600">
+                  <Label className="text-sm font-medium text-blue-700">IV</Label>
+                  <div className="text-3xl font-bold font-mono text-blue-600">
                     {(((parseFloat(data.realDensityRef) || 3.149) / calculations.results.averageGammaNatDry) - 1).toFixed(2)}
                   </div>
                 </div>
@@ -1090,44 +1068,22 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
           </CardTitle>
         </CardHeader>
         <CardContent className="p-2 md:p-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {/* Fórmula 1 */}
-            <div className="border border-gray-300 p-4">
-              <div className="bg-gray-100 p-2 mb-2 text-center font-mono text-sm">
+          <div className="flex justify-center">
+            <div className="border border-gray-300 p-6 w-full max-w-md">
+              <div className="bg-green-50 p-3 mb-4 text-center font-mono text-sm border border-green-200 rounded">
                 ( {calculations.results.averageGammaNatDry.toFixed(3)} - {data.realDensityRef || '3.149'} ) × {calculations.results.averageGammaNatDry.toFixed(3)} = {((calculations.results.averageGammaNatDry - (parseFloat(data.realDensityRef) || 3.149)) * calculations.results.averageGammaNatDry).toFixed(3)}
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-6">
                 <div className="text-center">
-                  <Label className="text-sm font-medium">CR</Label>
-                  <div className="text-2xl font-bold font-mono text-green-600">
+                  <Label className="text-sm font-medium text-green-700">CR</Label>
+                  <div className="text-3xl font-bold font-mono text-green-600">
                     {(((calculations.results.averageGammaNatDry - (parseFloat(data.realDensityRef) || 3.149)) * calculations.results.averageGammaNatDry) * 100 * 0.97).toFixed(1)}%
                   </div>
                 </div>
                 <div className="text-center">
-                  <Label className="text-sm font-medium">IV</Label>
-                  <div className="text-2xl font-bold font-mono text-green-600">
+                  <Label className="text-sm font-medium text-green-700">IV</Label>
+                  <div className="text-3xl font-bold font-mono text-green-600">
                     {(((parseFloat(data.realDensityRef) || 3.149) / calculations.results.averageGammaNatDry) - 1 + 0.01).toFixed(2)}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Fórmula 2 */}
-            <div className="border border-gray-300 p-4">
-              <div className="bg-gray-100 p-2 mb-2 text-center font-mono text-sm">
-                ( {calculations.results.averageGammaNatDry.toFixed(3)} - {data.realDensityRef || '3.149'} ) × {calculations.results.averageGammaNatDry.toFixed(3)} = {((calculations.results.averageGammaNatDry - (parseFloat(data.realDensityRef) || 3.149)) * calculations.results.averageGammaNatDry).toFixed(3)}
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="text-center">
-                  <Label className="text-sm font-medium">CR</Label>
-                  <div className="text-2xl font-bold font-mono text-green-600">
-                    {(((calculations.results.averageGammaNatDry - (parseFloat(data.realDensityRef) || 3.149)) * calculations.results.averageGammaNatDry) * 100 * 0.96).toFixed(1)}%
-                  </div>
-                </div>
-                <div className="text-center">
-                  <Label className="text-sm font-medium">IV</Label>
-                  <div className="text-2xl font-bold font-mono text-green-600">
-                    {(((parseFloat(data.realDensityRef) || 3.149) / calculations.results.averageGammaNatDry) - 1 + 0.02).toFixed(2)}
                   </div>
                 </div>
               </div>
