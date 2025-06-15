@@ -21,18 +21,26 @@ import { ptBR } from 'date-fns/locale';
 interface SavedTest {
   id: number;
   testType: string;
-  registro: string;
-  operador: string;
-  responsavelCalculo: string;
-  verificador: string;
-  data: string;
-  hora: string;
-  local: string;
-  quadrante: string;
-  camada: string;
-  origem: string;
+  registrationNumber?: string;
+  registro?: string;
+  operator?: string;
+  operador?: string;
+  responsavelCalculo?: string;
+  verificador?: string;
+  date?: string;
+  data?: string;
+  hora?: string;
+  local?: string;
+  quadrante?: string;
+  camada?: string;
+  origin?: string;
+  origem?: string;
+  material?: string;
   createdAt: string;
-  updatedAt: string;
+  updatedAt?: string;
+  results?: {
+    status?: string;
+  };
 }
 
 const EnsaiosSalvos: React.FC = () => {
@@ -40,35 +48,43 @@ const EnsaiosSalvos: React.FC = () => {
   const [filterType, setFilterType] = useState('todos');
 
   // Buscar ensaios de densidade in-situ
-  const { data: densityInSituTests = [] } = useQuery({
+  const { data: densityInSituTests = [] } = useQuery<SavedTest[]>({
     queryKey: ['/api/tests/densidade-in-situ/temp'],
     enabled: true
   });
 
   // Buscar ensaios de densidade real
-  const { data: densityRealTests = [] } = useQuery({
+  const { data: densityRealTests = [] } = useQuery<SavedTest[]>({
     queryKey: ['/api/tests/densidade-real/temp'],
     enabled: true
   });
 
   // Buscar ensaios de densidade máx/mín
-  const { data: densityMaxMinTests = [] } = useQuery({
+  const { data: densityMaxMinTests = [] } = useQuery<SavedTest[]>({
     queryKey: ['/api/tests/densidade-max-min/temp'],
     enabled: true
   });
 
-  // Combinar todos os ensaios
+  // Combinar todos os ensaios com tipagem correta
   const allTests: SavedTest[] = [
-    ...densityInSituTests.map((test: any) => ({ ...test, testType: 'densidade-in-situ' })),
-    ...densityRealTests.map((test: any) => ({ ...test, testType: 'densidade-real' })),
-    ...densityMaxMinTests.map((test: any) => ({ ...test, testType: 'densidade-max-min' }))
-  ].sort((a, b) => new Date(b.createdAt || b.data).getTime() - new Date(a.createdAt || a.data).getTime());
+    ...(Array.isArray(densityInSituTests) ? densityInSituTests.map((test: any) => ({ ...test, testType: 'densidade-in-situ' })) : []),
+    ...(Array.isArray(densityRealTests) ? densityRealTests.map((test: any) => ({ ...test, testType: 'densidade-real' })) : []),
+    ...(Array.isArray(densityMaxMinTests) ? densityMaxMinTests.map((test: any) => ({ ...test, testType: 'densidade-max-min' })) : [])
+  ].sort((a, b) => new Date(b.createdAt || b.data || b.date || '').getTime() - new Date(a.createdAt || a.data || a.date || '').getTime());
 
   // Filtrar ensaios
   const filteredTests = allTests.filter(test => {
-    const matchesSearch = test.registro?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         test.operador?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         test.local?.toLowerCase().includes(searchTerm.toLowerCase());
+    const registro = test.registrationNumber || test.registro || '';
+    const operador = test.operator || test.operador || '';
+    const local = test.local || '';
+    const material = test.material || '';
+    const origem = test.origin || test.origem || '';
+    
+    const matchesSearch = registro.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         operador.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         local.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         material.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         origem.toLowerCase().includes(searchTerm.toLowerCase());
     
     const matchesFilter = filterType === 'todos' || test.testType === filterType;
     
@@ -205,30 +221,53 @@ const EnsaiosSalvos: React.FC = () => {
                         <Badge className={getTestTypeColor(test.testType)}>
                           {getTestTypeLabel(test.testType)}
                         </Badge>
-                        <h3 className="font-semibold text-lg">{test.registro}</h3>
+                        <h3 className="font-semibold text-lg">
+                          {test.registrationNumber || test.registro || `Ensaio #${test.id}`}
+                        </h3>
+                        {test.results?.status && (
+                          <Badge variant={test.results.status === 'APROVADO' ? 'default' : 'secondary'}>
+                            {test.results.status}
+                          </Badge>
+                        )}
                       </div>
                       
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm text-gray-600">
                         <div className="flex items-center gap-1">
                           <User size={14} />
-                          <span>Operador: {test.operador}</span>
+                          <span>Operador: {test.operator || test.operador || 'Não informado'}</span>
                         </div>
                         <div className="flex items-center gap-1">
                           <Calendar size={14} />
                           <span>
-                            {test.data} às {test.hora}
+                            {test.date || test.data || 'Data não informada'}
+                            {test.hora && ` às ${test.hora}`}
                           </span>
                         </div>
                         <div className="flex items-center gap-1">
                           <MapPin size={14} />
-                          <span>{test.local} - {test.quadrante}</span>
+                          <span>
+                            {test.material && `Material: ${test.material}`}
+                            {test.origin || test.origem ? ` - ${test.origin || test.origem}` : ''}
+                            {test.local && ` - ${test.local}`}
+                            {test.quadrante && ` - ${test.quadrante}`}
+                          </span>
                         </div>
                       </div>
                       
                       <div className="mt-2 text-sm text-gray-500">
-                        <span>Responsável: {test.responsavelCalculo}</span>
-                        <span className="mx-2">•</span>
-                        <span>Verificador: {test.verificador}</span>
+                        {test.responsavelCalculo && (
+                          <>
+                            <span>Responsável: {test.responsavelCalculo}</span>
+                            {test.verificador && <span className="mx-2">•</span>}
+                          </>
+                        )}
+                        {test.verificador && <span>Verificador: {test.verificador}</span>}
+                        {test.createdAt && (
+                          <>
+                            <span className="mx-2">•</span>
+                            <span>Criado: {new Date(test.createdAt).toLocaleDateString('pt-BR')}</span>
+                          </>
+                        )}
                       </div>
                     </div>
                     
