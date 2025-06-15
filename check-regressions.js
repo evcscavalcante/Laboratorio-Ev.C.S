@@ -37,8 +37,8 @@ const CRITICAL_COMPONENTS = {
   'dashboard': {
     file: 'client/src/pages/dashboard-simplified.tsx',
     requiredFeatures: [
-      'Estatísticas',
-      'Ações rápidas',
+      'Statistics Cards',
+      'Quick Actions',
       'stat-card',
       'Performance'
     ]

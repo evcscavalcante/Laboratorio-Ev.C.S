@@ -209,6 +209,14 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Mobile-first: sidebar colapsável real, botão menu reposicionado, touch targets otimizados
   - Performance melhorada: componentes React Query otimizados, menos re-renders
   - Interface limpa: removidas seções informativas desnecessárias, foco na funcionalidade
+- June 15, 2025: Sistema de prevenção de regressões implementado
+  - Component Registry: versionamento de componentes críticos com contratos definidos
+  - Development Hooks: verificação automática durante hot reload do Vite
+  - Regression Test Suite: testes específicos para funcionalidades essenciais
+  - Script de verificação: comando 'node check-regressions.js' para validação manual
+  - Alertas visuais: notificações automáticas quando regressões são detectadas
+  - Manual do usuário restaurado na sidebar após otimizações
+  - Sistema elimina loop de manutenção ao adicionar novas funcionalidades
 
 ## User Preferences
 
