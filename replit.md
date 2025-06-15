@@ -502,6 +502,8 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - DELETE /api/tests/densidade-max-min/temp/:id para densidade máx/mín
   - Sistema de exclusão funcionando sem reinicialização do site
   - Sincronização Firebase-PostgreSQL otimizada para desenvolvimento
+  - Atualização automática da lista após exclusão (sem reload manual)
+  - Interface fluida com contadores atualizados em tempo real
   - Todas as funcionalidades operacionais: criar, visualizar, buscar, filtrar e excluir ensaios
 
 ## User Preferences

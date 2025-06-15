@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -46,6 +46,7 @@ interface SavedTest {
 const EnsaiosSalvos: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('todos');
+  const queryClient = useQueryClient();
 
   // Buscar ensaios de densidade in-situ
   const { data: densityInSituTests = [] } = useQuery<SavedTest[]>({
@@ -163,9 +164,11 @@ const EnsaiosSalvos: React.FC = () => {
           });
 
           if (response.ok) {
+            // Invalidar cache para atualizar automaticamente a lista
+            queryClient.invalidateQueries({ queryKey: ['/api/tests/densidade-in-situ/temp'] });
+            queryClient.invalidateQueries({ queryKey: ['/api/tests/densidade-real/temp'] });
+            queryClient.invalidateQueries({ queryKey: ['/api/tests/densidade-max-min/temp'] });
             alert('Ensaio excluído com sucesso!');
-            // Recarregar a página para atualizar a lista
-            window.location.reload();
           } else {
             alert('Erro ao excluir o ensaio. Tente novamente.');
           }
