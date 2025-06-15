@@ -6,10 +6,6 @@ import {
   ChevronDown, 
   ChevronRight,
   Home,
-  Settings,
-  Mountain,
-  Car,
-  Building2,
   Target,
   Layers,
   Scale,
@@ -17,14 +13,11 @@ import {
   Users,
   Building,
   LucideIcon,
-  HelpCircle,
-  FileText,
   Package,
-  Book,
+  FileText,
   UserCog,
   LogOut,
-  User,
-  CreditCard
+  User
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
@@ -64,147 +57,107 @@ export default function Sidebar({ isOpen }: SidebarProps) {
   const { user, logout } = useAuth();
   const permissions = usePermissions();
 
-  // Build menu items with proper permission checks
-  const buildMenuItems = (): MenuItem[] => [
-    {
-      label: 'Dashboard',
-      icon: Home,
-      href: '/',
-      active: location === '/'
-    },
-    {
-      label: 'Analytics',
-      icon: BarChart3,
-      href: '/analytics',
-      active: location === '/analytics'
-    },
-    {
-      label: 'Ensaios',
-      icon: FlaskRound,
-      expandable: true,
-      expanded: solosOpen,
-      onToggle: () => setSolosOpen(!solosOpen),
-      children: [
-        {
-          label: 'Densidade In-Situ',
-          icon: Target,
-          href: '/densidade-in-situ',
-          active: location.includes('/densidade-in-situ')
-        },
-        {
-          label: 'Densidade Real',
-          icon: Layers,
-          href: '/densidade-real',
-          active: location.includes('/densidade-real')
-        },
-        {
-          label: 'Densidade Máx/Mín',
-          icon: Scale,
-          href: '/densidade-max-min',
-          active: location.includes('/densidade-max-min')
-        },
-        {
-          label: 'Asfalto',
-          icon: Car,
-          href: '/asfalto',
-          active: location.includes('/asfalto'),
-          disabled: true
-        },
-        {
-          label: 'Concreto',
-          icon: Building2,
-          href: '/concreto',
-          active: location.includes('/concreto'),
-          disabled: true
-        }
-      ]
-    },
-    {
-      label: 'Equipamentos',
-      icon: Package,
-      href: '/equipamentos',
-      active: location === '/equipamentos'
-    },
-    {
-      label: 'Verificação de Balança',
-      icon: Scale,
-      href: '/balanca-verificacao',
-      active: location === '/balanca-verificacao'
-    },
-    {
-      label: 'Relatórios',
-      icon: FileText,
-      href: '/relatorios',
-      active: location === '/relatorios'
-    },
-    // Admin section - only for authorized users
-    ...(permissions.canManageUsers ? [{
-      label: 'Administração',
-      icon: Shield,
-      expandable: true,
-      expanded: adminOpen,
-      onToggle: () => setAdminOpen(!adminOpen),
-      children: [
-        {
-          label: 'Painel Admin',
-          icon: Settings,
-          href: '/admin',
-          active: location === '/admin'
-        },
-        {
-          label: 'Usuários',
-          icon: Users,
-          href: '/admin/users',
-          active: location === '/admin/users'
-        },
-        {
-          label: 'Gerenciar Usuários',
-          icon: UserCog,
-          href: '/admin/user-roles',
-          active: location === '/admin/user-roles'
-        },
-        {
-          label: 'Organizações',
-          icon: Building,
-          href: '/admin/organizations',
-          active: location === '/admin/organizations'
-        },
-        {
-          label: 'Criar Usuário',
-          icon: UserCog,
-          href: '/admin/create-user',
-          active: location === '/admin/create-user'
-        }
-      ]
-    }] : []),
-    {
-      label: 'Ajuda',
-      icon: HelpCircle,
-      expandable: true,
-      expanded: helpOpen,
-      onToggle: () => setHelpOpen(!helpOpen),
-      children: [
-        {
-          label: 'Manual do Usuário',
-          icon: Book,
-          href: '/help/manual-usuario',
-          active: location === '/help/manual-usuario'
-        },
-        {
-          label: 'Manual Administrativo',
-          icon: UserCog,
-          href: '/help/manual-admin',
-          active: location === '/help/manual-admin'
-        },
-        {
-          label: 'Teste de Acesso',
-          icon: Shield,
-          href: '/test-access',
-          active: location === '/test-access'
-        }
-      ]
+  // Build simplified menu items
+  const buildMenuItems = (): MenuItem[] => {
+    const items: MenuItem[] = [
+      {
+        label: 'Dashboard',
+        icon: Home,
+        href: '/',
+        active: location === '/'
+      },
+      {
+        label: 'Analytics',
+        icon: BarChart3,
+        href: '/analytics',
+        active: location === '/analytics'
+      },
+      {
+        label: 'Ensaios',
+        icon: FlaskRound,
+        expandable: true,
+        expanded: solosOpen,
+        onToggle: () => setSolosOpen(!solosOpen),
+        children: [
+          {
+            label: 'Densidade In-Situ',
+            icon: Target,
+            href: '/densidade-in-situ',
+            active: location.includes('/densidade-in-situ')
+          },
+          {
+            label: 'Densidade Real',
+            icon: Layers,
+            href: '/densidade-real',
+            active: location.includes('/densidade-real')
+          },
+          {
+            label: 'Densidade Máx/Mín',
+            icon: Scale,
+            href: '/densidade-max-min',
+            active: location.includes('/densidade-max-min')
+          }
+        ]
+      },
+      {
+        label: 'Equipamentos',
+        icon: Package,
+        href: '/equipamentos',
+        active: location === '/equipamentos'
+      },
+      {
+        label: 'Verificação de Balança',
+        icon: Scale,
+        href: '/balanca-verificacao',
+        active: location === '/balanca-verificacao'
+      },
+      {
+        label: 'Relatórios',
+        icon: FileText,
+        href: '/relatorios',
+        active: location === '/relatorios'
+      }
+    ];
+
+    // Add admin section if user has permissions
+    if (permissions.canManageUsers) {
+      items.push({
+        label: 'Administração',
+        icon: Shield,
+        expandable: true,
+        expanded: adminOpen,
+        onToggle: () => setAdminOpen(!adminOpen),
+        children: [
+          {
+            label: 'Painel Admin',
+            icon: Shield,
+            href: '/admin',
+            active: location === '/admin'
+          },
+          {
+            label: 'Usuários',
+            icon: Users,
+            href: '/admin/users',
+            active: location === '/admin/users'
+          },
+          {
+            label: 'Gerenciar Usuários',
+            icon: UserCog,
+            href: '/admin/user-roles',
+            active: location === '/admin/user-roles'
+          },
+          {
+            label: 'Organizações',
+            icon: Building,
+            href: '/admin/organizations',
+            active: location === '/admin/organizations'
+          }
+        ]
+      });
     }
-  ];
+
+    return items;
+  };
 
   const menuItems = buildMenuItems();
 

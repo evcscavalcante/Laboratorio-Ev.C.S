@@ -9,7 +9,7 @@ export default function SolosPage() {
       title: 'Densidade In-Situ',
       description: 'Determinação da densidade do solo em seu estado natural no campo',
       icon: Target,
-      href: '/solos/densidade-in-situ',
+      href: '/densidade-in-situ',
       status: 'Disponível',
       color: 'bg-green-500'
     },
@@ -17,7 +17,7 @@ export default function SolosPage() {
       title: 'Densidade Real',
       description: 'Determinação da densidade real dos grãos de solo',
       icon: Layers,
-      href: '/solos/densidade-real',
+      href: '/densidade-real',
       status: 'Disponível',
       color: 'bg-blue-500'
     },
@@ -25,7 +25,7 @@ export default function SolosPage() {
       title: 'Densidade Máxima/Mínima',
       description: 'Ensaio para determinação das densidades máxima e mínima de solos granulares',
       icon: Scale,
-      href: '/solos/densidade-max-min',
+      href: '/densidade-max-min',
       status: 'Disponível',
       color: 'bg-purple-500'
     }
@@ -75,34 +75,7 @@ export default function SolosPage() {
           })}
         </div>
 
-        {/* Informações Adicionais */}
-        <div className="mt-12">
-          <Card className="bg-white/80 backdrop-blur-sm border-0">
-            <CardHeader>
-              <CardTitle className="text-xl text-gray-900">Sobre os Ensaios de Solo</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-gray-600">
-                Os ensaios de caracterização de solos são fundamentais para a análise geotécnica. 
-                Cada ensaio fornece parâmetros específicos necessários para projetos de engenharia.
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-                <div className="bg-blue-50 p-4 rounded-lg">
-                  <h4 className="font-semibold text-blue-900 mb-2">Precisão</h4>
-                  <p className="text-sm text-blue-700">Cálculos automáticos com alta precisão</p>
-                </div>
-                <div className="bg-green-50 p-4 rounded-lg">
-                  <h4 className="font-semibold text-green-900 mb-2">Normas Técnicas</h4>
-                  <p className="text-sm text-green-700">Baseado em normas ABNT e internacionais</p>
-                </div>
-                <div className="bg-purple-50 p-4 rounded-lg">
-                  <h4 className="font-semibold text-purple-900 mb-2">Relatórios</h4>
-                  <p className="text-sm text-purple-700">Geração automática de relatórios técnicos</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+
       </div>
     </div>
   );

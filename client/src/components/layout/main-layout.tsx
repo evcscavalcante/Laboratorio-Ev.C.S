@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import Sidebar from '@/components/navigation/sidebar';
+import Sidebar from '@/components/navigation/sidebar-optimized';
 import Breadcrumb from '@/components/ui/breadcrumb';
 
 interface MainLayoutProps {
@@ -23,14 +23,14 @@ export default function MainLayout({ children }: MainLayoutProps) {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Mobile menu button */}
-      <div className="lg:hidden fixed top-4 left-4 z-50">
+      <div className="lg:hidden fixed top-4 right-4 z-50">
         <Button
           variant="outline"
           size="sm"
           onClick={toggleSidebar}
-          className="bg-white shadow-md"
+          className="bg-white shadow-md border-gray-300 hover:bg-gray-50"
         >
-          {sidebarOpen ? <X size={16} /> : <Menu size={16} />}
+          {sidebarOpen ? <X size={18} /> : <Menu size={18} />}
         </Button>
       </div>
 
