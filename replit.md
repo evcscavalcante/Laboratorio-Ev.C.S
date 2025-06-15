@@ -278,6 +278,14 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Hook useValidation para validação client-side em tempo real
   - Componente ValidationFeedback para feedback visual
   - Headers de segurança e logs estruturados implementados
+- June 15, 2025: Suíte completa de testes expandida implementada
+  - Testes unitários para funções críticas de cálculo geotécnico (NBR 9813, 17212, 12004/12051)
+  - Testes de integração para fluxos completos (autenticação híbrida, workflow de ensaios)
+  - Testes de segurança para validação contra SQL injection, XSS, rate limiting
+  - Testes de performance para escalabilidade (50+ requisições simultâneas, <500ms response)
+  - Test Runner automatizado com relatórios detalhados e métricas de cobertura
+  - Scripts npm organizados por tipo de teste (unit, integration, security, performance)
+  - Validação de ambiente de testes e execução contínua configurada
 
 ## User Preferences
 
