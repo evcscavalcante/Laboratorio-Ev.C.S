@@ -334,11 +334,19 @@ export default function EquipamentosGestao() {
     }
   };
 
-  const getConferenciaStatus = (proximaConferencia?: Date) => {
+  const getConferenciaStatus = (proximaConferencia?: Date | string) => {
     if (!proximaConferencia) return 'pendente';
     
+    // Garantir que temos um objeto Date válido
+    const dataConferencia = proximaConferencia instanceof Date 
+      ? proximaConferencia 
+      : new Date(proximaConferencia);
+    
+    // Verificar se a data é válida
+    if (isNaN(dataConferencia.getTime())) return 'pendente';
+    
     const hoje = new Date();
-    const diasRestantes = Math.ceil((proximaConferencia.getTime() - hoje.getTime()) / (1000 * 60 * 60 * 24));
+    const diasRestantes = Math.ceil((dataConferencia.getTime() - hoje.getTime()) / (1000 * 60 * 60 * 24));
     
     if (diasRestantes < 0) return 'vencido';
     if (diasRestantes <= 30) return 'proximo';
