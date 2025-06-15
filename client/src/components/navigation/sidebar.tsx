@@ -61,6 +61,7 @@ export default function Sidebar({ isOpen }: SidebarProps) {
   const [location] = useLocation();
   const [solosOpen, setSolosOpen] = useState(true);
   const [adminOpen, setAdminOpen] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
   const { user, signOut } = useAuth();
   const permissions = usePermissions();
 
