@@ -782,6 +782,17 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Console logs informativos para feedback durante desenvolvimento
   - Sistema mantém layout existente sem modificações visuais
   - Funcionalidade pronta para uso em produção com testes validados
+- June 16, 2025: NUMERAÇÃO SIMPLIFICADA DE EQUIPAMENTOS IMPLEMENTADA E VALIDADA
+  - Sistema reformulado para usar numeração 1-8 em vez de códigos complexos (CIL-CRAV-001, etc.)
+  - Detecção automática de tipo baseada no contexto da calculadora
+  - Trigger de preenchimento otimizado: ativa com 1 dígito em vez de 3+ caracteres
+  - Mapeamento inteligente: cilindros 1-2 (biselados in-situ), 3-4 (padrão máx/mín), 5 (proctor)
+  - Cápsulas organizadas: 1-3 (pequenas densidade real), 4-6 (médias umidade), 7-8 (grandes frigideira)
+  - Hook useEquipmentAutofill atualizado para buscar por números simples
+  - Todos os useEffect em calculadoras ajustados para length >= 1
+  - Banco PostgreSQL reestruturado com 13 equipamentos: 5 cilindros + 8 cápsulas
+  - Sistema validado: dados corretos carregando automaticamente por número
+  - Workflow de laboratório otimizado: digitação mais rápida e intuitiva
 
 ## User Preferences
 
