@@ -14,6 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import { localDataManager } from "@/lib/local-storage";
 import TestHeader from "@/components/test-header";
 import { useEquipmentAutofill } from "@/hooks/useEquipmentAutofill";
+import { firebaseSync } from "@/lib/firebase-sync";
 
 interface RealDensityData {
   registrationNumber: string;
@@ -347,16 +348,36 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
     mutationFn: async (testData: any) => {
       return apiRequest("POST", "/api/tests/densidade-real/temp", testData);
     },
-    onSuccess: (result) => {
+    onSuccess: async (result) => {
       const response = result.json ? result.json() : result;
+      
+      // Sincronizar com Firebase Firestore
+      const firebaseSuccess = await firebaseSync.syncEnsaio({
+        ...data,
+        results: {
+          difference: realDensityDifference,
+          average: averageRealDensity,
+          status: status
+        }
+      }, 'densidade-real');
+
       toast({ 
         title: "✅ Ensaio Salvo com Sucesso!",
-        description: `Ensaio de densidade real salvo no banco PostgreSQL.`,
+        description: firebaseSuccess 
+          ? `Ensaio salvo no PostgreSQL e sincronizado com Firebase.`
+          : `Ensaio salvo no PostgreSQL. Sincronização Firebase falharam.`,
         duration: 5000,
       });
+      
       queryClient.invalidateQueries({ queryKey: ["/api/tests/densidade-real/temp"] });
       localStorage.removeItem('density-real-progress');
       console.log('🗑️ Progresso do ensaio de densidade real limpo após salvamento');
+      
+      if (firebaseSuccess) {
+        console.log('✅ Dados sincronizados com Firebase Firestore');
+      } else {
+        console.log('⚠️ Falha na sincronização Firebase - dados mantidos no PostgreSQL');
+      }
     },
     onError: (error) => {
       toast({ 

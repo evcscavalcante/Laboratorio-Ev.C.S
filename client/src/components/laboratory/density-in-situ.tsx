@@ -15,6 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import { localDataManager } from "@/lib/local-storage";
 import TestHeader from "@/components/test-header";
 import { useEquipmentAutofill } from "@/hooks/useEquipmentAutofill";
+import { firebaseSync } from "@/lib/firebase-sync";
 
 interface DensityInSituData {
   registrationNumber: string;
