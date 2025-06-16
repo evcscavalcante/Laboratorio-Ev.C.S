@@ -397,8 +397,8 @@ export default function EquipamentosFixed() {
         </Card>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {equipamentosFiltrados.map((equipamento) => (
-            <Card key={`${equipamento.id}-${equipamento.codigo}`} className="hover:shadow-md transition-shadow">
+          {equipamentosFiltrados.map((equipamento, index) => (
+            <Card key={`${equipamento.tipo}-${equipamento.id}-${equipamento.codigo}-${index}`} className="hover:shadow-md transition-shadow">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-lg flex items-center gap-2">
