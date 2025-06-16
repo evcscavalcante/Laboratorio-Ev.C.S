@@ -1,0 +1,59 @@
+queryClient.ts:96 
+ GET https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/api/tests/densidade-max-min/temp 410 (Gone)
+Explanation
+
+Understanding the problem
+The 410 Gone status code indicates that the requested resource is no longer available at the server and no forwarding address is known. In the context of your fetch request, this means the specific API endpoint you are trying to access (/api/tests/densidade-max-min/temp) has been permanently removed or is no longer accessible via that URL. This is not an authorization issue, even though your code includes Firebase authorization logic.
+
+How to verify
+You can verify this by attempting to access the same URL directly in your browser or by using a tool like curl. If you receive a 410 status code or a similar "resource not found" error, it confirms that the issue is with the endpoint itself, not your code's authorization part.
+
+Suggested fix
+The fix is to update the URL in your fetch request to the correct and currently active endpoint for the resource you are trying to access. You will need to consult the API documentation or the service provider to determine the correct URL.
+
+Code
+
+// Get Firebase token for authorization
+    let authHeaders: Record<string, string> = {};
+
+    if (auth.currentUser) {
+      try {
+        const token = await getIdToken(auth.currentUser);
+        authHeaders.Authorization = `Bearer ${token}`;
+      } catch (error) {
+        console.warn('Não foi possível obter token Firebase:', error);
+      }
+    }
+
+    // Update the URL to the correct endpoint
+    const correctUrl = 'https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/api/tests/densidade-max-min/new-temp-endpoint'; // Replace with the actual correct URL
+
+    const res = await fetch(correctUrl, { // Use the correctUrl
+      headers: authHeaders,
+      credentials: "include",
+    });
+
+    if (unauthorizedBehavior === "returnNull" && res.status === 401) {
+      return null;
+    }
+
+    await throwIfResNotOk(res);
+    return await res.json();
+Use code snippets with caution
+
+Summary
+The 410 Gone error signifies that the requested API endpoint has been permanently removed. To fix this, update the fetch URL to the correct and currently available endpoint for the desired resource.
+
+Sources and related content
+Data used to understand this message
+Use search instead
+AI tools may generate inaccurate info that doesn't represent Google's views. Data sent to Google may be seen by human reviewers to improve this feature. Open settings or learn more
+
+
+
+queryClient.ts:96 
+ GET https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/api/tests/densidade-real/temp 410 (Gone)
+queryClient.ts:96 
+ GET https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/api/tests/densidade-in-situ/temp 410 (Gone)
+﻿
+

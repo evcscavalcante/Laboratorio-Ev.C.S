@@ -47,17 +47,17 @@ interface TestData {
 const Analytics: React.FC = () => {
   // Buscar dados de todos os tipos de ensaios
   const { data: densityInSituTests = [] } = useQuery<TestData[]>({
-    queryKey: ['/api/tests/densidade-in-situ/temp'],
+    queryKey: ['/api/tests/density-in-situ'],
     enabled: true
   });
 
   const { data: densityRealTests = [] } = useQuery<TestData[]>({
-    queryKey: ['/api/tests/densidade-real/temp'],
+    queryKey: ['/api/tests/real-density'],
     enabled: true
   });
 
   const { data: densityMaxMinTests = [] } = useQuery<TestData[]>({
-    queryKey: ['/api/tests/densidade-max-min/temp'],
+    queryKey: ['/api/tests/max-min-density'],
     enabled: true
   });
 

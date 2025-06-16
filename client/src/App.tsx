@@ -2,6 +2,7 @@ import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
+import { useEffect } from "react";
 
 import { DataSyncProvider } from "@/contexts/data-sync-context";
 import MainLayout from "@/components/layout/main-layout";
@@ -37,6 +38,16 @@ import ConfiguracoesLGPD from "@/pages/configuracoes-lgpd";
 
 function Router() {
   const { user, loading } = useAuth();
+
+  // Clear old cached queries that might still try temp endpoints
+  useEffect(() => {
+    queryClient.invalidateQueries({
+      predicate: (query) => {
+        const key = query.queryKey[0];
+        return typeof key === 'string' && key.includes('/temp');
+      }
+    });
+  }, []);
 
   // Permitir acesso público aos termos de uso
   if (window.location.pathname === '/termos-uso') {
