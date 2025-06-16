@@ -7,11 +7,12 @@ import { registerPaymentRoutes } from "./payment-routes";
 import { setupVite, serveStatic } from "./vite";
 import MemoryStore from "memorystore";
 import { db } from "./db";
-import { users, organizations, notifications, capsulas, cilindros } from "@shared/schema";
+import { users, organizations, notifications, capsulas, cilindros, userActionLogs } from "@shared/schema";
 import { eq, desc, sql } from "drizzle-orm";
 import { initializeAdminUser } from "./init-admin";
 import { storage } from "./storage";
 import { observability } from "./observability-minimal";
+import { actionLogger } from './middleware/action-logger';
 import admin from 'firebase-admin';
 
 // Initialize Firebase Admin
@@ -259,6 +260,9 @@ async function startServer() {
     },
   }));
 
+  // Audit log middleware
+  app.use(actionLogger);
+
   // Middleware de segurança otimizado
 
   // Rotas de segurança otimizadas
@@ -411,6 +415,18 @@ async function startServer() {
     } catch (error) {
       console.error('Erro ao marcar todas como lidas:', error);
       res.status(500).json({ error: 'Falha ao atualizar notificações' });
+    }
+  });
+
+  // Audit logs retrieval (ADMIN and DEVELOPER)
+  app.get('/api/security/audit-logs', verifyFirebaseToken, requireRole(['ADMIN', 'DEVELOPER']), async (req: Request, res: Response) => {
+    try {
+      const limit = parseInt((req.query.limit as string) || '100');
+      const logs = await db.select().from(userActionLogs).orderBy(desc(userActionLogs.createdAt)).limit(limit);
+      res.json(logs);
+    } catch (error) {
+      console.error('Erro ao buscar audit logs:', error);
+      res.status(500).json({ error: 'Falha ao buscar logs' });
     }
   });
 
