@@ -219,6 +219,122 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
     loadSavedProgress();
   }, [mode]);
 
+  // Preenchimento automático de equipamentos - Determinação 1 Cilindro
+  useEffect(() => {
+    if (data.det1.cylinderNumber && data.det1.cylinderNumber.length >= 1) {
+      const result = searchEquipment(data.det1.cylinderNumber);
+      if (result.found && result.type === 'cilindro') {
+        console.log(`🔧 Preenchimento automático Det1 - Cilindro ${data.det1.cylinderNumber}:`, result.data);
+        setData(prev => ({
+          ...prev,
+          det1: {
+            ...prev.det1,
+            molde: result.data.peso || 0,
+            volume: result.data.volume || 0
+          }
+        }));
+      }
+    }
+  }, [data.det1.cylinderNumber]);
+
+  // Preenchimento automático de equipamentos - Determinação 2 Cilindro
+  useEffect(() => {
+    if (data.det2.cylinderNumber && data.det2.cylinderNumber.length >= 1) {
+      const result = searchEquipment(data.det2.cylinderNumber);
+      if (result.found && result.type === 'cilindro') {
+        console.log(`🔧 Preenchimento automático Det2 - Cilindro ${data.det2.cylinderNumber}:`, result.data);
+        setData(prev => ({
+          ...prev,
+          det2: {
+            ...prev.det2,
+            molde: result.data.peso || 0,
+            volume: result.data.volume || 0
+          }
+        }));
+      }
+    }
+  }, [data.det2.cylinderNumber]);
+
+  // Preenchimento automático de equipamentos - Cápsulas de umidade TOPO
+  useEffect(() => {
+    if (data.moistureTop1.capsule && data.moistureTop1.capsule.length >= 1) {
+      const result = searchEquipment(data.moistureTop1.capsule);
+      if (result.found && result.type === 'capsula') {
+        console.log(`🔧 Preenchimento automático TOPO1 - Cápsula ${data.moistureTop1.capsule}:`, result.data);
+        setData(prev => ({
+          ...prev,
+          moistureTop1: { ...prev.moistureTop1, tare: result.data.peso || 0 }
+        }));
+      }
+    }
+  }, [data.moistureTop1.capsule]);
+
+  useEffect(() => {
+    if (data.moistureTop2.capsule && data.moistureTop2.capsule.length >= 1) {
+      const result = searchEquipment(data.moistureTop2.capsule);
+      if (result.found && result.type === 'capsula') {
+        console.log(`🔧 Preenchimento automático TOPO2 - Cápsula ${data.moistureTop2.capsule}:`, result.data);
+        setData(prev => ({
+          ...prev,
+          moistureTop2: { ...prev.moistureTop2, tare: result.data.peso || 0 }
+        }));
+      }
+    }
+  }, [data.moistureTop2.capsule]);
+
+  useEffect(() => {
+    if (data.moistureTop3.capsule && data.moistureTop3.capsule.length >= 1) {
+      const result = searchEquipment(data.moistureTop3.capsule);
+      if (result.found && result.type === 'capsula') {
+        console.log(`🔧 Preenchimento automático TOPO3 - Cápsula ${data.moistureTop3.capsule}:`, result.data);
+        setData(prev => ({
+          ...prev,
+          moistureTop3: { ...prev.moistureTop3, tare: result.data.peso || 0 }
+        }));
+      }
+    }
+  }, [data.moistureTop3.capsule]);
+
+  // Preenchimento automático de equipamentos - Cápsulas de umidade BASE
+  useEffect(() => {
+    if (data.moistureBase1.capsule && data.moistureBase1.capsule.length >= 1) {
+      const result = searchEquipment(data.moistureBase1.capsule);
+      if (result.found && result.type === 'capsula') {
+        console.log(`🔧 Preenchimento automático BASE1 - Cápsula ${data.moistureBase1.capsule}:`, result.data);
+        setData(prev => ({
+          ...prev,
+          moistureBase1: { ...prev.moistureBase1, tare: result.data.peso || 0 }
+        }));
+      }
+    }
+  }, [data.moistureBase1.capsule]);
+
+  useEffect(() => {
+    if (data.moistureBase2.capsule && data.moistureBase2.capsule.length >= 1) {
+      const result = searchEquipment(data.moistureBase2.capsule);
+      if (result.found && result.type === 'capsula') {
+        console.log(`🔧 Preenchimento automático BASE2 - Cápsula ${data.moistureBase2.capsule}:`, result.data);
+        setData(prev => ({
+          ...prev,
+          moistureBase2: { ...prev.moistureBase2, tare: result.data.peso || 0 }
+        }));
+      }
+    }
+  }, [data.moistureBase2.capsule]);
+
+  useEffect(() => {
+    if (data.moistureBase3.capsule && data.moistureBase3.capsule.length >= 1) {
+      const result = searchEquipment(data.moistureBase3.capsule);
+      if (result.found && result.type === 'capsula') {
+        console.log(`🔧 Preenchimento automático BASE3 - Cápsula ${data.moistureBase3.capsule}:`, result.data);
+        setData(prev => ({
+          ...prev,
+          moistureBase3: { ...prev.moistureBase3, tare: result.data.peso || 0 }
+        }));
+      }
+    }
+  }, [data.moistureBase3.capsule]);
+
   // Salvamento automático sempre que os dados mudarem
   useEffect(() => {
     const saveProgress = () => {
