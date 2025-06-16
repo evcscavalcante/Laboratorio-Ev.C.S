@@ -1,0 +1,46 @@
+Uncaught NotFoundError: Failed to execute 'removeChild' on 'Node': The node to be removed is not a child of this node.
+    at removeChild (chunk-XQLYTHWV.js?v=d97851ae:8456:26)
+    at commitDeletionEffectsOnFiber (chunk-XQLYTHWV.js?v=d97851ae:17510:21)
+    at commitDeletionEffects (chunk-XQLYTHWV.js?v=d97851ae:17477:13)
+    at recursivelyTraverseMutationEffects (chunk-XQLYTHWV.js?v=d97851ae:17674:17)
+    at commitMutationEffectsOnFiber (chunk-XQLYTHWV.js?v=d97851ae:17737:15)
+    at recursivelyTraverseMutationEffects (chunk-XQLYTHWV.js?v=d97851ae:17685:15)
+    at commitMutationEffectsOnFiber (chunk-XQLYTHWV.js?v=d97851ae:17737:15)
+    at recursivelyTraverseMutationEffects (chunk-XQLYTHWV.js?v=d97851ae:17685:15)
+    at commitMutationEffectsOnFiber (chunk-XQLYTHWV.js?v=d97851ae:17737:15)
+    at recursivelyTraverseMutationEffects (chunk-XQLYTHWV.js?v=d97851ae:17685:15)
+chunk-XQLYTHWV.js?v=d97851ae:14032 The above error occurred in the <Text> component:
+
+    at div
+    at div
+    at div
+    at div
+    at div
+    at div
+    at Sidebar (https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/src/components/navigation/sidebar-optimized.tsx:47:35)
+    at div
+    at MainLayout (https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/src/components/layout/main-layout.tsx:23:38)
+    at Router (https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/src/App.tsx?v=t_ilAAVXBIfuQgEZBF2dZ:53:29)
+    at DataSyncProvider (https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/src/contexts/data-sync-context.tsx:29:36)
+    at AuthProvider (https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/src/hooks/useAuth.tsx:52:32)
+    at QueryClientProvider (https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.repli…rkspace/node_modules/.vite/deps/@tanstack_react-query.js?v=d97851ae:2805:3)
+    at App
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+
+chunk-XQLYTHWV.js?v=d97851ae:9129 Uncaught NotFoundError: Failed to execute 'removeChild' on 'Node': The node to be removed is not a child of this node.
+    at removeChild (chunk-XQLYTHWV.js?v=d97851ae:8456:26)
+    at commitDeletionEffectsOnFiber (chunk-XQLYTHWV.js?v=d97851ae:17510:21)
+    at commitDeletionEffects (chunk-XQLYTHWV.js?v=d97851ae:17477:13)
+    at recursivelyTraverseMutationEffects (chunk-XQLYTHWV.js?v=d97851ae:17674:17)
+    at commitMutationEffectsOnFiber (chunk-XQLYTHWV.js?v=d97851ae:17737:15)
+    at recursivelyTraverseMutationEffects (chunk-XQLYTHWV.js?v=d97851ae:17685:15)
+    at commitMutationEffectsOnFiber (chunk-XQLYTHWV.js?v=d97851ae:17737:15)
+    at recursivelyTraverseMutationEffects (chunk-XQLYTHWV.js?v=d97851ae:17685:15)
+    at commitMutationEffectsOnFiber (chunk-XQLYTHWV.js?v=d97851ae:17737:15)
+    at recursivelyTraverseMutationEffects (chunk-XQLYTHWV.js?v=d97851ae:17685:15)
+organizations:1 Refused to load the stylesheet 'https://www.gstatic.com/_/translate_http/_/ss/k=translate_http.tr.pgV-E-68K-A.L.W.O/am=AIAB/d=0/rs=AN8SPfrmq8FRbUqU1IlJUoEnksIMIqlZPQ/m=el_main_css' because it violates the following Content Security Policy directive: "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com". Note that 'style-src-elem' was not explicitly set, so 'style-src' is used as a fallback.
+organizations:1 Refused to load the stylesheet 'https://www.gstatic.com/_/translate_http/_/ss/k=translate_http.tr.pgV-E-68K-A.L.W.O/am=AIAB/d=0/rs=AN8SPfrmq8FRbUqU1IlJUoEnksIMIqlZPQ/m=el_main_css' because it violates the following Content Security Policy directive: "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com". Note that 'style-src-elem' was not explicitly set, so 'style-src' is used as a fallback.
+﻿
+

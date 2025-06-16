@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Link, useLocation } from 'wouter';
 import { 
   BarChart3, 
@@ -59,6 +59,41 @@ export default function Sidebar({ isOpen }: SidebarProps) {
   const [adminOpen, setAdminOpen] = useState(false);
   const { user, logout } = useAuth();
   const permissions = usePermissions();
+  
+  // Component mounting protection to prevent DOM removeChild errors
+  const isMountedRef = useRef(true);
+  const sidebarRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
+  
+  // Safe state setters that check if component is still mounted
+  const safeSolosToggle = useCallback(() => {
+    if (isMountedRef.current) {
+      setSolosOpen(!solosOpen);
+    }
+  }, [solosOpen]);
+  
+  const safeAdminToggle = useCallback(() => {
+    if (isMountedRef.current) {
+      setAdminOpen(!adminOpen);
+    }
+  }, [adminOpen]);
+  
+  // Safe logout function
+  const safeLogout = useCallback(async () => {
+    if (isMountedRef.current) {
+      try {
+        await logout();
+      } catch (error) {
+        console.warn('Logout error during component unmount:', error);
+      }
+    }
+  }, [logout]);
 
   // Build simplified menu items
   const buildMenuItems = (): MenuItem[] => {
@@ -80,7 +115,7 @@ export default function Sidebar({ isOpen }: SidebarProps) {
         icon: FlaskRound,
         expandable: true,
         expanded: solosOpen,
-        onToggle: () => setSolosOpen(!solosOpen),
+        onToggle: safeSolosToggle,
         children: [
           {
             label: 'Densidade In-Situ',
@@ -141,7 +176,7 @@ export default function Sidebar({ isOpen }: SidebarProps) {
         icon: Shield,
         expandable: true,
         expanded: adminOpen,
-        onToggle: () => setAdminOpen(!adminOpen),
+        onToggle: safeAdminToggle,
         children: [
           {
             label: 'Painel Admin',
@@ -183,10 +218,12 @@ export default function Sidebar({ isOpen }: SidebarProps) {
   const menuItems = buildMenuItems();
 
   return (
-    <div className={cn(
-      "fixed left-0 top-0 z-40 h-screen w-64 bg-white border-r border-gray-200 shadow-lg flex flex-col transition-transform duration-300",
-      isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
-    )}>
+    <div 
+      ref={sidebarRef}
+      className={cn(
+        "fixed left-0 top-0 z-40 h-screen w-64 bg-white border-r border-gray-200 shadow-lg flex flex-col transition-transform duration-300",
+        isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+      )}>
       {/* Header */}
       <div className="flex items-center justify-between p-6 border-b border-gray-200">
         <div className="flex items-center gap-3">
@@ -300,7 +337,7 @@ export default function Sidebar({ isOpen }: SidebarProps) {
           <Button
             variant="ghost"
             size="sm"
-            onClick={logout}
+            onClick={safeLogout}
             className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50"
           >
             <LogOut className="h-4 w-4 mr-2" />
