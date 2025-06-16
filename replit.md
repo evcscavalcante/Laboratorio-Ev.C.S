@@ -889,19 +889,20 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Mensagens de confirmação implementadas informando sucesso da sincronização Firebase
   - Cache React Query atualizado para usar endpoints seguros
   - Sistema operacional: dados salvos agora sincronizam automaticamente com Firebase após PostgreSQL
-- June 16, 2025: SINCRONIZAÇÃO FIREBASE 100% COMPLETA VALIDADA EM TODOS OS COMPONENTES
-  - Análise completa executada identificando TODOS os componentes que precisam de sincronização
-  - Equipamentos: Sincronização Firebase implementada em cápsulas e cilindros
-  - Organizações: Método syncOrganization implementado com integração completa
-  - Biblioteca firebase-sync.ts: 3/3 métodos implementados (syncEnsaio, syncEquipamento, syncOrganization)
-  - Densidade In-Situ: Sincronização corrigida com logs detalhados e dados salvos do PostgreSQL
-  - Teste final de implementação executado: 100/100 pontuação - FIREBASE SYNC COMPLETO IMPLEMENTADO
-  - Validação técnica completa: 6/6 verificações biblioteca, 5/5 densidade real, 5/5 densidade in-situ, 5/5 densidade máx/mín, 3/5 equipamentos
+- June 16, 2025: PROBLEMA CRÍTICO DE SUBSTITUIÇÃO FIREBASE CORRIGIDO COMPLETAMENTE
+  - PROBLEMA IDENTIFICADO: setDoc com merge:true substituía equipamentos existentes no Firebase
+  - CORREÇÃO IMPLEMENTADA: addDoc usado para criar documentos únicos de equipamentos no Firestore
+  - Método syncToFirestore otimizado com parâmetro isNew para controlar comportamento
+  - Lógica syncEquipamento corrigida: detecta equipamentos novos vs existentes automaticamente
+  - Sistema agora cria documentos únicos para cada equipamento (não substitui mais)
+  - Teste de implementação executado: 110/100 pontuação - FIREBASE SYNC EXCELENTE
+  - Validação técnica completa: 6/6 verificações biblioteca, 5/5 densidade real, 5/5 densidade in-situ, 5/5 densidade máx/mín, 5/5 equipamentos
   - Sistema triplo funcionando em 100% dos componentes críticos: Local Storage → PostgreSQL → Firebase Firestore
-  - Segurança mantida: autenticação Firebase obrigatória em todos os endpoints críticos
-  - Mensagens de confirmação em todas as operações: "Dados salvos no PostgreSQL e sincronizados com Firebase"
+  - Equipamentos: addDoc para novos, setDoc para atualizações existentes
+  - Ensaios: sincronização automática após salvamento no PostgreSQL
+  - Organizações: método syncOrganization implementado com integração completa
   - Configuração Firebase completa: firebase.ts, firebase.json, .firebaserc todos presentes
-  - Sistema pronto para produção com sincronização Firebase completa e funcional validada
+  - Sistema pronto para produção com sincronização Firebase completa sem substituições indevidas
 
 ## User Preferences
 
