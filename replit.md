@@ -853,6 +853,14 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Todos os três ensaios agora aceitam entrada de dados nos campos Quadrante, Camada e Estaca
   - Sistema de entrada de dados totalmente padronizado e funcional em todas as calculadoras
   - Interface de laboratório operacional com entrada de dados consistente
+- June 16, 2025: LOOP INFINITO NO PREENCHIMENTO AUTOMÁTICO CORRIGIDO DEFINITIVAMENTE
+  - Problema crítico identificado: cápsula número 7 causava carregamento infinito com "Maximum update depth exceeded"
+  - Causa raiz: setLastSearched sendo chamado dentro de searchEquipment criava ciclo de re-renderizações
+  - Hook useEquipmentAutofill otimizado: removida chamada setLastSearched da função searchEquipment
+  - Sistema de cache implementado: verificação de código já pesquisado para evitar buscas repetidas
+  - setLastSearched movido para após sucesso no preenchimento automático
+  - Teste automatizado validou correção: busca única sem loops de chamadas
+  - Sistema de preenchimento automático agora funciona instantaneamente sem travamentos
 
 ## User Preferences
 

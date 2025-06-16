@@ -59,8 +59,6 @@ export const useEquipmentAutofill = () => {
 
     // Limpar entrada - aceitar números, letras e hífen para códigos complexos
     const codigoLimpo = codigo.trim().toUpperCase();
-    
-    setLastSearched(codigoLimpo);
 
     // Buscar nas cápsulas (aceita qualquer código: 1, 2, 100, CAP-001, etc.)
     const capsula = equipmentData.capsulas?.find(
@@ -111,7 +109,14 @@ export const useEquipmentAutofill = () => {
     fieldMapping: Record<string, string>
   ) => {
     useEffect(() => {
-      if (codigo && codigo !== lastSearched && codigo.length >= 1) {
+      if (codigo && codigo.length >= 1) {
+        const codigoLimpo = codigo.trim().toUpperCase();
+        
+        // Evitar pesquisas repetidas do mesmo código
+        if (codigoLimpo === lastSearched) {
+          return;
+        }
+        
         const result = searchEquipment(codigo);
         
         if (result.found && result.data) {
@@ -126,11 +131,12 @@ export const useEquipmentAutofill = () => {
 
           if (Object.keys(updates).length > 0) {
             setValues(updates);
+            setLastSearched(codigoLimpo); // Atualizar após sucesso
             console.log(`✅ Dados preenchidos automaticamente para ${codigo}:`, updates);
           }
         }
       }
-    }, [codigo]); // REMOVIDO setValues e fieldMapping para evitar loop infinito
+    }, [codigo]); // Apenas codigo como dependência
   };
 
   return {
