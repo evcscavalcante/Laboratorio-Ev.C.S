@@ -1031,6 +1031,13 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Preenchimento automático funcional para cilindros 3-5 (vazios_mínimos) com peso e volume corretos
   - Eliminada dependência de dados antigos salvos localmente
   - Sistema unificado: cápsulas e cilindros usando mesma fonte de dados (PostgreSQL via API)
+- June 16, 2025: FÓRMULA DE CÁLCULO γdmax E γdmin CORRIGIDA CONFORME ESPECIFICAÇÃO TÉCNICA
+  - PROBLEMA CRÍTICO RESOLVIDO: Cálculo errado produzia γdmax = 38.726 (densidade úmida simples)
+  - Fórmula corrigida implementada: γdmax = (γd / (umidade + 100)) × 100
+  - Fórmula corrigida implementada: γdmin = (γd / (umidade + 100)) × 100
+  - Sistema agora calcula umidade média das 3 determinações para correção
+  - Etapas de cálculo: 1) γd úmido = peso_solo/volume, 2) aplicar correção pela umidade
+  - Cálculos técnicos agora seguem especificação correta conforme normas NBR
 
 ## User Preferences
 

@@ -446,14 +446,28 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
   });
 
   useEffect(() => {
+    // Calcular umidade média para correção
+    const moisture1 = calculateMoisture(data.moisture1.wetTare, data.moisture1.dryTare, data.moisture1.tare);
+    const moisture2 = calculateMoisture(data.moisture2.wetTare, data.moisture2.dryTare, data.moisture2.tare);
+    const moisture3 = calculateMoisture(data.moisture3.wetTare, data.moisture3.dryTare, data.moisture3.tare);
+    
+    const validMoistures = [moisture1, moisture2, moisture3].filter(m => m > 0);
+    const averageMoisture = validMoistures.length > 0 ? validMoistures.reduce((sum, m) => sum + m, 0) / validMoistures.length : 0;
+
     // Calculate maximum density determinations
     const maxDet1Soil = data.maxDensity1.moldeSolo - data.maxDensity1.molde;
     const maxDet2Soil = data.maxDensity2.moldeSolo - data.maxDensity2.molde;
     const maxDet3Soil = data.maxDensity3.moldeSolo - data.maxDensity3.molde;
 
-    const maxDet1GammaD = data.maxDensity1.volume > 0 ? maxDet1Soil / data.maxDensity1.volume : 0;
-    const maxDet2GammaD = data.maxDensity2.volume > 0 ? maxDet2Soil / data.maxDensity2.volume : 0;
-    const maxDet3GammaD = data.maxDensity3.volume > 0 ? maxDet3Soil / data.maxDensity3.volume : 0;
+    // γd úmido = peso_solo / volume
+    const maxDet1GammaDWet = data.maxDensity1.volume > 0 ? maxDet1Soil / data.maxDensity1.volume : 0;
+    const maxDet2GammaDWet = data.maxDensity2.volume > 0 ? maxDet2Soil / data.maxDensity2.volume : 0;
+    const maxDet3GammaDWet = data.maxDensity3.volume > 0 ? maxDet3Soil / data.maxDensity3.volume : 0;
+
+    // γdmax = (γd / (umidade + 100)) × 100
+    const maxDet1GammaD = averageMoisture > 0 ? (maxDet1GammaDWet / (averageMoisture + 100)) * 100 : maxDet1GammaDWet;
+    const maxDet2GammaD = averageMoisture > 0 ? (maxDet2GammaDWet / (averageMoisture + 100)) * 100 : maxDet2GammaDWet;
+    const maxDet3GammaD = averageMoisture > 0 ? (maxDet3GammaDWet / (averageMoisture + 100)) * 100 : maxDet3GammaDWet;
 
     const maxDensities = [maxDet1GammaD, maxDet2GammaD, maxDet3GammaD].filter(d => d > 0);
     const maxAverage = maxDensities.length > 0 ? maxDensities.reduce((a, b) => a + b, 0) / maxDensities.length : 0;
@@ -463,9 +477,15 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
     const minDet2Soil = data.minDensity2.moldeSolo - data.minDensity2.molde;
     const minDet3Soil = data.minDensity3.moldeSolo - data.minDensity3.molde;
 
-    const minDet1GammaD = data.minDensity1.volume > 0 ? minDet1Soil / data.minDensity1.volume : 0;
-    const minDet2GammaD = data.minDensity2.volume > 0 ? minDet2Soil / data.minDensity2.volume : 0;
-    const minDet3GammaD = data.minDensity3.volume > 0 ? minDet3Soil / data.minDensity3.volume : 0;
+    // γd úmido = peso_solo / volume
+    const minDet1GammaDWet = data.minDensity1.volume > 0 ? minDet1Soil / data.minDensity1.volume : 0;
+    const minDet2GammaDWet = data.minDensity2.volume > 0 ? minDet2Soil / data.minDensity2.volume : 0;
+    const minDet3GammaDWet = data.minDensity3.volume > 0 ? minDet3Soil / data.minDensity3.volume : 0;
+
+    // γdmin = (γd / (umidade + 100)) × 100
+    const minDet1GammaD = averageMoisture > 0 ? (minDet1GammaDWet / (averageMoisture + 100)) * 100 : minDet1GammaDWet;
+    const minDet2GammaD = averageMoisture > 0 ? (minDet2GammaDWet / (averageMoisture + 100)) * 100 : minDet2GammaDWet;
+    const minDet3GammaD = averageMoisture > 0 ? (minDet3GammaDWet / (averageMoisture + 100)) * 100 : minDet3GammaDWet;
 
     const minDensities = [minDet1GammaD, minDet2GammaD, minDet3GammaD].filter(d => d > 0);
     const minAverage = minDensities.length > 0 ? minDensities.reduce((a, b) => a + b, 0) / minDensities.length : 0;
