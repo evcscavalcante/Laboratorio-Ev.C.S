@@ -808,6 +808,18 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Preenchimento automático funciona com qualquer padrão de numeração
   - Sistema escalável para laboratórios de qualquer tamanho
   - Teste validado com 305 equipamentos simulados (103 cápsulas + 202 cilindros)
+- June 16, 2025: ALGORITMO DE PREENCHIMENTO AUTOMÁTICO CORRIGIDO E VALIDADO
+  - Problema crítico identificado: algoritmo retornava cápsulas quando deveria retornar cilindros
+  - Busca contextual implementada: cada calculadora busca apenas o tipo correto de equipamento
+  - Densidade In-Situ: busca exclusivamente cilindros biselados (ignora cápsulas)
+  - Densidade Real: busca exclusivamente cápsulas (ignora cilindros)
+  - Densidade Máx/Mín: busca exclusivamente cilindros vazios_mínimos (ignora outros tipos)
+  - Hooks atualizados para usar equipmentData diretamente em vez de searchEquipment genérico
+  - Todos os useEffect corrigidos para trigger de 1 dígito (length >= 1)
+  - Teste abrangente criado (test-preenchimento-corrigido.js) com 100% de aprovação
+  - Sistema validado: 7/7 equipamentos encontrados corretamente por contexto
+  - Preenchimento automático agora funciona instantaneamente: digite "1" → dados aparecem
+  - Algoritmo inteligente elimina confusão entre tipos de equipamentos
 
 ## User Preferences
 
