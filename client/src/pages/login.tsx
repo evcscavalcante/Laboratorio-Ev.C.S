@@ -9,6 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 import { signIn, signUp } from '@/lib/firebase';
 import { Loader2, LogIn, UserPlus, AlertTriangle } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { PasswordStrength } from '@/components/ui/password-strength';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -241,6 +242,7 @@ export default function Login() {
                 disabled={isLoading}
                 minLength={isSignUp ? 8 : 6}
               />
+              <PasswordStrength password={password} isVisible={isSignUp && password.length > 0} />
             </div>
             {isSignUp && (
               <div className="space-y-3">

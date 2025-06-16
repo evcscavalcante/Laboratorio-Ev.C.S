@@ -75,6 +75,7 @@ function Router() {
         <Route path="/configuracoes" component={Configuracoes} />
         <Route path="/relatorios" component={Relatorios} />
         <Route path="/admin" component={AdminDashboard} />
+        <Route path="/admin/dashboard" component={DashboardAdmin} />
         <Route path="/admin/users" component={UserManagement} />
         <Route path="/admin/user-roles" component={UserRoles} />
         <Route path="/admin/organizations" component={OrganizationManagement} />

@@ -1135,6 +1135,65 @@ async function startServer() {
     }
   });
 
+  // Endpoint para estatísticas do dashboard administrativo
+  app.get('/api/admin/dashboard-stats', verifyFirebaseToken, requireRole(['ADMIN', 'DEVELOPER']), async (req: Request, res: Response) => {
+    try {
+      // Total de usuários
+      const usersResult = await db.query('SELECT COUNT(*) as count FROM users');
+      const totalUsers = parseInt(usersResult.rows[0].count);
+
+      // Total de organizações
+      const orgsResult = await db.query('SELECT COUNT(*) as count FROM organizations');
+      const totalOrganizations = parseInt(orgsResult.rows[0].count);
+
+      // Total de ensaios (soma de todas as tabelas de ensaios)
+      const densityInSituResult = await db.query('SELECT COUNT(*) as count FROM density_in_situ_tests');
+      const realDensityResult = await db.query('SELECT COUNT(*) as count FROM real_density_tests');
+      const maxMinDensityResult = await db.query('SELECT COUNT(*) as count FROM max_min_density_tests');
+      
+      const totalTests = 
+        parseInt(densityInSituResult.rows[0].count) +
+        parseInt(realDensityResult.rows[0].count) +
+        parseInt(maxMinDensityResult.rows[0].count);
+
+      // Usuários ativos (que fizeram login nos últimos 30 dias)
+      const activeUsersResult = await db.query(`
+        SELECT COUNT(*) as count 
+        FROM users 
+        WHERE last_login >= NOW() - INTERVAL '30 days'
+      `);
+      const activeUsers = parseInt(activeUsersResult.rows[0].count || 0);
+
+      // Atividade recente (ensaios criados nas últimas 24 horas)
+      const recentActivityResult = await db.query(`
+        SELECT 
+          (SELECT COUNT(*) FROM density_in_situ_tests WHERE created_at >= NOW() - INTERVAL '24 hours') +
+          (SELECT COUNT(*) FROM real_density_tests WHERE created_at >= NOW() - INTERVAL '24 hours') +
+          (SELECT COUNT(*) FROM max_min_density_tests WHERE created_at >= NOW() - INTERVAL '24 hours') as count
+      `);
+      const recentActivity = parseInt(recentActivityResult.rows[0].count || 0);
+
+      // Notificações pendentes (não lidas)
+      const pendingApprovalsResult = await db.query('SELECT COUNT(*) as count FROM notifications WHERE read = false');
+      const pendingApprovals = parseInt(pendingApprovalsResult.rows[0].count || 0);
+
+      const stats = {
+        totalUsers,
+        totalOrganizations,
+        totalTests,
+        activeUsers,
+        recentActivity,
+        pendingApprovals
+      };
+
+      console.log('📊 Estatísticas do dashboard:', stats);
+      res.json(stats);
+    } catch (error) {
+      console.error('❌ Erro ao buscar estatísticas do dashboard:', error);
+      res.status(500).json({ error: 'Erro interno do servidor' });
+    }
+  });
+
   // Rotas específicas integradas diretamente no servidor principal
   await registerPaymentRoutes(app);
 
