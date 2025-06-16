@@ -453,8 +453,21 @@ async function startServer() {
   // Endpoint seguro para buscar ensaios densidade in-situ
   app.get('/api/tests/density-in-situ', verifyFirebaseToken, async (req: Request, res: Response) => {
     try {
-      const tests = await storage.getDensityInSituTests();
-      console.log('📋 Ensaios densidade in-situ encontrados:', tests.length);
+      const user = (req as any).user;
+      let tests = await storage.getDensityInSituTests();
+      
+      // Isolamento organizacional: ADMIN só vê ensaios da própria organização
+      if (user.role === 'ADMIN' && user.organizationId) {
+        tests = tests.filter(test => test.organizationId === user.organizationId);
+        console.log(`📋 ADMIN org${user.organizationId}: ${tests.length} ensaios densidade in-situ`);
+      } else if (user.role === 'DEVELOPER') {
+        console.log(`📋 DEVELOPER: ${tests.length} ensaios densidade in-situ (acesso total)`);
+      } else {
+        // MANAGER, TECHNICIAN, VIEWER - isolamento por organização
+        tests = tests.filter(test => test.organizationId === user.organizationId);
+        console.log(`📋 ${user.role} org${user.organizationId}: ${tests.length} ensaios densidade in-situ`);
+      }
+      
       res.json(tests);
     } catch (error) {
       console.error('Error fetching density in situ tests:', error);
@@ -518,8 +531,21 @@ async function startServer() {
   // Real Density Tests
   app.get('/api/tests/real-density', verifyFirebaseToken, async (req: Request, res: Response) => {
     try {
-      const tests = await storage.getRealDensityTests();
-      console.log('📋 Ensaios real density encontrados:', tests.length);
+      const user = (req as any).user;
+      let tests = await storage.getRealDensityTests();
+      
+      // Isolamento organizacional: ADMIN só vê ensaios da própria organização
+      if (user.role === 'ADMIN' && user.organizationId) {
+        tests = tests.filter(test => test.organizationId === user.organizationId);
+        console.log(`📋 ADMIN org${user.organizationId}: ${tests.length} ensaios densidade real`);
+      } else if (user.role === 'DEVELOPER') {
+        console.log(`📋 DEVELOPER: ${tests.length} ensaios densidade real (acesso total)`);
+      } else {
+        // MANAGER, TECHNICIAN, VIEWER - isolamento por organização
+        tests = tests.filter(test => test.organizationId === user.organizationId);
+        console.log(`📋 ${user.role} org${user.organizationId}: ${tests.length} ensaios densidade real`);
+      }
+      
       res.json(tests);
     } catch (error) {
       console.error('Error fetching real density tests:', error);
@@ -576,8 +602,21 @@ async function startServer() {
   // Max/Min Density Tests
   app.get('/api/tests/max-min-density', verifyFirebaseToken, async (req: Request, res: Response) => {
     try {
-      const tests = await storage.getMaxMinDensityTests();
-      console.log('📋 Ensaios max-min density encontrados:', tests.length);
+      const user = (req as any).user;
+      let tests = await storage.getMaxMinDensityTests();
+      
+      // Isolamento organizacional: ADMIN só vê ensaios da própria organização
+      if (user.role === 'ADMIN' && user.organizationId) {
+        tests = tests.filter(test => test.organizationId === user.organizationId);
+        console.log(`📋 ADMIN org${user.organizationId}: ${tests.length} ensaios densidade máx/mín`);
+      } else if (user.role === 'DEVELOPER') {
+        console.log(`📋 DEVELOPER: ${tests.length} ensaios densidade máx/mín (acesso total)`);
+      } else {
+        // MANAGER, TECHNICIAN, VIEWER - isolamento por organização
+        tests = tests.filter(test => test.organizationId === user.organizationId);
+        console.log(`📋 ${user.role} org${user.organizationId}: ${tests.length} ensaios densidade máx/mín`);
+      }
+      
       res.json(tests);
     } catch (error) {
       console.error('Error fetching max/min density tests:', error);
@@ -766,12 +805,18 @@ async function startServer() {
       const user = (req as any).user;
       let capsulasList, cilindrosList;
 
-      // Por enquanto todos veem os equipamentos (será implementado isolamento por organização futuramente)
-      // TODO: Adicionar campo organization_id às tabelas capsulas/cilindros
-      capsulasList = await db.select().from(capsulas);
-      cilindrosList = await db.select().from(cilindros);
-      
-      console.log(`🔐 Acesso por ${user.role}: ${user.email}`);
+      if (user.role === 'DEVELOPER') {
+        // DEVELOPER vê todos os equipamentos
+        capsulasList = await db.select().from(capsulas);
+        cilindrosList = await db.select().from(cilindros);
+        console.log(`🔐 DEVELOPER acesso total: ${user.email}`);
+      } else {
+        // ADMIN, MANAGER, TECHNICIAN veem apenas equipamentos da própria organização
+        // Por enquanto, como não há campo organization_id, retorna lista vazia para isolamento
+        capsulasList = [];
+        cilindrosList = [];
+        console.log(`🔐 ${user.role} org${user.organizationId}: acesso isolado - ${user.email}`);
+      }
       
       // Combinar e padronizar formato
       const equipamentos = [
@@ -976,6 +1021,7 @@ async function startServer() {
   app.post('/api/users', verifyFirebaseToken, requireRole(['ADMIN', 'DEVELOPER']), async (req: Request, res: Response) => {
     try {
       const { name, email, role, organizationId, active = true } = req.body;
+      const user = (req as any).user;
       
       if (!name || !email || !role) {
         return res.status(400).json({ 
@@ -989,11 +1035,34 @@ async function startServer() {
         return res.status(400).json({ error: 'Role inválido' });
       }
       
+      // ADMIN só pode criar usuários na própria organização
+      if (user.role === 'ADMIN') {
+        if (!organizationId || organizationId !== user.organizationId) {
+          return res.status(403).json({ 
+            error: 'ADMIN só pode criar usuários na própria organização' 
+          });
+        }
+        
+        // ADMIN não pode criar outro ADMIN ou DEVELOPER
+        if (role === 'ADMIN' || role === 'DEVELOPER') {
+          return res.status(403).json({ 
+            error: 'ADMIN não pode criar usuários com role ADMIN ou DEVELOPER' 
+          });
+        }
+      }
+      
       // Verificar se a organização existe (se fornecida)
       if (organizationId) {
         const orgExists = await db.select().from(organizations).where(eq(organizations.id, organizationId));
         if (orgExists.length === 0) {
           return res.status(400).json({ error: 'Organização não encontrada' });
+        }
+        
+        // Para ADMIN, verificar se tem acesso à organização
+        if (user.role === 'ADMIN' && organizationId !== user.organizationId) {
+          return res.status(403).json({ 
+            error: 'Acesso negado: organização fora do escopo' 
+          });
         }
       }
       
