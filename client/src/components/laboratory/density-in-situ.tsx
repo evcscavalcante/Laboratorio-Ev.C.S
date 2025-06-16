@@ -178,6 +178,55 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
   // Hook para preenchimento automático dos equipamentos
   const { searchEquipment } = useEquipmentAutofill();
 
+  // Carregamento inicial do progresso salvo
+  useEffect(() => {
+    const loadSavedProgress = () => {
+      try {
+        const savedData = localStorage.getItem('density-in-situ-progress');
+        if (savedData && mode === 'new') {
+          const parsedData = JSON.parse(savedData);
+          console.log('🔄 Restaurando progresso salvo do ensaio de densidade in-situ');
+          setData(parsedData);
+        }
+      } catch (error) {
+        console.error('Erro ao carregar progresso salvo:', error);
+      }
+    };
+
+    loadSavedProgress();
+  }, [mode]);
+
+  // Salvamento automático sempre que os dados mudarem
+  useEffect(() => {
+    const saveProgress = () => {
+      try {
+        // Só salva se houver dados significativos
+        const hasSignificantData = data.registrationNumber || 
+                                  data.operator || 
+                                  data.material || 
+                                  data.origin ||
+                                  data.det1.cylinderNumber ||
+                                  data.det2.cylinderNumber ||
+                                  data.moistureTop1.capsule ||
+                                  data.moistureTop2.capsule ||
+                                  data.moistureTop3.capsule ||
+                                  data.moistureBase1.capsule ||
+                                  data.moistureBase2.capsule ||
+                                  data.moistureBase3.capsule;
+
+        if (hasSignificantData) {
+          localStorage.setItem('density-in-situ-progress', JSON.stringify(data));
+          console.log('💾 Progresso do ensaio de densidade in-situ salvo automaticamente');
+        }
+      } catch (error) {
+        console.error('Erro ao salvar progresso:', error);
+      }
+    };
+
+    const timeoutId = setTimeout(saveProgress, 500);
+    return () => clearTimeout(timeoutId);
+  }, [data]);
+
   // Import dos hooks específicos
   const { equipmentData } = useEquipmentAutofill();
 
