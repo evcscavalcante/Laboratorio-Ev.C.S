@@ -737,7 +737,7 @@ async function startServer() {
   app.get('/api/users', verifyFirebaseToken, async (req: Request, res: Response) => {
     try {
       const user = (req as any).user;
-      let usersList = await db.select().from(users);
+      let usersList: any[] = await db.select().from(users);
       
       // Aplicar filtros hierárquicos baseado no role do usuário
       if (user?.role && user?.organizationId) {
