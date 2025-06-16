@@ -76,7 +76,7 @@ const Analytics: React.FC = () => {
     return testDate >= weekAgo;
   }).length;
 
-  const uniqueOperators = [...new Set(allTests.map(test => test.operator).filter(Boolean))].length;
+  const uniqueOperators = Array.from(new Set(allTests.map(test => test.operator).filter(Boolean))).length;
   
   const approvedTests = allTests.filter(test => 
     test.results?.status === 'APROVADO' || 

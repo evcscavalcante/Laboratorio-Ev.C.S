@@ -336,16 +336,7 @@ async function startServer() {
     }
   });
 
-  // Subscription plans (public access)
-  app.get("/api/subscription/plans", async (req: Request, res: Response) => {
-    try {
-      const plans = await db.select().from(subscriptionPlans);
-      res.json(plans);
-    } catch (error) {
-      console.error('Error fetching subscription plans:', error);
-      res.status(500).json({ message: "Error fetching subscription plans" });
-    }
-  });
+  // Subscription plans endpoint handled by payment-routes.ts
 
   // User permissions (protected route)
   app.get("/api/user/permissions", verifyFirebaseToken, (req: Request, res: Response) => {
@@ -784,12 +775,8 @@ async function startServer() {
       } else {
         // Fallback: usuário sem role/org definida vê apenas dados básicos
         console.log(`👥 Usuário sem hierarquia definida: acesso limitado`);
-        usersList = usersList.map(u => ({
-          id: u.id,
-          email: u.email,
-          role: u.role,
-          organizationId: u.organizationId
-        }));
+        // Retorna os usuários como estão, sem modificação de propriedades
+        usersList = usersList;
       }
 
       console.log(`👥 Usuários filtrados: ${usersList.length}`);
