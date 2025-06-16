@@ -171,7 +171,7 @@ export const useDensityInSituAutofill = (
         console.log(`✅ Cilindro biselado ${cilindroId} carregado: ${cilindro.peso}g, ${cilindro.volume}cm³`);
       }
     }
-  }, [cilindroId, setValues, equipmentData]);
+  }, [cilindroId]); // REMOVIDO setValues e equipmentData
 };
 
 // Hook específico para densidade real (usa cápsulas pequenas para limites físicos)
@@ -198,7 +198,7 @@ export const useRealDensityAutofill = (
         console.log(`✅ Cápsula ${capsulaId} carregada para densidade real: ${capsula.peso}g`);
       }
     }
-  }, [capsulaId, setValues, determinacao, equipmentData]);
+  }, [capsulaId, determinacao]); // REMOVIDO setValues e equipmentData
 };
 
 // Hook específico para densidade máx/mín (usa cilindro padrão/máximo-mínimos)
@@ -227,7 +227,7 @@ export const useMaxMinDensityAutofill = (
         console.log(`✅ Cilindro vazios mínimos ${cilindroId} carregado: ${cilindro.peso}g, ${cilindro.volume}cm³`);
       }
     }
-  }, [cilindroId, setValues, tipo, determinacao, equipmentData]);
+  }, [cilindroId, tipo, determinacao]); // REMOVIDO setValues e equipmentData
 };
 
 // Hook para umidade - detecta automaticamente o tipo de cápsula necessária
@@ -256,5 +256,5 @@ export const useMoistureAutofill = (
         }
       }
     }
-  }, [capsulaId, setValues, metodo, campo]);
+  }, [capsulaId, metodo, campo]); // REMOVIDO setValues
 };

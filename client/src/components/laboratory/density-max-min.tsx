@@ -138,7 +138,7 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
         console.log(`✅ Cilindro padrão ${data.maxDensity1.cylinderNumber} carregado para densidade máxima`);
       }
     }
-  }, [data.maxDensity1.cylinderNumber, searchEquipment]);
+  }, [data.maxDensity1.cylinderNumber]); // REMOVIDO searchEquipment
 
   useEffect(() => {
     if (data.maxDensity2.cylinderNumber && data.maxDensity2.cylinderNumber.length >= 1) {
@@ -150,7 +150,7 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
         }));
       }
     }
-  }, [data.maxDensity2.cylinderNumber, searchEquipment]);
+  }, [data.maxDensity2.cylinderNumber]); // REMOVIDO searchEquipment
 
   useEffect(() => {
     if (data.maxDensity3.cylinderNumber && data.maxDensity3.cylinderNumber.length >= 1) {
