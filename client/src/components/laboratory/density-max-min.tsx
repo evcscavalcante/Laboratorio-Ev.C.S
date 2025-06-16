@@ -284,34 +284,23 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
     return Number(average.toFixed(2));
   };
 
-  // Função para buscar dados do cilindro padrão pelo código
+  // Função para buscar dados do cilindro pelo número
   const buscarDadosCilindro = (codigo: string) => {
-    if (!codigo) return null;
+    if (!codigo || !searchEquipment) return null;
     
-    // Buscar nos cilindros padrão usando a nova estrutura de sincronização
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (key?.startsWith('equipamento_cilindro_')) {
-        const item = localStorage.getItem(key);
-        if (item) {
-          try {
-            const equipamento = JSON.parse(item);
-            if (equipamento.tipo === 'cilindro' && 
-                equipamento.codigo === codigo && 
-                equipamento.subtipo === 'padrao') {
-              return {
-                codigo: equipamento.codigo,
-                peso: equipamento.peso,
-                volume: equipamento.volume,
-                subtipo: equipamento.subtipo
-              };
-            }
-          } catch (error) {
-            console.error('Erro ao processar equipamento:', error);
-          }
-        }
-      }
+    // Buscar usando o hook searchEquipment
+    const resultado = searchEquipment(codigo, 'cilindro');
+    if (resultado.found && resultado.data && resultado.data.peso && resultado.data.volume) {
+      console.log(`✅ Cilindro ${codigo} encontrado: ${resultado.data.peso}g, ${resultado.data.volume}cm³`);
+      return {
+        codigo: resultado.data.codigo,
+        peso: resultado.data.peso,
+        volume: resultado.data.volume,
+        tipo: resultado.data.tipo
+      };
     }
+    
+    console.log(`❌ Cilindro ${codigo} não encontrado`);
     return null;
   };
 
@@ -419,8 +408,8 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
 
     if (dadosCilindro) {
       toast({
-        title: "Cilindro Padrão - Dados Preenchidos",
-        description: `Cilindro ${dadosCilindro.codigo} (${dadosCilindro.subtipo}): Peso ${dadosCilindro.peso}g, Volume ${dadosCilindro.volume}cm³`,
+        title: "Cilindro - Dados Preenchidos",
+        description: `Cilindro ${dadosCilindro.codigo} (${dadosCilindro.tipo}): Peso ${dadosCilindro.peso}g, Volume ${dadosCilindro.volume}cm³`,
       });
     }
   };

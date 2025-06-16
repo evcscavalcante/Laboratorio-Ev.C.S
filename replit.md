@@ -1024,6 +1024,13 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Erro TypeScript corrigido: searchEquipment retorna AutofillResult, acessar via resultado.data.peso
   - Interface otimizada: informações de identificação no cabeçalho, dados técnicos na tabela
   - Sistema operacional com tabela de umidade completa e preenchimento automático funcionando
+- June 16, 2025: PREENCHIMENTO AUTOMÁTICO DE CILINDROS CORRIGIDO NA DENSIDADE MÁX/MÍN
+  - PROBLEMA IDENTIFICADO: Cilindros ainda buscavam dados antigos do localStorage em vez do PostgreSQL atual
+  - Função buscarDadosCilindro atualizada para usar hook searchEquipment(codigo, 'cilindro')
+  - Sistema agora busca dados atualizados do banco PostgreSQL com 13 equipamentos
+  - Preenchimento automático funcional para cilindros 3-5 (vazios_mínimos) com peso e volume corretos
+  - Eliminada dependência de dados antigos salvos localmente
+  - Sistema unificado: cápsulas e cilindros usando mesma fonte de dados (PostgreSQL via API)
 
 ## User Preferences
 
