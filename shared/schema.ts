@@ -3,19 +3,7 @@ import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 import { relations } from "drizzle-orm";
 
-// Subscription Plans
-export const subscriptionPlans = pgTable("subscription_plans", {
-  id: serial("id").primaryKey(),
-  name: varchar("name", { length: 100 }).notNull(),
-  description: text("description"),
-  price: real("price").notNull(),
-  currency: varchar("currency", { length: 3 }).default("BRL"),
-  maxUsers: integer("max_users").default(5),
-  maxTests: integer("max_tests").default(100),
-  features: json("features").$type<string[]>(),
-  active: boolean("active").default(true),
-  createdAt: timestamp("created_at").defaultNow()
-});
+// Subscription Plans schema moved to shared/payment-schema.ts
 
 // User Management Tables with Hierarchical Organization Support
 export const organizations: any = pgTable("organizations", {
@@ -32,7 +20,7 @@ export const organizations: any = pgTable("organizations", {
   organizationType: varchar("organization_type", { length: 20 }).default("independent"), // 'independent', 'headquarters', 'affiliate'
   accessLevel: varchar("access_level", { length: 20 }).default("isolated"), // 'isolated', 'parent_access', 'full_hierarchy'
   
-  subscriptionPlanId: integer("subscription_plan_id").references(() => subscriptionPlans.id),
+  subscriptionPlanId: integer("subscription_plan_id"), // Reference to payment-schema.ts subscriptionPlans
   subscriptionStatus: varchar("subscription_status", { length: 20 }).default("active"),
   subscriptionExpiry: timestamp("subscription_expiry"),
   monthlyTestCount: integer("monthly_test_count").default(0),
@@ -427,11 +415,7 @@ export const SubscriptionPlansEnum = {
   UNLIMITED: 'UNLIMITED'
 } as const;
 
-// Schemas
-export const insertSubscriptionPlanSchema = createInsertSchema(subscriptionPlans).omit({
-  id: true,
-  createdAt: true,
-});
+// Subscription plan schemas moved to shared/payment-schema.ts
 
 export const insertOrganizationSchema = createInsertSchema(organizations).omit({
   id: true,

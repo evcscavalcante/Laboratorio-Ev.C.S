@@ -799,8 +799,8 @@ async function startServer() {
 
       if (user.role === 'DEVELOPER') {
         // DEVELOPER vê todos os equipamentos
-        capsulasList = await db.select().from(capsulas);
-        cilindrosList = await db.select().from(cilindros);
+        capsulasList = await db.select().from(capsulas) as any[];
+        cilindrosList = await db.select().from(cilindros) as any[];
         console.log(`🔐 DEVELOPER acesso total: ${user.email}`);
       } else {
         // ADMIN, MANAGER, TECHNICIAN veem apenas equipamentos da própria organização
@@ -812,14 +812,14 @@ async function startServer() {
       
       // Formato correto para o hook useEquipmentAutofill
       const equipamentosFormatados = {
-        capsulas: capsulasList.map(cap => ({
+        capsulas: capsulasList.map((cap: any) => ({
           id: cap.id,
           codigo: cap.codigo,
           peso: cap.peso,
           material: cap.material,
           descricao: cap.descricao
         })),
-        cilindros: cilindrosList.map(cil => ({
+        cilindros: cilindrosList.map((cil: any) => ({
           id: cil.id,
           codigo: cil.codigo,
           peso: cil.peso,
