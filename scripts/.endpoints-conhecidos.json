@@ -1,0 +1,217 @@
+[
+  {
+    "method": "GET",
+    "url": "/api/health",
+    "detected": "2025-06-16T08:07:19.998Z"
+  },
+  {
+    "method": "GET",
+    "url": "/api/metrics",
+    "detected": "2025-06-16T08:07:19.998Z"
+  },
+  {
+    "method": "GET",
+    "url": "/api/metrics/performance",
+    "detected": "2025-06-16T08:07:19.998Z"
+  },
+  {
+    "method": "GET",
+    "url": "/api/metrics/errors",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "GET",
+    "url": "/api/alerts",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "GET",
+    "url": "/api/observability/dashboard",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "GET",
+    "url": "/api/auth/user",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "POST",
+    "url": "/api/auth/sync-user",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "GET",
+    "url": "/api/subscription/plans",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "GET",
+    "url": "/api/user/permissions",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "GET",
+    "url": "/api/admin/users",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "GET",
+    "url": "/api/developer/system-info",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "GET",
+    "url": "/api/notifications",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "PATCH",
+    "url": "/api/notifications/:id/read",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "PATCH",
+    "url": "/api/notifications/mark-all-read",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "GET",
+    "url": "/api/payment/config",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "GET",
+    "url": "/api/ensaios/densidade-in-situ",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "GET",
+    "url": "/api/tests/density-in-situ",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "POST",
+    "url": "/api/tests/density-in-situ",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/tests/density-in-situ/:id",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/tests/density-in-situ/:id",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "GET",
+    "url": "/api/tests/real-density",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "POST",
+    "url": "/api/tests/real-density",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/tests/real-density/:id",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/tests/real-density/:id",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "GET",
+    "url": "/api/tests/max-min-density",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "POST",
+    "url": "/api/tests/max-min-density",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/tests/max-min-density/:id",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/tests/max-min-density/:id",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "GET",
+    "url": "/api/organizations/user-counts",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "GET",
+    "url": "/api/organizations",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "POST",
+    "url": "/api/organizations",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "GET",
+    "url": "/api/users",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "GET",
+    "url": "/api/equipamentos",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "POST",
+    "url": "/api/equipamentos",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "PUT",
+    "url": "/api/equipamentos/:id",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "DELETE",
+    "url": "/api/equipamentos/:id",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "POST",
+    "url": "/api/auth/set-role",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "GET",
+    "url": "/api/lgpd/terms",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "GET",
+    "url": "/api/lgpd/privacy-policy",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "POST",
+    "url": "/api/lgpd/consent",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "GET",
+    "url": "/api/lgpd/my-data",
+    "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "POST",
+    "url": "/api/lgpd/request-deletion",
+    "detected": "2025-06-16T08:07:19.999Z"
+  }
+]
