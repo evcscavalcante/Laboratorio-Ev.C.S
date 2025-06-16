@@ -223,10 +223,12 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
 
   // Preenchimento automático de equipamentos - Determinação 1 Cilindro
   useEffect(() => {
+    console.log(`🔍 Debug Det1 - Código: "${data.det1.cylinderNumber}", Comprimento: ${data.det1.cylinderNumber?.length}`);
     if (data.det1.cylinderNumber && data.det1.cylinderNumber.length >= 1) {
-      const result = searchEquipment(data.det1.cylinderNumber);
+      const result = searchEquipment(data.det1.cylinderNumber, 'cilindro');
+      console.log(`🔧 Resultado busca Det1 - Cilindro ${data.det1.cylinderNumber}:`, result);
       if (result.found && result.type === 'cilindro') {
-        console.log(`🔧 Preenchimento automático Det1 - Cilindro ${data.det1.cylinderNumber}:`, result.data);
+        console.log(`✅ Preenchimento automático Det1 - Cilindro ${data.det1.cylinderNumber}:`, result.data);
         setData(prev => ({
           ...prev,
           det1: {
@@ -235,16 +237,20 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
             volume: result.data.volume || 0
           }
         }));
+      } else {
+        console.log(`❌ Det1 - Equipamento não encontrado ou tipo incorreto:`, result);
       }
     }
-  }, [data.det1.cylinderNumber]);
+  }, [data.det1.cylinderNumber, searchEquipment]);
 
   // Preenchimento automático de equipamentos - Determinação 2 Cilindro
   useEffect(() => {
+    console.log(`🔍 Debug Det2 - Código: "${data.det2.cylinderNumber}", Comprimento: ${data.det2.cylinderNumber?.length}`);
     if (data.det2.cylinderNumber && data.det2.cylinderNumber.length >= 1) {
-      const result = searchEquipment(data.det2.cylinderNumber);
+      const result = searchEquipment(data.det2.cylinderNumber, 'cilindro');
+      console.log(`🔧 Resultado busca Det2 - Cilindro ${data.det2.cylinderNumber}:`, result);
       if (result.found && result.type === 'cilindro') {
-        console.log(`🔧 Preenchimento automático Det2 - Cilindro ${data.det2.cylinderNumber}:`, result.data);
+        console.log(`✅ Preenchimento automático Det2 - Cilindro ${data.det2.cylinderNumber}:`, result.data);
         setData(prev => ({
           ...prev,
           det2: {
@@ -253,9 +259,11 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
             volume: result.data.volume || 0
           }
         }));
+      } else {
+        console.log(`❌ Det2 - Equipamento não encontrado ou tipo incorreto:`, result);
       }
     }
-  }, [data.det2.cylinderNumber]);
+  }, [data.det2.cylinderNumber, searchEquipment]);
 
   // Preenchimento automático de equipamentos - Cápsulas de umidade TOPO
   useEffect(() => {

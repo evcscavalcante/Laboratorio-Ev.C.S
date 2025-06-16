@@ -52,7 +52,7 @@ export const useEquipmentAutofill = () => {
     });
   }, [equipmentData, isLoading, error]);
 
-  const searchEquipment = (codigo: string): AutofillResult => {
+  const searchEquipment = (codigo: string, tipoPreferido?: 'capsula' | 'cilindro'): AutofillResult => {
     if (!equipmentData || !codigo || codigo.length < 1) {
       return { found: false, type: null, data: null };
     }
@@ -60,7 +60,52 @@ export const useEquipmentAutofill = () => {
     // Limpar entrada - aceitar números, letras e hífen para códigos complexos
     const codigoLimpo = codigo.trim().toUpperCase();
 
-    // Buscar nas cápsulas (aceita qualquer código: 1, 2, 100, CAP-001, etc.)
+    // Se há preferência por tipo, buscar primeiro no tipo preferido
+    if (tipoPreferido === 'cilindro') {
+      // Buscar nos cilindros primeiro
+      const cilindro = equipmentData.cilindros?.find(
+        cil => cil.codigo.toString().toUpperCase() === codigoLimpo
+      );
+
+      if (cilindro) {
+        return {
+          found: true,
+          type: 'cilindro',
+          data: {
+            codigo: cilindro.codigo,
+            peso: cilindro.peso,
+            volume: cilindro.volume,
+            altura: cilindro.altura,
+            diametro: cilindro.diametro,
+            tipo: cilindro.tipo,
+            descricao: cilindro.descricao
+          }
+        };
+      }
+    }
+
+    if (tipoPreferido === 'capsula') {
+      // Buscar nas cápsulas primeiro
+      const capsula = equipmentData.capsulas?.find(
+        cap => cap.codigo.toString().toUpperCase() === codigoLimpo
+      );
+
+      if (capsula) {
+        return {
+          found: true,
+          type: 'capsula',
+          data: {
+            codigo: capsula.codigo,
+            peso: capsula.peso,
+            descricao: capsula.descricao,
+            material: capsula.material
+          }
+        };
+      }
+    }
+
+    // Busca geral (para compatibilidade)
+    // Buscar nas cápsulas
     const capsula = equipmentData.capsulas?.find(
       cap => cap.codigo.toString().toUpperCase() === codigoLimpo
     );
@@ -78,7 +123,7 @@ export const useEquipmentAutofill = () => {
       };
     }
 
-    // Buscar nos cilindros (aceita qualquer código: 1, 2, 500, CIL-001, etc.)
+    // Buscar nos cilindros
     const cilindro = equipmentData.cilindros?.find(
       cil => cil.codigo.toString().toUpperCase() === codigoLimpo
     );
