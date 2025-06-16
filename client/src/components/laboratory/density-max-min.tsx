@@ -317,14 +317,13 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
 
   // Função para buscar peso da cápsula pelo número
   const buscarPesoCapsula = (numero: string) => {
-    if (!numero || !equipmentData?.capsulas) return null;
+    if (!numero || !searchEquipment) return null;
     
-    // Buscar nas cápsulas usando equipmentData do hook
-    for (const capsula of equipmentData.capsulas) {
-      if (capsula.codigo === numero) {
-        console.log(`✅ Cápsula ${numero} encontrada: ${capsula.peso}g`);
-        return capsula.peso;
-      }
+    // Buscar usando o hook searchEquipment
+    const equipamento = searchEquipment(numero, 'capsula');
+    if (equipamento && equipamento.peso) {
+      console.log(`✅ Cápsula ${numero} encontrada: ${equipamento.peso}g`);
+      return equipamento.peso;
     }
     
     console.log(`❌ Cápsula ${numero} não encontrada`);
@@ -793,8 +792,6 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
           </div>
         </CardContent>
       </Card>
-
-
 
       {/* Maximum Density */}
       <Card>
