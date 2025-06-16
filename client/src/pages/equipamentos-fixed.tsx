@@ -98,14 +98,53 @@ export default function EquipamentosFixed() {
       
       if (response.ok) {
         const equipamentosData = await response.json();
-        setEquipamentos(equipamentosData);
-        console.log(`✅ ${equipamentosData.length} equipamentos carregados do PostgreSQL`);
         
-        if (equipamentosData.length > 0) {
-          toast({
-            title: "Equipamentos carregados",
-            description: `${equipamentosData.length} equipamento(s) encontrado(s)`,
-          });
+        // Verificar se os dados estão no formato correto
+        if (equipamentosData && typeof equipamentosData === 'object') {
+          const { capsulas = [], cilindros = [] } = equipamentosData;
+          
+          // Combinar cápsulas e cilindros em um array único
+          const equipamentosCombinados: Equipamento[] = [
+            ...capsulas.map((cap: any) => ({
+              id: cap.id,
+              codigo: cap.codigo,
+              tipo: 'capsula' as const,
+              tipoEspecifico: cap.tipo || 'pequena',
+              descricao: cap.descricao || descricoesTipos[cap.tipo] || 'Cápsula para ensaios',
+              peso: cap.peso,
+              material: cap.material,
+              status: 'ativo' as const,
+              createdAt: cap.createdAt || new Date().toISOString(),
+              updatedAt: cap.updatedAt || new Date().toISOString()
+            })),
+            ...cilindros.map((cil: any) => ({
+              id: cil.id,
+              codigo: cil.codigo,
+              tipo: 'cilindro' as const,
+              tipoEspecifico: cil.tipo || 'biselado',
+              descricao: cil.descricao || descricoesTipos[cil.tipo] || 'Cilindro para ensaios',
+              peso: cil.peso,
+              volume: cil.volume,
+              altura: cil.altura,
+              diametro: cil.diametro,
+              status: 'ativo' as const,
+              createdAt: cil.createdAt || new Date().toISOString(),
+              updatedAt: cil.updatedAt || new Date().toISOString()
+            }))
+          ];
+          
+          setEquipamentos(equipamentosCombinados);
+          console.log(`✅ ${equipamentosCombinados.length} equipamentos carregados (${capsulas.length} cápsulas, ${cilindros.length} cilindros)`);
+          
+          if (equipamentosCombinados.length > 0) {
+            toast({
+              title: "Equipamentos carregados",
+              description: `${equipamentosCombinados.length} equipamento(s) encontrado(s)`,
+            });
+          }
+        } else {
+          console.error('Formato de dados inválido:', equipamentosData);
+          setEquipamentos([]);
         }
       } else {
         console.error('Erro na resposta da API:', response.status);
@@ -255,17 +294,19 @@ export default function EquipamentosFixed() {
     }
   };
 
-  // Filtrar equipamentos
-  const equipamentosFiltrados = equipamentos.filter(equipamento => {
+  // Filtrar equipamentos com validação de segurança
+  const equipamentosFiltrados = Array.isArray(equipamentos) ? equipamentos.filter(equipamento => {
+    if (!equipamento || typeof equipamento !== 'object') return false;
+    
     const matchTipo = filtroTipo === 'todos' || equipamento.tipo === filtroTipo;
     const matchStatus = filtroStatus === 'todos' || equipamento.status === filtroStatus;
     const matchBusca = !busca || 
-      equipamento.codigo.toLowerCase().includes(busca.toLowerCase()) ||
+      equipamento.codigo?.toLowerCase().includes(busca.toLowerCase()) ||
       equipamento.descricao?.toLowerCase().includes(busca.toLowerCase()) ||
       equipamento.material?.toLowerCase().includes(busca.toLowerCase());
     
     return matchTipo && matchStatus && matchBusca;
-  });
+  }) : [];
 
   return (
     <div className="p-6 space-y-6">
