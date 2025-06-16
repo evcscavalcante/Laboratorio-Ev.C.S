@@ -96,7 +96,7 @@ export const useEquipmentAutofill = () => {
     fieldMapping: Record<string, string>
   ) => {
     useEffect(() => {
-      if (codigo && codigo !== lastSearched && codigo.length >= 3) {
+      if (codigo && codigo !== lastSearched && codigo.length >= 1) {
         const result = searchEquipment(codigo);
         
         if (result.found && result.data) {
@@ -134,7 +134,7 @@ export const useDensityInSituAutofill = (
   const { searchEquipment } = useEquipmentAutofill();
 
   useEffect(() => {
-    if (cilindroId && cilindroId.length >= 3) {
+    if (cilindroId && cilindroId.length >= 1) {
       const result = searchEquipment(cilindroId);
       
       if (result.found && result.type === 'cilindro' && result.data.tipo === 'biselado') {
@@ -157,7 +157,7 @@ export const useRealDensityAutofill = (
   const { searchEquipment } = useEquipmentAutofill();
 
   useEffect(() => {
-    if (capsulaId && capsulaId.length >= 3) {
+    if (capsulaId && capsulaId.length >= 1) {
       const result = searchEquipment(capsulaId);
       
       if (result.found && result.type === 'capsula') {
@@ -180,7 +180,7 @@ export const useMaxMinDensityAutofill = (
   const { searchEquipment } = useEquipmentAutofill();
 
   useEffect(() => {
-    if (cilindroId && cilindroId.length >= 3) {
+    if (cilindroId && cilindroId.length >= 1) {
       const result = searchEquipment(cilindroId);
       
       if (result.found && result.type === 'cilindro' && result.data.tipo === 'vazios_minimos') {
@@ -204,7 +204,7 @@ export const useMoistureAutofill = (
   const { searchEquipment } = useEquipmentAutofill();
 
   useEffect(() => {
-    if (capsulaId && capsulaId.length >= 3) {
+    if (capsulaId && capsulaId.length >= 1) {
       const result = searchEquipment(capsulaId);
       
       if (result.found && result.type === 'capsula') {
