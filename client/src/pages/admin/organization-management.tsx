@@ -73,8 +73,25 @@ export default function OrganizationManagement() {
   const { data: userCounts = {} } = useQuery({
     queryKey: ['/api/organizations/user-counts'],
     queryFn: async () => {
-      const response = await fetch('/api/organizations/user-counts');
-      return response.json();
+      try {
+        const response = await fetch('/api/organizations/user-counts');
+        if (!response.ok) {
+          console.warn('Falha ao buscar user-counts:', response.status);
+          return {};
+        }
+        const data = await response.json();
+        
+        // Garantir que sempre retornamos um objeto válido
+        if (data && typeof data === 'object' && !Array.isArray(data)) {
+          return data;
+        } else {
+          console.warn('API retornou formato inválido para user-counts:', typeof data);
+          return {};
+        }
+      } catch (error) {
+        console.error('Erro ao buscar user-counts:', error);
+        return {};
+      }
     }
   });
 

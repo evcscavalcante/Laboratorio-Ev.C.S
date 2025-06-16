@@ -1,0 +1,42 @@
+3
+chunk-XQLYTHWV.js?v=d97851ae:14032 The above error occurred in the <span> component:
+
+    at span
+    at div
+    at div
+    at div
+    at _c9 (https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/src/components/ui/card.tsx:114:12)
+    at div
+    at _c (https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/src/components/ui/card.tsx:20:11)
+    at div
+    at div
+    at OrganizationManagement (https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/src/pages/admin/organization-management.tsx:33:41)
+    at Route (https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.repli…/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=d97851ae:323:16)
+    at Switch (https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.repli…/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=d97851ae:379:17)
+    at div
+    at main
+    at div
+    at div
+    at MainLayout (https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/src/components/layout/main-layout.tsx:23:38)
+    at Router (https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/src/App.tsx?v=i5EVOcxOsSDEOOBf6Mvju:53:29)
+    at DataSyncProvider (https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/src/contexts/data-sync-context.tsx:29:36)
+    at AuthProvider (https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/src/hooks/useAuth.tsx:52:32)
+    at QueryClientProvider (https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.repli…rkspace/node_modules/.vite/deps/@tanstack_react-query.js?v=d97851ae:2805:3)
+    at App
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+chunk-XQLYTHWV.js?v=d97851ae:9934 Uncaught Error: Objects are not valid as a React child (found: object with keys {organizationId, count}). If you meant to render a collection of children, use an array instead.
+    at throwOnInvalidObjectType (chunk-XQLYTHWV.js?v=d97851ae:9934:17)
+    at createChild (chunk-XQLYTHWV.js?v=d97851ae:10110:15)
+    at reconcileChildrenArray (chunk-XQLYTHWV.js?v=d97851ae:10282:33)
+    at reconcileChildFibers2 (chunk-XQLYTHWV.js?v=d97851ae:10559:24)
+    at reconcileChildren (chunk-XQLYTHWV.js?v=d97851ae:14290:37)
+    at updateHostComponent (chunk-XQLYTHWV.js?v=d97851ae:14807:11)
+    at beginWork (chunk-XQLYTHWV.js?v=d97851ae:15935:22)
+    at beginWork$1 (chunk-XQLYTHWV.js?v=d97851ae:19753:22)
+    at performUnitOfWork (chunk-XQLYTHWV.js?v=d97851ae:19198:20)
+    at workLoopSync (chunk-XQLYTHWV.js?v=d97851ae:19137:13)
+
+﻿
+

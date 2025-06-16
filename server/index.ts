@@ -636,19 +636,15 @@ async function startServer() {
       // Buscar todos os usuários e agrupar por organização
       const allUsers = await db.select().from(users);
       const userCounts = allUsers.reduce((acc: any, user) => {
-        const orgId = user.organizationId || 'null';
-        acc[orgId] = (acc[orgId] || 0) + 1;
+        const orgId = user.organizationId;
+        if (orgId) {
+          acc[orgId] = (acc[orgId] || 0) + 1;
+        }
         return acc;
       }, {});
       
-      // Converter para formato array
-      const result = Object.entries(userCounts).map(([organizationId, count]) => ({
-        organizationId: organizationId === 'null' ? null : parseInt(organizationId),
-        count
-      }));
-      
-      console.log(`📊 Contagem de usuários por organização: ${result.length} organizações`);
-      res.json(result);
+      console.log(`📊 Contagem de usuários por organização: ${Object.keys(userCounts).length} organizações`);
+      res.json(userCounts);
     } catch (error) {
       console.error('Erro ao buscar contagem de usuários:', error);
       res.status(500).json({ message: 'Falha ao buscar contagem de usuários' });
