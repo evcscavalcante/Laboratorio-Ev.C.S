@@ -228,8 +228,15 @@ export default function EquipamentosFixed() {
       });
 
       if (response.ok) {
-        // Sincronizar com Firebase Firestore
-        const firebaseSuccess = await firebaseSync.syncEquipamento(equipamentoSelecionado);
+        const savedData = await response.json();
+        console.log('✅ Equipamento salvo no PostgreSQL:', savedData);
+        
+        // Sincronizar com Firebase Firestore usando dados salvos
+        const equipamentoComId = { ...equipamentoSelecionado, id: savedData.id || equipamentoSelecionado.id };
+        console.log('🔥 Iniciando sincronização Firebase para equipamento:', equipamentoComId);
+        
+        const firebaseSuccess = await firebaseSync.syncEquipamento(equipamentoComId);
+        console.log('🔥 Resultado sincronização Firebase:', firebaseSuccess);
         
         await carregarEquipamentos();
         setDialogOpen(false);

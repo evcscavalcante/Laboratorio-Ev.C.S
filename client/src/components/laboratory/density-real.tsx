@@ -349,19 +349,25 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
       return apiRequest("POST", "/api/tests/real-density", testData);
     },
     onSuccess: async (result) => {
-      const response = result.json ? result.json() : result;
+      const savedData = result.json ? await result.json() : result;
+      console.log('✅ Ensaio densidade real salvo no PostgreSQL:', savedData);
       
-      // Sincronizar com Firebase Firestore
-      const firebaseSuccess = await firebaseSync.syncEnsaio({
+      // Sincronizar com Firebase Firestore usando dados salvos
+      const ensaioComId = {
         ...data,
+        id: savedData.id || data.id,
         results: calculations.results
-      }, 'densidade-real');
+      };
+      console.log('🔥 Iniciando sincronização Firebase para densidade real:', ensaioComId);
+      
+      const firebaseSuccess = await firebaseSync.syncEnsaio(ensaioComId, 'densidade-real');
+      console.log('🔥 Resultado sincronização Firebase densidade real:', firebaseSuccess);
 
       toast({ 
         title: "✅ Ensaio Salvo com Sucesso!",
         description: firebaseSuccess 
           ? `Ensaio salvo no PostgreSQL e sincronizado com Firebase.`
-          : `Ensaio salvo no PostgreSQL. Sincronização Firebase falharam.`,
+          : `Ensaio salvo no PostgreSQL. Sincronização Firebase falhou.`,
         duration: 5000,
       });
       

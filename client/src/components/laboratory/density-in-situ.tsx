@@ -100,13 +100,19 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
       return response;
     },
     onSuccess: async (result) => {
-      console.log("✅ Ensaio salvo com sucesso:", result);
+      const savedData = result.json ? await result.json() : result;
+      console.log('✅ Ensaio densidade in-situ salvo no PostgreSQL:', savedData);
       
-      // Sincronizar com Firebase Firestore
-      const firebaseSuccess = await firebaseSync.syncEnsaio({
+      // Sincronizar com Firebase Firestore usando dados salvos
+      const ensaioComId = {
         ...data,
+        id: savedData.id || data.id,
         results: calculations.results
-      }, 'densidade-in-situ');
+      };
+      console.log('🔥 Iniciando sincronização Firebase para densidade in-situ:', ensaioComId);
+      
+      const firebaseSuccess = await firebaseSync.syncEnsaio(ensaioComId, 'densidade-in-situ');
+      console.log('🔥 Resultado sincronização Firebase densidade in-situ:', firebaseSuccess);
 
       toast({
         title: "✅ Ensaio Salvo com Sucesso!",
@@ -117,6 +123,12 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
       });
       queryClient.invalidateQueries({ queryKey: ["/api/tests/density-in-situ"] });
       localStorage.removeItem('density-in-situ-progress');
+      
+      if (firebaseSuccess) {
+        console.log('✅ Dados sincronizados com Firebase Firestore');
+      } else {
+        console.log('⚠️ Falha na sincronização Firebase - dados mantidos no PostgreSQL');
+      }
     },
     onError: (error: any) => {
       console.error('❌ Erro ao salvar ensaio:', error);

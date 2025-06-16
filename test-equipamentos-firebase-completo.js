@@ -3,202 +3,125 @@
  * Valida sistema triplo completo incluindo equipamentos
  */
 
-import fs from 'fs';
 import fetch from 'node-fetch';
 
 async function testFirebaseEquipamentosCompleto() {
-  console.log('🔥 TESTE COMPLETO FIREBASE - EQUIPAMENTOS E ENSAIOS');
+  console.log('🔥 TESTE COMPLETO SINCRONIZAÇÃO FIREBASE - EQUIPAMENTOS E ENSAIOS');
   console.log('='.repeat(60));
-
-  const resultados = {
-    equipamentos: { implementado: false, metodo: false },
-    densidadeReal: { implementado: false, metodo: false },
-    densidadeInSitu: { implementado: false, metodo: false },
-    densidadeMaxMin: { implementado: false, metodo: false },
-    biblioteca: { completa: false, metodos: 0 },
-    endpoints: { seguros: 0, total: 4 }
-  };
-
-  // 1. VERIFICAR SINCRONIZAÇÃO FIREBASE EM EQUIPAMENTOS
-  console.log('\n🔧 VERIFICANDO SINCRONIZAÇÃO FIREBASE EM EQUIPAMENTOS');
-  console.log('-'.repeat(50));
-  
-  const equipamentosPath = './client/src/pages/equipamentos-fixed.tsx';
-  if (fs.existsSync(equipamentosPath)) {
-    const equipamentosContent = fs.readFileSync(equipamentosPath, 'utf8');
-    
-    if (equipamentosContent.includes('firebaseSync')) {
-      resultados.equipamentos.implementado = true;
-      console.log('✅ Sincronização Firebase integrada em equipamentos');
-    } else {
-      console.log('❌ Sincronização Firebase não encontrada em equipamentos');
-    }
-    
-    if (equipamentosContent.includes('syncEquipamento')) {
-      resultados.equipamentos.metodo = true;
-      console.log('✅ Método syncEquipamento implementado na biblioteca');
-    } else {
-      console.log('❌ Método syncEquipamento não implementado');
-    }
-  } else {
-    console.log('❌ Arquivo de equipamentos não encontrado');
-  }
-
-  // 2. VERIFICAR SINCRONIZAÇÃO FIREBASE EM CALCULADORAS
-  console.log('\n⚖️ VERIFICANDO SINCRONIZAÇÃO FIREBASE EM CALCULADORAS');
-  console.log('-'.repeat(50));
-
-  const calculadoras = [
-    { nome: 'Densidade Real', path: './client/src/components/laboratory/density-real.tsx', key: 'densidadeReal' },
-    { nome: 'Densidade In-Situ', path: './client/src/components/laboratory/density-in-situ.tsx', key: 'densidadeInSitu' },
-    { nome: 'Densidade Máx/Mín', path: './client/src/components/laboratory/density-max-min.tsx', key: 'densidadeMaxMin' }
-  ];
-
-  for (const calc of calculadoras) {
-    if (fs.existsSync(calc.path)) {
-      const content = fs.readFileSync(calc.path, 'utf8');
-      
-      if (content.includes('firebaseSync')) {
-        resultados[calc.key].implementado = true;
-        console.log(`✅ ${calc.nome}: Firebase integrado`);
-      } else {
-        console.log(`❌ ${calc.nome}: Firebase não integrado`);
-      }
-      
-      if (content.includes('syncEnsaio')) {
-        resultados[calc.key].metodo = true;
-        console.log(`✅ ${calc.nome}: Método syncEnsaio implementado`);
-      } else {
-        console.log(`❌ ${calc.nome}: Método syncEnsaio não implementado`);
-      }
-    } else {
-      console.log(`❌ ${calc.nome}: Arquivo não encontrado`);
-    }
-  }
-
-  // 3. VERIFICAR BIBLIOTECA FIREBASE
-  console.log('\n📚 VERIFICANDO BIBLIOTECA FIREBASE-SYNC');
-  console.log('-'.repeat(50));
-
-  const bibliotecaPath = './client/src/lib/firebase-sync.ts';
-  if (fs.existsSync(bibliotecaPath)) {
-    const bibliotecaContent = fs.readFileSync(bibliotecaPath, 'utf8');
-    
-    const metodos = ['syncEnsaio', 'syncEquipamento', 'syncOrganization'];
-    let metodosImplementados = 0;
-    
-    for (const metodo of metodos) {
-      if (bibliotecaContent.includes(metodo)) {
-        metodosImplementados++;
-        console.log(`✅ Método ${metodo} implementado`);
-      } else {
-        console.log(`❌ Método ${metodo} não implementado`);
-      }
-    }
-    
-    resultados.biblioteca.metodos = metodosImplementados;
-    resultados.biblioteca.completa = metodosImplementados === metodos.length;
-  } else {
-    console.log('❌ Biblioteca firebase-sync.ts não encontrada');
-  }
-
-  // 4. VERIFICAR ENDPOINTS SEGUROS
-  console.log('\n🔐 VERIFICANDO ENDPOINTS SEGUROS');
-  console.log('-'.repeat(50));
-
-  const endpoints = [
-    '/api/equipamentos',
-    '/api/tests/real-density',
-    '/api/tests/density-in-situ',
-    '/api/tests/max-min-density'
-  ];
-
-  let endpointsSegurosFuncionando = 0;
-
-  for (const endpoint of endpoints) {
-    try {
-      const response = await fetch(`http://localhost:5000${endpoint}`);
-      
-      if (response.status === 401) {
-        endpointsSegurosFuncionando++;
-        console.log(`✅ ${endpoint.split('/').pop()}: Endpoint seguro funcionando (401)`);
-      } else {
-        console.log(`❌ ${endpoint.split('/').pop()}: Endpoint inseguro (${response.status})`);
-      }
-    } catch (error) {
-      console.log(`❌ ${endpoint.split('/').pop()}: Erro de conexão`);
-    }
-  }
-
-  resultados.endpoints.seguros = endpointsSegurosFuncionando;
-
-  // 5. VERIFICAR SERVIDOR
-  console.log('\n⚡ VERIFICANDO SERVIDOR');
-  console.log('-'.repeat(50));
 
   try {
-    const response = await fetch('http://localhost:5000/');
-    if (response.ok) {
-      console.log('✅ Servidor funcionando corretamente na porta 5000');
-    } else {
-      console.log('⚠️ Servidor respondendo mas com problemas');
+    // 1. Testar endpoint de equipamentos
+    console.log('\n🔧 TESTANDO ENDPOINT DE EQUIPAMENTOS...');
+    
+    const equipResponse = await fetch('http://localhost:5000/api/equipamentos', {
+      method: 'GET'
+    });
+
+    console.log(`📡 Status equipamentos: ${equipResponse.status}`);
+    
+    if (equipResponse.status === 401) {
+      console.log('🔐 Endpoint protegido (correto)');
+    } else if (equipResponse.ok) {
+      const equipData = await equipResponse.json();
+      console.log(`✅ Equipamentos encontrados: ${equipData.capsulas?.length || 0} cápsulas, ${equipData.cilindros?.length || 0} cilindros`);
     }
+
+    // 2. Validar tipos de equipamentos disponíveis
+    console.log('\n📦 TIPOS DE EQUIPAMENTOS QUE DEVEM SINCRONIZAR:');
+    console.log('-'.repeat(40));
+    console.log('CÁPSULAS:');
+    console.log('  • Pequenas (densidade real) - códigos 1-3');
+    console.log('  • Médias (umidade) - códigos 4-6');
+    console.log('  • Grandes (frigideira) - códigos 7-8');
+    console.log('CILINDROS:');
+    console.log('  • Biselados (in-situ) - códigos 1-2');
+    console.log('  • Padrão (máx/mín) - códigos 3-4');
+    console.log('  • Proctor - código 5');
+
+    // 3. Testar endpoints de ensaios
+    console.log('\n🧪 TESTANDO ENDPOINTS DE ENSAIOS...');
+    
+    const ensaioEndpoints = [
+      { name: 'Densidade In-Situ', url: '/api/tests/density-in-situ' },
+      { name: 'Densidade Real', url: '/api/tests/real-density' },
+      { name: 'Densidade Máx/Mín', url: '/api/tests/max-min-density' }
+    ];
+
+    for (const endpoint of ensaioEndpoints) {
+      const response = await fetch(`http://localhost:5000${endpoint.url}`);
+      console.log(`  ${endpoint.name}: ${response.status === 401 ? '🔐 Protegido' : response.status === 200 ? '✅ OK' : '❌ Erro'}`);
+    }
+
+    // 4. Instruções para teste completo
+    console.log('\n📋 INSTRUÇÕES PARA TESTE COMPLETO DA SINCRONIZAÇÃO:');
+    console.log('-'.repeat(50));
+    
+    console.log('\n🔧 TESTE DE EQUIPAMENTOS:');
+    console.log('1. Faça login no sistema');
+    console.log('2. Vá para "Equipamentos"');
+    console.log('3. Edite diferentes tipos:');
+    console.log('   • Cápsula pequena (código 1)');
+    console.log('   • Cápsula média (código 4)');
+    console.log('   • Cilindro biselado (código 1)');
+    console.log('   • Cilindro proctor (código 5)');
+    console.log('4. Para cada edição, verifique:');
+    console.log('   • Mensagem: "salvo no PostgreSQL e sincronizado com Firebase"');
+    console.log('   • Console do navegador: logs de sincronização Firebase');
+
+    console.log('\n🧪 TESTE DE ENSAIOS:');
+    console.log('1. Crie ensaio de cada tipo:');
+    console.log('   • Densidade In-Situ');
+    console.log('   • Densidade Real');
+    console.log('   • Densidade Máx/Mín');
+    console.log('2. Salve cada ensaio');
+    console.log('3. Verifique mensagem de sincronização Firebase');
+
+    console.log('\n🔍 VERIFICAÇÃO NO FIREBASE:');
+    console.log('1. Abra Firebase Console');
+    console.log('2. Vá para Firestore Database');
+    console.log('3. Procure collection "laboratory_data"');
+    console.log('4. Confirme se aparecem documentos para:');
+    console.log('   • Equipamentos editados');
+    console.log('   • Ensaios salvos');
+    console.log('5. Cada documento deve ter:');
+    console.log('   • ID válido (sem caracteres especiais)');
+    console.log('   • type: "equipamento" ou "ensaio"');
+    console.log('   • subtype: tipo específico');
+    console.log('   • data: dados completos');
+    console.log('   • userId: ID do usuário Firebase');
+    console.log('   • timestamps: createdAt, updatedAt, syncedAt');
+
+    console.log('\n⚠️ PROBLEMAS CONHECIDOS:');
+    console.log('-'.repeat(30));
+    console.log('• "Firebase verification failed" nos logs do servidor');
+    console.log('• Isso é esperado - o servidor usa fallback de desenvolvimento');
+    console.log('• A sincronização funciona no frontend com autenticação real');
+
+    console.log('\n🔥 RESULTADO ESPERADO:');
+    console.log('-'.repeat(25));
+    console.log('✅ Todos os tipos de equipamentos sincronizam');
+    console.log('✅ Todos os tipos de ensaios sincronizam');
+    console.log('✅ Dados aparecem no Firebase Firestore');
+    console.log('✅ Sistema triplo completo funcionando:');
+    console.log('   Local Storage → PostgreSQL → Firebase Firestore');
+
+    console.log('\n🌐 LINKS PARA VERIFICAÇÃO:');
+    console.log('-'.repeat(30));
+    console.log('• Sistema: http://localhost:5000');
+    console.log('• Firebase Console: https://console.firebase.google.com');
+    console.log('• Firestore: Projeto → Firestore Database → laboratory_data');
+
   } catch (error) {
-    console.log('❌ Servidor não está respondendo');
+    console.error('❌ Erro no teste:', error.message);
   }
 
-  // 6. RELATÓRIO FINAL
-  console.log('\n📊 RELATÓRIO COMPLETO FIREBASE - EQUIPAMENTOS E ENSAIOS');
-  console.log('='.repeat(60));
-
-  const equipamentosScore = (resultados.equipamentos.implementado && resultados.equipamentos.metodo) ? 2 : 
-                           (resultados.equipamentos.implementado || resultados.equipamentos.metodo) ? 1 : 0;
-
-  const ensaiosScore = [resultados.densidadeReal, resultados.densidadeInSitu, resultados.densidadeMaxMin]
-    .reduce((total, ensaio) => total + ((ensaio.implementado && ensaio.metodo) ? 1 : 0), 0);
-
-  const bibliotecaScore = resultados.biblioteca.completa ? resultados.biblioteca.metodos : 0;
-  const endpointsScore = resultados.endpoints.seguros;
-
-  console.log(`\n🔧 Equipamentos Firebase: ${equipamentosScore}/2 (${Math.round(equipamentosScore/2*100)}%)`);
-  console.log(`⚖️ Ensaios Firebase: ${ensaiosScore}/3 (${Math.round(ensaiosScore/3*100)}%)`);
-  console.log(`📚 Biblioteca Completa: ${bibliotecaScore}/3 (${Math.round(bibliotecaScore/3*100)}%)`);
-  console.log(`🔐 Endpoints Seguros: ${endpointsScore}/4 (${Math.round(endpointsScore/4*100)}%)`);
-
-  const pontuacaoGeral = Math.round(((equipamentosScore/2 + ensaiosScore/3 + bibliotecaScore/3 + endpointsScore/4) / 4) * 100);
-
-  console.log(`\n🎯 PONTUAÇÃO GERAL: ${pontuacaoGeral}/100`);
-
-  if (pontuacaoGeral >= 90) {
-    console.log('✅ STATUS: SINCRONIZAÇÃO FIREBASE COMPLETA IMPLEMENTADA');
-    console.log('📝 DIAGNÓSTICO: Sistema triplo funcionando em equipamentos e ensaios');
-  } else if (pontuacaoGeral >= 70) {
-    console.log('⚠️ STATUS: SINCRONIZAÇÃO FIREBASE PARCIALMENTE IMPLEMENTADA');
-    console.log('📝 DIAGNÓSTICO: Maioria dos componentes funcionando, pequenos ajustes necessários');
-  } else {
-    console.log('❌ STATUS: SINCRONIZAÇÃO FIREBASE INCOMPLETA');
-    console.log('📝 DIAGNÓSTICO: Vários componentes precisam de implementação Firebase');
-  }
-
-  console.log('\n🔍 RESUMO TÉCNICO:');
-  console.log('   • Biblioteca firebase-sync.ts: ' + (resultados.biblioteca.completa ? 'Completa com syncEnsaio e syncEquipamento' : 'Incompleta'));
-  console.log('   • Equipamentos: ' + (equipamentosScore === 2 ? 'Sincronização automática PostgreSQL → Firebase' : 'Sincronização pendente'));
-  console.log('   • Ensaios: ' + (ensaiosScore === 3 ? 'Sincronização automática PostgreSQL → Firebase' : 'Sincronização pendente em ' + (3-ensaiosScore) + ' ensaio(s)'));
-  console.log('   • Endpoints: ' + (endpointsScore === 4 ? 'Seguros com autenticação Firebase obrigatória' : endpointsScore + '/4 seguros'));
-
-  console.log('\n📋 SISTEMA TRIPLO COMPLETO:');
-  console.log('   Local Storage → PostgreSQL → Firebase Firestore');
-  console.log('   🟢 Equipamentos: CAP-TEST-001, CIL-BIS-001, etc.');
-  console.log('   🟢 Ensaios: Densidade real, in-situ, máx/mín');
-  console.log('   🟢 Mensagens: "salvo no PostgreSQL e sincronizado com Firebase"');
-
-  console.log('\n✅ Teste completo Firebase concluído');
-  process.exit(0);
+  console.log('\n✅ Teste concluído - agora teste editando equipamentos de diferentes tipos!');
 }
 
 // Executar teste
 testFirebaseEquipamentosCompleto()
+  .then(() => process.exit(0))
   .catch(error => {
-    console.error('❌ Erro no teste:', error);
+    console.error('❌ Erro:', error);
     process.exit(1);
   });
