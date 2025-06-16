@@ -17,8 +17,8 @@ export const subscriptionPlans = pgTable("subscription_plans", {
   createdAt: timestamp("created_at").defaultNow()
 });
 
-// User Management Tables
-export const organizations = pgTable("organizations", {
+// User Management Tables with Hierarchical Organization Support
+export const organizations: any = pgTable("organizations", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
   description: text("description"),
@@ -26,6 +26,12 @@ export const organizations = pgTable("organizations", {
   phone: varchar("phone", { length: 20 }),
   email: varchar("email", { length: 255 }),
   cnpj: varchar("cnpj", { length: 18 }),
+  
+  // Hierarchical structure for parent-child organizations
+  parentOrganizationId: integer("parent_organization_id").references(() => organizations.id),
+  organizationType: varchar("organization_type", { length: 20 }).default("independent"), // 'independent', 'headquarters', 'affiliate'
+  accessLevel: varchar("access_level", { length: 20 }).default("isolated"), // 'isolated', 'parent_access', 'full_hierarchy'
+  
   subscriptionPlanId: integer("subscription_plan_id").references(() => subscriptionPlans.id),
   subscriptionStatus: varchar("subscription_status", { length: 20 }).default("active"),
   subscriptionExpiry: timestamp("subscription_expiry"),

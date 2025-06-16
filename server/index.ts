@@ -626,18 +626,7 @@ async function startServer() {
     }
   });
 
-  // Organizations API endpoints
-  app.get('/api/organizations', async (req: Request, res: Response) => {
-    try {
-      const organizationsList = await db.select().from(organizations);
-      console.log(`📊 Organizações encontradas: ${organizationsList.length}`);
-      res.json(organizationsList);
-    } catch (error) {
-      console.error('Erro ao buscar organizações:', error);
-      res.status(500).json({ message: 'Falha ao buscar organizações' });
-    }
-  });
-
+  // IMPORTANTE: user-counts DEVE vir ANTES do endpoint genérico /organizations
   // Get user counts per organization
   app.get('/api/organizations/user-counts', async (req: Request, res: Response) => {
     try {
@@ -685,10 +674,56 @@ async function startServer() {
     }
   });
 
-  app.get('/api/users', async (req: Request, res: Response) => {
+  app.get('/api/users', verifyFirebaseToken, async (req: Request, res: Response) => {
     try {
-      const usersList = await db.select().from(users);
-      console.log(`👥 Usuários encontrados: ${usersList.length}`);
+      const user = (req as any).user;
+      let usersList = await db.select().from(users);
+      
+      // Aplicar filtros hierárquicos baseado no role do usuário
+      if (user?.role && user?.organizationId) {
+        // DEVELOPER e ADMIN podem ver usuários de acordo com hierarquia organizacional
+        if (user.role === 'DEVELOPER') {
+          // DEVELOPER vê todos os usuários (para desenvolvimento/debug)
+          console.log(`👥 DEVELOPER: Acesso total - ${usersList.length} usuários`);
+        } else if (user.role === 'ADMIN') {
+          // ADMIN vê usuários da própria organização + filiais (se for matriz)
+          const userOrg = await db.select().from(organizations)
+            .where(eq(organizations.id, user.organizationId)).limit(1);
+          
+          if (userOrg.length > 0) {
+            let allowedOrgIds = [user.organizationId];
+            
+            // Se é matriz, adiciona filiais
+            if (userOrg[0].organizationType === 'headquarters') {
+              const affiliates = await db.select().from(organizations)
+                .where(eq(organizations.parentOrganizationId, user.organizationId));
+              allowedOrgIds.push(...affiliates.map(org => org.id));
+            }
+            
+            usersList = usersList.filter(u => 
+              allowedOrgIds.includes(u.organizationId) || !u.organizationId
+            );
+            console.log(`👥 ADMIN org${user.organizationId}: ${usersList.length} usuários acessíveis`);
+          }
+        } else {
+          // MANAGER, TECHNICIAN, VIEWER veem apenas usuários da própria organização
+          usersList = usersList.filter(u => 
+            u.organizationId === user.organizationId || !u.organizationId
+          );
+          console.log(`👥 ${user.role} org${user.organizationId}: ${usersList.length} usuários da organização`);
+        }
+      } else {
+        // Fallback: usuário sem role/org definida vê apenas dados básicos
+        console.log(`👥 Usuário sem hierarquia definida: acesso limitado`);
+        usersList = usersList.map(u => ({
+          id: u.id,
+          email: u.email,
+          role: u.role,
+          organizationId: u.organizationId
+        }));
+      }
+
+      console.log(`👥 Usuários filtrados: ${usersList.length}`);
       res.json(usersList);
     } catch (error) {
       console.error('Erro ao buscar usuários:', error);

@@ -1,193 +1,209 @@
-/**
- * Middleware de Isolamento de Dados por Organização
- * Previne vazamento de informações entre camadas hierárquicas
- */
-
 import { Request, Response, NextFunction } from 'express';
+import { db } from '../db';
+import { organizations, users } from '@shared/schema';
+import { eq } from 'drizzle-orm';
 
-interface AuthenticatedRequest extends Request {
-  user?: {
-    id: string;
-    email: string;
-    role: string;
-    organizationId?: string;
-    firebaseUid: string;
-  };
+/**
+ * Middleware de Isolamento de Dados Organizacionais
+ * Implementa segurança de dados entre organizações com suporte a hierarquia
+ */
+
+interface OrganizationHierarchy {
+  id: number;
+  name: string;
+  parentOrganizationId: number | null;
+  organizationType: 'independent' | 'headquarters' | 'affiliate';
+  accessLevel: 'isolated' | 'parent_access' | 'full_hierarchy';
+  children?: OrganizationHierarchy[];
+}
+
+export class DataIsolationService {
+  /**
+   * Busca a árvore hierárquica da organização
+   */
+  static async getOrganizationHierarchy(organizationId: number): Promise<OrganizationHierarchy | null> {
+    try {
+      const org = await db.select().from(organizations).where(eq(organizations.id, organizationId)).limit(1);
+      if (!org.length) return null;
+
+      const organization = org[0];
+      
+      // Busca organizações filhas
+      const children = await db.select().from(organizations)
+        .where(eq(organizations.parentOrganizationId, organizationId));
+
+      return {
+        id: organization.id,
+        name: organization.name,
+        parentOrganizationId: organization.parentOrganizationId,
+        organizationType: organization.organizationType as any,
+        accessLevel: organization.accessLevel as any,
+        children: children.map(child => ({
+          id: child.id,
+          name: child.name,
+          parentOrganizationId: child.parentOrganizationId,
+          organizationType: child.organizationType as any,
+          accessLevel: child.accessLevel as any
+        }))
+      };
+    } catch (error) {
+      console.error('Erro ao buscar hierarquia organizacional:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Determina quais organizações o usuário pode acessar
+   */
+  static async getAccessibleOrganizations(userOrganizationId: number): Promise<number[]> {
+    const hierarchy = await this.getOrganizationHierarchy(userOrganizationId);
+    if (!hierarchy) return [userOrganizationId];
+
+    const accessibleIds = [userOrganizationId];
+
+    // Se é uma matriz (headquarters), pode acessar todas as filiais
+    if (hierarchy.organizationType === 'headquarters') {
+      const affiliates = await db.select().from(organizations)
+        .where(eq(organizations.parentOrganizationId, userOrganizationId));
+      
+      accessibleIds.push(...affiliates.map(org => org.id));
+    }
+
+    // Se tem acesso hierárquico completo
+    if (hierarchy.accessLevel === 'full_hierarchy') {
+      const allRelated = await this.getAllRelatedOrganizations(userOrganizationId);
+      accessibleIds.push(...allRelated);
+    }
+
+    return Array.from(new Set(accessibleIds)); // Remove duplicatas
+  }
+
+  /**
+   * Busca todas as organizações relacionadas na hierarquia
+   */
+  static async getAllRelatedOrganizations(organizationId: number): Promise<number[]> {
+    const related: number[] = [];
+    
+    // Busca organização pai se existir
+    const org = await db.select().from(organizations).where(eq(organizations.id, organizationId)).limit(1);
+    if (org.length && org[0].parentOrganizationId) {
+      related.push(org[0].parentOrganizationId);
+    }
+
+    // Busca todas as filiais
+    const children = await db.select().from(organizations)
+      .where(eq(organizations.parentOrganizationId, organizationId));
+    
+    related.push(...children.map(child => child.id));
+
+    return related;
+  }
+
+  /**
+   * Verifica se o usuário pode acessar dados de uma organização específica
+   */
+  static async canAccessOrganization(userOrganizationId: number, targetOrganizationId: number): Promise<boolean> {
+    if (userOrganizationId === targetOrganizationId) return true;
+
+    const accessibleOrgs = await this.getAccessibleOrganizations(userOrganizationId);
+    return accessibleOrgs.includes(targetOrganizationId);
+  }
+
+  /**
+   * Middleware para filtrar dados por organização
+   */
+  static createDataFilter() {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const user = (req as any).user;
+        
+        if (!user || !user.organizationId) {
+          console.log('🔒 Acesso negado: usuário sem organização definida');
+          return res.status(403).json({ 
+            error: 'Acesso negado',
+            message: 'Usuário deve estar associado a uma organização'
+          });
+        }
+
+        // Adiciona informações de isolamento de dados na requisição
+        const accessibleOrgs = await DataIsolationService.getAccessibleOrganizations(user.organizationId);
+        (req as any).dataIsolation = {
+          userOrganizationId: user.organizationId,
+          accessibleOrganizations: accessibleOrgs,
+          canAccessOrganization: (targetOrgId: number) => accessibleOrgs.includes(targetOrgId)
+        };
+
+        console.log(`🔐 Isolamento de dados: usuário org ${user.organizationId} pode acessar orgs [${accessibleOrgs.join(', ')}]`);
+        next();
+      } catch (error) {
+        console.error('Erro no middleware de isolamento de dados:', error);
+        res.status(500).json({ error: 'Erro interno de segurança' });
+      }
+    };
+  }
+
+  /**
+   * Valida acesso a ensaios específicos
+   */
+  static async validateTestAccess(userId: number, testOrganizationId: number): Promise<boolean> {
+    try {
+      const user = await db.select().from(users).where(eq(users.id, userId)).limit(1);
+      if (!user.length || !user[0].organizationId) return false;
+
+      return await this.canAccessOrganization(user[0].organizationId, testOrganizationId);
+    } catch (error) {
+      console.error('Erro ao validar acesso ao ensaio:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Cria filtro SQL para consultas organizacionais
+   */
+  static createOrganizationFilter(userOrganizationId: number, accessibleOrgs: number[]) {
+    return {
+      userOrganizationId,
+      accessibleOrganizations: accessibleOrgs,
+      sqlFilter: `organization_id IN (${accessibleOrgs.join(',')})`
+    };
+  }
 }
 
 /**
- * Middleware para filtrar dados por organização
- * Apenas DEVELOPER pode ver dados de todas as organizações
+ * Middleware para aplicar isolamento automático em todas as rotas de API
  */
-export const enforceDataIsolation = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-  const user = req.user;
+export const applyDataIsolation = DataIsolationService.createDataFilter();
+
+/**
+ * Função utilitária para verificar acesso em controladores
+ */
+export const checkOrganizationAccess = async (req: Request, targetOrganizationId: number): Promise<boolean> => {
+  const dataIsolation = (req as any).dataIsolation;
+  if (!dataIsolation) return false;
   
-  if (!user) {
-    return res.status(401).json({ error: 'Usuário não autenticado' });
-  }
-
-  // DEVELOPER tem acesso global - pode ver dados de todas as organizações
-  if (user.role === 'DEVELOPER') {
-    req.query.enforceIsolation = 'false';
-    return next();
-  }
-
-  // Todos os outros roles só veem dados da própria organização
-  if (!user.organizationId) {
-    return res.status(403).json({ 
-      error: 'Usuário não associado a uma organização',
-      details: 'Contate o administrador para associar sua conta a uma organização'
-    });
-  }
-
-  // Força filtro por organização
-  req.query.organizationId = user.organizationId;
-  req.query.enforceIsolation = 'true';
-  
-  next();
+  return dataIsolation.canAccessOrganization(targetOrganizationId);
 };
 
 /**
- * Middleware para sanitizar dados sensíveis baseado no role
+ * Middleware específico para proteção de ensaios
  */
-export const sanitizeDataByRole = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-  const user = req.user;
-  
-  if (!user) {
-    return res.status(401).json({ error: 'Usuário não autenticado' });
-  }
-
-  // Função para sanitizar objetos baseado no role
-  const originalJson = res.json;
-  res.json = function(data: any) {
-    const sanitizedData = sanitizeDataBasedOnRole(data, user.role);
-    return originalJson.call(this, sanitizedData);
-  };
-  
-  next();
-};
-
-/**
- * Sanitiza dados baseado no nível hierárquico
- */
-function sanitizeDataBasedOnRole(data: any, role: string): any {
-  if (!data) return data;
-
-  const roleLevel = getRoleLevel(role);
-  
-  // DEVELOPER vê tudo
-  if (role === 'DEVELOPER') {
-    return data;
-  }
-
-  // Para arrays, sanitiza cada item
-  if (Array.isArray(data)) {
-    return data.map(item => sanitizeDataBasedOnRole(item, role));
-  }
-
-  // Para objetos, remove campos sensíveis baseado no role
-  if (typeof data === 'object') {
-    const sanitized = { ...data };
-
-    // Campos removidos para VIEWER
-    if (roleLevel <= 1) {
-      delete sanitized.created_at;
-      delete sanitized.updated_at;
-      delete sanitized.createdBy;
-      delete sanitized.userId;
-      delete sanitized.firebaseUid;
-    }
-
-    // Campos removidos para TECHNICIAN
-    if (roleLevel <= 2) {
-      delete sanitized.organizationId;
-      delete sanitized.internalId;
-    }
-
-    // Campos administrativos apenas para ADMIN+
-    if (roleLevel < 4) {
-      delete sanitized.systemConfig;
-      delete sanitized.debugInfo;
-      delete sanitized.rawData;
-    }
-
-    return sanitized;
-  }
-
-  return data;
-}
-
-/**
- * Retorna o nível numérico do role para comparações
- */
-function getRoleLevel(role: string): number {
-  const levels: { [key: string]: number } = {
-    'VIEWER': 1,
-    'TECHNICIAN': 2,
-    'MANAGER': 3,
-    'ADMIN': 4,
-    'DEVELOPER': 5
-  };
-  return levels[role] || 0;
-}
-
-/**
- * Middleware para verificar permissões específicas de ação
- */
-export const requirePermission = (permission: string) => {
-  return (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    const user = req.user;
+export const protectTestData = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const user = (req as any).user;
+    const testId = req.params.id;
     
-    if (!user) {
-      return res.status(401).json({ error: 'Usuário não autenticado' });
+    if (!user || !testId) {
+      return res.status(400).json({ error: 'Parâmetros inválidos' });
     }
 
-    const hasPermission = checkUserPermission(user.role, permission);
-    
-    if (!hasPermission) {
-      return res.status(403).json({ 
-        error: 'Permissão insuficiente',
-        required: permission,
-        userRole: user.role
-      });
-    }
-
+    // TODO: Implementar verificação específica quando os ensaios tiverem campo organization_id
+    // Por enquanto, permite acesso baseado na autenticação do usuário
+    console.log(`🧪 Acesso ao ensaio ${testId} liberado para usuário ${user.email}`);
     next();
-  };
-};
-
-/**
- * Verifica se um role tem uma permissão específica
- */
-function checkUserPermission(role: string, permission: string): boolean {
-  const permissions: { [key: string]: string[] } = {
-    'VIEWER': ['view_tests'],
-    'TECHNICIAN': ['view_tests', 'create_tests'],
-    'MANAGER': ['view_tests', 'create_tests', 'edit_tests', 'view_reports'],
-    'ADMIN': ['view_tests', 'create_tests', 'edit_tests', 'view_reports', 'manage_users', 'system_config'],
-    'DEVELOPER': ['all_permissions']
-  };
-
-  const userPermissions = permissions[role] || [];
-  
-  // DEVELOPER tem todas as permissões
-  if (userPermissions.includes('all_permissions')) {
-    return true;
+  } catch (error) {
+    console.error('Erro na proteção de dados de ensaio:', error);
+    res.status(500).json({ error: 'Erro interno de segurança' });
   }
-
-  return userPermissions.includes(permission);
-}
-
-/**
- * Log de auditoria para ações sensíveis
- */
-export const auditLog = (action: string) => {
-  return (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    const user = req.user;
-    
-    console.log(`🔐 AUDIT: ${user?.email || 'unknown'} (${user?.role || 'unknown'}) executou ${action} em ${req.originalUrl}`);
-    
-    // Em produção, isso deveria ir para um sistema de logs centralizados
-    next();
-  };
 };
+
+export default DataIsolationService;
