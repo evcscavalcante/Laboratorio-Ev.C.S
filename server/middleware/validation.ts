@@ -176,8 +176,8 @@ export const authRateLimit = createRateLimit(
 
 export const apiRateLimit = createRateLimit(
   1 * 60 * 1000, // 1 minuto
-  1000, // 1000 requests para permitir testes automatizados
-  'Muitas requisições. Limite de 1000 por minuto.'
+  100, // 100 requests por minuto (mais restritivo para produção)
+  'Muitas requisições. Limite de 100 por minuto.'
 );
 
 export const uploadRateLimit = createRateLimit(
