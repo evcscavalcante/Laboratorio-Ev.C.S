@@ -87,6 +87,13 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
         return {
           ...parsedData,
           date: parsedData.date || new Date().toISOString().split('T')[0],
+          time: parsedData.time || new Date().toTimeString().slice(0, 5),
+          layer: parsedData.layer || "",
+          estaca: parsedData.estaca || "",
+          quadrant: parsedData.quadrant || "",
+          cota: parsedData.cota || "",
+          north: parsedData.north || "",
+          east: parsedData.east || "",
         };
       }
     } catch (error) {
@@ -692,6 +699,8 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
         este={data.east}
         cota={data.elevation}
         quadrante={data.quadrant}
+        camada={data.layer}
+        estaca={data.estaca}
         material={data.material}
         origem={data.origin}
         registro={data.registrationNumber}
