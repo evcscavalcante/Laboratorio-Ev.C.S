@@ -30,6 +30,7 @@ interface DensityInSituData {
   coordinates: string;
   quadrant: string;
   layer: string;
+  estaca: string;
   balanceId: string;
   ovenId: string;
   realDensityRef: string;
@@ -666,6 +667,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
         cota={data.elevation}
         quadrante={data.quadrant}
         camada={data.layer}
+        estaca={data.estaca}
         fvs={data.fvs}
         material={data.material}
         origem={data.origin}
@@ -696,6 +698,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
         onCotaChange={(value) => updateData("cota", value)}
         onQuadranteChange={(value) => updateData("quadrant", value)}
         onCamadaChange={(value) => updateData("layer", value)}
+        onEstacaChange={(value) => updateData("estaca", value)}
         onFvsChange={(value) => updateData("fvs", value)}
         onMaterialChange={(value) => updateData("material", value)}
         onOrigemChange={(value) => updateData("origin", value)}
