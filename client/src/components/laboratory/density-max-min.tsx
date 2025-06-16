@@ -469,15 +469,6 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
     const maxDet2GammaD = averageMoisture > 0 ? (maxDet2GammaDWet / (averageMoisture + 100)) * 100 : maxDet2GammaDWet;
     const maxDet3GammaD = averageMoisture > 0 ? (maxDet3GammaDWet / (averageMoisture + 100)) * 100 : maxDet3GammaDWet;
 
-    // Debug dos cálculos
-    if (maxDet1GammaDWet > 0 || averageMoisture > 0) {
-      console.log('🧮 DEBUG CÁLCULO γdmax:');
-      console.log(`   Umidade média: ${averageMoisture.toFixed(2)}%`);
-      console.log(`   γd úmido Det1: ${maxDet1GammaDWet.toFixed(3)} g/cm³`);
-      console.log(`   Fórmula: (${maxDet1GammaDWet.toFixed(3)} / (${averageMoisture.toFixed(2)} + 100)) × 100`);
-      console.log(`   γdmax Det1: ${maxDet1GammaD.toFixed(3)} g/cm³`);
-    }
-
     const maxDensities = [maxDet1GammaD, maxDet2GammaD, maxDet3GammaD].filter(d => d > 0);
     const maxAverage = maxDensities.length > 0 ? maxDensities.reduce((a, b) => a + b, 0) / maxDensities.length : 0;
 

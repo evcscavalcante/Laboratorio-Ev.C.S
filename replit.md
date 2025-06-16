@@ -1038,6 +1038,8 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Sistema agora calcula umidade média das 3 determinações para correção
   - Etapas de cálculo: 1) γd úmido = peso_solo/volume, 2) aplicar correção pela umidade
   - Cálculos técnicos agora seguem especificação correta conforme normas NBR
+  - Teste validado pelo usuário: valor alto proposital (38.726) corrigido para 34.298 com umidade 12.91%
+  - Sistema aplica corretamente a correção pela umidade em tempo real
 
 ## User Preferences
 
