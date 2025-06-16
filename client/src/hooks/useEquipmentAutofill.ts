@@ -38,15 +38,18 @@ export const useEquipmentAutofill = () => {
   });
 
   const searchEquipment = (codigo: string): AutofillResult => {
-    if (!equipmentData || !codigo) {
+    if (!equipmentData || !codigo || codigo.length < 1) {
       return { found: false, type: null, data: null };
     }
 
-    setLastSearched(codigo);
+    // Limpar entrada - aceitar apenas números
+    const numeroLimpo = codigo.trim();
+    
+    setLastSearched(numeroLimpo);
 
-    // Buscar nas cápsulas
+    // Buscar nas cápsulas (números 1-8)
     const capsula = equipmentData.capsulas?.find(
-      cap => cap.codigo.toLowerCase() === codigo.toLowerCase()
+      cap => cap.codigo === numeroLimpo
     );
 
     if (capsula) {
@@ -62,9 +65,9 @@ export const useEquipmentAutofill = () => {
       };
     }
 
-    // Buscar nos cilindros
+    // Buscar nos cilindros (números 1-5)
     const cilindro = equipmentData.cilindros?.find(
-      cil => cil.codigo.toLowerCase() === codigo.toLowerCase()
+      cil => cil.codigo === numeroLimpo
     );
 
     if (cilindro) {

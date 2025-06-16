@@ -180,7 +180,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
 
   // Preenchimento automático para cilindro determinação 1
   useEffect(() => {
-    if (data.det1.cylinderNumber && data.det1.cylinderNumber.length >= 3) {
+    if (data.det1.cylinderNumber && data.det1.cylinderNumber.length >= 1) {
       const result = searchEquipment(data.det1.cylinderNumber);
       if (result.found && result.type === 'cilindro' && result.data.tipo === 'biselado') {
         setData(prev => ({
@@ -198,7 +198,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
 
   // Preenchimento automático para cilindro determinação 2
   useEffect(() => {
-    if (data.det2.cylinderNumber && data.det2.cylinderNumber.length >= 3) {
+    if (data.det2.cylinderNumber && data.det2.cylinderNumber.length >= 1) {
       const result = searchEquipment(data.det2.cylinderNumber);
       if (result.found && result.type === 'cilindro' && result.data.tipo === 'biselado') {
         setData(prev => ({
@@ -216,7 +216,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
 
   // Preenchimento automático para cápsulas de umidade (cápsulas médias para estufa)
   useEffect(() => {
-    if (data.moistureTop1.capsule && data.moistureTop1.capsule.length >= 3) {
+    if (data.moistureTop1.capsule && data.moistureTop1.capsule.length >= 1) {
       const result = searchEquipment(data.moistureTop1.capsule);
       if (result.found && result.type === 'capsula') {
         setData(prev => ({
@@ -229,7 +229,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
   }, [data.moistureTop1.capsule, searchEquipment]);
 
   useEffect(() => {
-    if (data.moistureTop2.capsule && data.moistureTop2.capsule.length >= 3) {
+    if (data.moistureTop2.capsule && data.moistureTop2.capsule.length >= 1) {
       const result = searchEquipment(data.moistureTop2.capsule);
       if (result.found && result.type === 'capsula') {
         setData(prev => ({
