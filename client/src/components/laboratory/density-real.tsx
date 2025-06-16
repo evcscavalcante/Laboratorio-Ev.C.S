@@ -30,6 +30,9 @@ interface RealDensityData {
   east: string;
   cota: string;
   elevation: string;
+  quadrant: string;
+  layer: string;
+  estaca: string;
   local: string;
   weatherCondition: string;
   humidity: string;
@@ -267,14 +270,19 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
   }, []);
 
   // Função para buscar peso da cápsula pelo número
-  const buscarPesoCapsula = (numero: string) => {
-    const capsula = equipamentos.capsulas.find(c => c.codigo === numero);
-    return capsula ? capsula.peso : null;
-  };
-
-  // Handler para mudança no número da cápsula
+  // Handler para mudança no número da cápsula com preenchimento automático
   const handleCapsuleNumberChange = (field: string, value: string) => {
-    const pesoCapsula = buscarPesoCapsula(value);
+    console.log(`🔍 Densidade Real - Buscando equipamento para código: ${value}`);
+    
+    // Buscar equipamento usando hook correto (trigger com 1+ caracteres)
+    let pesoCapsula = null;
+    if (value && value.length >= 1) {
+      const result = searchEquipment(value);
+      if (result.found && result.type === 'capsula') {
+        pesoCapsula = result.data.peso;
+        console.log(`✅ Cápsula encontrada: ${value} - ${pesoCapsula}g`);
+      }
+    }
     
     if (field === 'moisture1') {
       setData(prev => ({
