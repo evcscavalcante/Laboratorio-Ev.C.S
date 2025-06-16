@@ -773,6 +773,15 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Melhores práticas atualizadas por função: técnicos vs gestores
   - Status visual dos ensaios documentado: critérios APROVADO/REPROVADO por tipo
   - Manual agora reflete exatamente o sistema em produção sem informações desatualizadas
+- June 16, 2025: Sistema completo de preenchimento automático de equipamentos implementado
+  - Hook useEquipmentAutofill integrado em todas as três calculadoras (densidade in-situ, real, máx/mín)
+  - Preenchimento automático de peso e volume quando identificação do equipamento é digitada
+  - Mapeamento específico por tipo de ensaio: cilindros de cravação (in-situ), cápsulas pequenas (real), cilindros padrão (máx/mín)
+  - useEffect implementado para detectar mudanças nos campos de identificação (3+ caracteres)
+  - Busca automática no banco de dados de equipamentos com validação por tipo
+  - Console logs informativos para feedback durante desenvolvimento
+  - Sistema mantém layout existente sem modificações visuais
+  - Funcionalidade pronta para uso em produção com testes validados
 
 ## User Preferences
 
