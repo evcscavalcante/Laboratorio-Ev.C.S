@@ -652,6 +652,50 @@ async function startServer() {
     }
   });
 
+  // Organizations API endpoints with data isolation
+  app.get('/api/organizations', verifyFirebaseToken, async (req: Request, res: Response) => {
+    try {
+      const user = (req as any).user;
+      let organizationsList: any[] = [];
+
+      // DEVELOPER e ADMIN podem ver todas as organizações
+      if (user?.role === 'DEVELOPER' || user?.role === 'ADMIN') {
+        organizationsList = await db.select().from(organizations);
+      } else {
+        // Outros usuários só veem organizações acessíveis
+        const userOrg = await db.select().from(organizations)
+          .where(eq(organizations.id, user?.organizationId || 0));
+        
+        if (userOrg.length > 0) {
+          // Se é headquarters, pode ver filiais
+          if (userOrg[0].organizationType === 'headquarters') {
+            organizationsList = await db.select().from(organizations)
+              .where(
+                eq(organizations.id, user.organizationId) // Sua própria organização
+              );
+            
+            // Adicionar filiais
+            const affiliates = await db.select().from(organizations)
+              .where(eq(organizations.parentOrganizationId, user.organizationId));
+            
+            organizationsList = [...organizationsList, ...affiliates];
+          } else {
+            // Organizações independentes/filiais só veem a própria
+            organizationsList = userOrg;
+          }
+        } else {
+          organizationsList = [];
+        }
+      }
+
+      console.log(`📊 Organizações acessíveis para ${user?.role}: ${organizationsList.length}`);
+      res.json(organizationsList);
+    } catch (error) {
+      console.error('Erro ao buscar organizações:', error);
+      res.status(500).json({ message: 'Falha ao buscar organizações' });
+    }
+  });
+
   // Create new organization
   app.post('/api/organizations', verifyFirebaseToken, requireRole(['ADMIN', 'DEVELOPER']), async (req: Request, res: Response) => {
     try {
