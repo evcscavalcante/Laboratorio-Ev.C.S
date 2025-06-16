@@ -167,17 +167,17 @@ export const createRateLimit = (windowMs: number, max: number, message: string) 
   });
 };
 
-// Rate limits específicos - ajustados para desenvolvimento
+// Rate limits específicos - otimizados para desenvolvimento e testes
 export const authRateLimit = createRateLimit(
-  1 * 60 * 1000, // 1 minuto (reduzido de 15 para desenvolvimento)
-  50, // 50 tentativas (aumentado de 5 para desenvolvimento)
-  'Muitas tentativas de login. Tente novamente em 1 minuto.'
+  5 * 60 * 1000, // 5 minutos
+  100, // 100 tentativas para testes
+  'Muitas tentativas de login. Tente novamente em 5 minutos.'
 );
 
 export const apiRateLimit = createRateLimit(
   1 * 60 * 1000, // 1 minuto
-  200, // 200 requests (aumentado de 100 para desenvolvimento)
-  'Muitas requisições. Limite de 200 por minuto.'
+  1000, // 1000 requests para permitir testes automatizados
+  'Muitas requisições. Limite de 1000 por minuto.'
 );
 
 export const uploadRateLimit = createRateLimit(
