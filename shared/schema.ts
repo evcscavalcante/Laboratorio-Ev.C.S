@@ -452,15 +452,18 @@ export type InsertNotification = z.infer<typeof insertNotificationSchema>;
 
 export type Notification = typeof notifications.$inferSelect;
 
-export const insertEquipamentoSchema = createInsertSchema(equipamentos);
+export const insertCapsulaSchema = createInsertSchema(capsulas);
+export const insertCilindroSchema = createInsertSchema(cilindros);
 
-export type InsertEquipamento = z.infer<typeof insertEquipamentoSchema>;
+export type InsertCapsula = z.infer<typeof insertCapsulaSchema>;
+export type InsertCilindro = z.infer<typeof insertCilindroSchema>;
 
 export type DensityInSituTest = typeof densityInSituTests.$inferSelect;
 export type RealDensityTest = typeof realDensityTests.$inferSelect;
 export type MaxMinDensityTest = typeof maxMinDensityTests.$inferSelect;
 
-export type Equipamento = typeof equipamentos.$inferSelect;
+export type Capsula = typeof capsulas.$inferSelect;
+export type Cilindro = typeof cilindros.$inferSelect;
 export type ConferenciaEquipamento = typeof conferenciaEquipamentos.$inferSelect;
 
 // Permission system

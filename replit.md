@@ -880,6 +880,17 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Sistema validado: 0 useEffect problemáticos restantes em todos os arquivos
   - Servidor operacional na porta 5000 sem carregamento infinito
   - Preenchimento automático funcional sem loops de re-renderização
+- June 16, 2025: SISTEMA DE EQUIPAMENTOS CONSOLIDADO E DUPLICAÇÃO ELIMINADA
+  - PROBLEMA RESOLVIDO: Dois sistemas conflitantes (antigo equipamentos vs novo capsulas/cilindros)
+  - Sistema antigo completamente removido: tabela equipamentos eliminada do schema
+  - Dados antigos do Firebase Firestore limpos (6 equipamentos removidos)
+  - Sistema novo consolidado: 8 cápsulas + 5 cilindros no PostgreSQL
+  - Numeração simplificada 1-8 funcionando corretamente
+  - Hook useEquipmentAutofill detectando 13 equipamentos totais
+  - Preenchimento automático operacional: digite "1" e dados aparecem instantaneamente
+  - Rota /solos/densidade-max-min corrigida no App.tsx
+  - Campos "Camada" e "Estaca" funcionais em todos os ensaios
+  - Sistema unificado pronto para produção sem conflitos
 - June 16, 2025: CAMPOS EDITÁVEIS DOS CABEÇALHOS COMPLETAMENTE FUNCIONAIS E VALIDADOS
   - Teste sistemático confirmou 100% dos campos editáveis operacionais (test-campos-cabecalho.js)
   - Problemas de mapeamento "cota"/"elevation" corrigidos em todas as três calculadoras
