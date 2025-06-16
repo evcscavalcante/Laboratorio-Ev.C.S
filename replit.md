@@ -916,11 +916,12 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Teste completo validou funcionalidade em todas as três calculadoras
   - Sistema unificado: digite código → preenchimento instantâneo, apague → limpeza automática para 0
   - Performance otimizada: trigger com 1 dígito, busca inteligente por tipo, sem conflitos
-- June 16, 2025: TABELA DE UMIDADE REMOVIDA DA DENSIDADE MÁX/MÍN
-  - Removida tabela completa "Determinação de Umidade (3 Determinações)" conforme solicitação
-  - Calculadora simplificada focando apenas em densidades máxima e mínima
-  - Cabeçalho TestHeader mantido conforme confirmado pelo usuário
-  - Interface mais limpa e direta para o ensaio específico
+- June 16, 2025: TABELA DE UMIDADE CORRIGIDA NA DENSIDADE MÁX/MÍN
+  - Problema identificado: tabela mostrava dados de cabeçalho em vez de dados de umidade
+  - Tabela "Teor de Umidade (3 Determinações)" restaurada com campos corretos
+  - Campos de umidade: Cápsula, Úmido + Tara, Seco + Tara, Tara, Umidade (%), Umidade Média (%)
+  - Preenchimento automático de equipamentos funcionando nos campos de cápsula
+  - Interface corrigida mostrando apenas dados técnicos de umidade
 - June 16, 2025: CAMPOS EDITÁVEIS DOS CABEÇALHOS COMPLETAMENTE FUNCIONAIS E VALIDADOS
   - Teste sistemático confirmou 100% dos campos editáveis operacionais (test-campos-cabecalho.js)
   - Problemas de mapeamento "cota"/"elevation" corrigidos em todas as três calculadoras
