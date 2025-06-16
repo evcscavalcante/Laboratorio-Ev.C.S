@@ -15,19 +15,21 @@ import { Plus, Edit, Trash2, Shield, Users, Building } from 'lucide-react';
 import type { User, Organization, UserRole } from '@shared/schema';
 
 const USER_ROLE_LABELS = {
-  admin: 'Administrador',
-  manager: 'Gerente',
-  supervisor: 'Supervisor',
-  technician: 'Técnico',
-  viewer: 'Visualizador'
+  ADMIN: 'Administrador',
+  MANAGER: 'Gerente',
+  SUPERVISOR: 'Supervisor',
+  TECHNICIAN: 'Técnico',
+  VIEWER: 'Visualizador',
+  DEVELOPER: 'Desenvolvedor'
 };
 
 const USER_ROLE_COLORS = {
-  admin: 'destructive',
-  manager: 'default',
-  supervisor: 'secondary',
-  technician: 'outline',
-  viewer: 'outline'
+  ADMIN: 'destructive',
+  MANAGER: 'default',
+  SUPERVISOR: 'secondary',
+  TECHNICIAN: 'outline',
+  VIEWER: 'outline',
+  DEVELOPER: 'destructive'
 } as const;
 
 interface UserFormData {
@@ -137,8 +139,8 @@ export default function UserManagement() {
   const handleEditUser = (user: User) => {
     setSelectedUser(user);
     setFormData({
-      name: user.name || '',
-      email: user.email,
+      name: (user.name || '') as string,
+      email: (user.email || '') as string,
       role: user.role as UserRole,
       organizationId: user.organizationId,
       active: user.active ?? true
