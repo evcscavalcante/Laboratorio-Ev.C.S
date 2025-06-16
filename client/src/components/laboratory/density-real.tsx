@@ -13,6 +13,7 @@ import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { localDataManager } from "@/lib/local-storage";
 import TestHeader from "@/components/test-header";
+import { useEquipmentAutofill } from "@/hooks/useEquipmentAutofill";
 
 interface RealDensityData {
   registrationNumber: string;
@@ -137,6 +138,47 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
   };
 
   const [data, setData] = useState<RealDensityData>(loadSavedData);
+  
+  // Hook para preenchimento automático dos equipamentos
+  const { searchEquipment } = useEquipmentAutofill();
+
+  // Preenchimento automático para cápsulas de umidade (cápsulas pequenas para limites físicos)
+  useEffect(() => {
+    if (data.moisture1.capsule && data.moisture1.capsule.length >= 3) {
+      const result = searchEquipment(data.moisture1.capsule);
+      if (result.found && result.type === 'capsula') {
+        setData(prev => ({
+          ...prev,
+          moisture1: { ...prev.moisture1, tare: result.data.peso }
+        }));
+        console.log(`✅ Cápsula pequena ${data.moisture1.capsule} carregada para densidade real`);
+      }
+    }
+  }, [data.moisture1.capsule, searchEquipment]);
+
+  useEffect(() => {
+    if (data.moisture2.capsule && data.moisture2.capsule.length >= 3) {
+      const result = searchEquipment(data.moisture2.capsule);
+      if (result.found && result.type === 'capsula') {
+        setData(prev => ({
+          ...prev,
+          moisture2: { ...prev.moisture2, tare: result.data.peso }
+        }));
+      }
+    }
+  }, [data.moisture2.capsule, searchEquipment]);
+
+  useEffect(() => {
+    if (data.moisture3.capsule && data.moisture3.capsule.length >= 3) {
+      const result = searchEquipment(data.moisture3.capsule);
+      if (result.found && result.type === 'capsula') {
+        setData(prev => ({
+          ...prev,
+          moisture3: { ...prev.moisture3, tare: result.data.peso }
+        }));
+      }
+    }
+  }, [data.moisture3.capsule, searchEquipment]);
 
   // Atualizar dados quando testData estiver disponível
   useEffect(() => {

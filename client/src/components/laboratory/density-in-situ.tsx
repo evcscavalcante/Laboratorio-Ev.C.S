@@ -174,6 +174,119 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
   };
 
   const [data, setData] = useState<DensityInSituData>(loadSavedData());
+  
+  // Hook para preenchimento automático dos equipamentos
+  const { searchEquipment } = useEquipmentAutofill();
+
+  // Preenchimento automático para cilindro determinação 1
+  useEffect(() => {
+    if (data.det1.cylinderNumber && data.det1.cylinderNumber.length >= 3) {
+      const result = searchEquipment(data.det1.cylinderNumber);
+      if (result.found && result.type === 'cilindro' && result.data.tipo === 'biselado') {
+        setData(prev => ({
+          ...prev,
+          det1: {
+            ...prev.det1,
+            molde: result.data.peso,
+            volume: result.data.volume
+          }
+        }));
+        console.log(`✅ Cilindro de cravação ${data.det1.cylinderNumber} carregado automaticamente`);
+      }
+    }
+  }, [data.det1.cylinderNumber, searchEquipment]);
+
+  // Preenchimento automático para cilindro determinação 2
+  useEffect(() => {
+    if (data.det2.cylinderNumber && data.det2.cylinderNumber.length >= 3) {
+      const result = searchEquipment(data.det2.cylinderNumber);
+      if (result.found && result.type === 'cilindro' && result.data.tipo === 'biselado') {
+        setData(prev => ({
+          ...prev,
+          det2: {
+            ...prev.det2,
+            molde: result.data.peso,
+            volume: result.data.volume
+          }
+        }));
+        console.log(`✅ Cilindro de cravação ${data.det2.cylinderNumber} carregado automaticamente`);
+      }
+    }
+  }, [data.det2.cylinderNumber, searchEquipment]);
+
+  // Preenchimento automático para cápsulas de umidade (cápsulas médias para estufa)
+  useEffect(() => {
+    if (data.moistureTop1.capsule && data.moistureTop1.capsule.length >= 3) {
+      const result = searchEquipment(data.moistureTop1.capsule);
+      if (result.found && result.type === 'capsula') {
+        setData(prev => ({
+          ...prev,
+          moistureTop1: { ...prev.moistureTop1, tare: result.data.peso }
+        }));
+        console.log(`✅ Cápsula média ${data.moistureTop1.capsule} carregada para umidade`);
+      }
+    }
+  }, [data.moistureTop1.capsule, searchEquipment]);
+
+  useEffect(() => {
+    if (data.moistureTop2.capsule && data.moistureTop2.capsule.length >= 3) {
+      const result = searchEquipment(data.moistureTop2.capsule);
+      if (result.found && result.type === 'capsula') {
+        setData(prev => ({
+          ...prev,
+          moistureTop2: { ...prev.moistureTop2, tare: result.data.peso }
+        }));
+      }
+    }
+  }, [data.moistureTop2.capsule, searchEquipment]);
+
+  useEffect(() => {
+    if (data.moistureTop3.capsule && data.moistureTop3.capsule.length >= 3) {
+      const result = searchEquipment(data.moistureTop3.capsule);
+      if (result.found && result.type === 'capsula') {
+        setData(prev => ({
+          ...prev,
+          moistureTop3: { ...prev.moistureTop3, tare: result.data.peso }
+        }));
+      }
+    }
+  }, [data.moistureTop3.capsule, searchEquipment]);
+
+  useEffect(() => {
+    if (data.moistureBase1.capsule && data.moistureBase1.capsule.length >= 3) {
+      const result = searchEquipment(data.moistureBase1.capsule);
+      if (result.found && result.type === 'capsula') {
+        setData(prev => ({
+          ...prev,
+          moistureBase1: { ...prev.moistureBase1, tare: result.data.peso }
+        }));
+      }
+    }
+  }, [data.moistureBase1.capsule, searchEquipment]);
+
+  useEffect(() => {
+    if (data.moistureBase2.capsule && data.moistureBase2.capsule.length >= 3) {
+      const result = searchEquipment(data.moistureBase2.capsule);
+      if (result.found && result.type === 'capsula') {
+        setData(prev => ({
+          ...prev,
+          moistureBase2: { ...prev.moistureBase2, tare: result.data.peso }
+        }));
+      }
+    }
+  }, [data.moistureBase2.capsule, searchEquipment]);
+
+  useEffect(() => {
+    if (data.moistureBase3.capsule && data.moistureBase3.capsule.length >= 3) {
+      const result = searchEquipment(data.moistureBase3.capsule);
+      if (result.found && result.type === 'capsula') {
+        setData(prev => ({
+          ...prev,
+          moistureBase3: { ...prev.moistureBase3, tare: result.data.peso }
+        }));
+      }
+    }
+  }, [data.moistureBase3.capsule, searchEquipment]);
 
   // Salvamento automático
   useEffect(() => {

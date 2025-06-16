@@ -12,6 +12,7 @@ import { apiRequest, queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { localDataManager } from "@/lib/local-storage";
 import TestHeader from "@/components/test-header";
+import { useEquipmentAutofill } from "@/hooks/useEquipmentAutofill";
 
 interface MaxMinDensityData {
   registrationNumber: string;

@@ -145,30 +145,77 @@ export const useDensityInSituAutofill = (
   }, [cilindroId, setValues]);
 };
 
-// Hook específico para densidade real (cápsulas)
+// Hook específico para densidade real (usa cápsulas pequenas para limites físicos)
 export const useRealDensityAutofill = (
   capsulaId: string,
   setValues: (values: any) => void,
   determinacao: 'det1' | 'det2' | 'det3'
 ) => {
-  const { useAutofillEffect } = useEquipmentAutofill();
+  const { searchEquipment } = useEquipmentAutofill();
 
-  useAutofillEffect(capsulaId, setValues, {
-    peso: `picnometer.${determinacao}.capsula`
-  });
+  useEffect(() => {
+    if (capsulaId && capsulaId.length >= 3) {
+      const result = searchEquipment(capsulaId);
+      
+      if (result.found && result.type === 'capsula') {
+        setValues({
+          [`picnometer.${determinacao}.capsula`]: result.data.peso
+        });
+        console.log(`✅ Cápsula pequena ${capsulaId} carregada para densidade real`);
+      }
+    }
+  }, [capsulaId, setValues, determinacao]);
 };
 
-// Hook específico para densidade máx/mín (cilindros)
+// Hook específico para densidade máx/mín (usa cilindro padrão/máximo-mínimos)
 export const useMaxMinDensityAutofill = (
   cilindroId: string,
   setValues: (values: any) => void,
   tipo: 'max' | 'min',
   determinacao: 'det1' | 'det2' | 'det3'
 ) => {
-  const { useAutofillEffect } = useEquipmentAutofill();
+  const { searchEquipment } = useEquipmentAutofill();
 
-  useAutofillEffect(cilindroId, setValues, {
-    peso: `${tipo}Density.${determinacao}.molde`,
-    volume: `${tipo}Density.${determinacao}.volume`
-  });
+  useEffect(() => {
+    if (cilindroId && cilindroId.length >= 3) {
+      const result = searchEquipment(cilindroId);
+      
+      if (result.found && result.type === 'cilindro' && result.data.tipo === 'vazios_minimos') {
+        setValues({
+          [`${tipo}Density.${determinacao}.molde`]: result.data.peso,
+          [`${tipo}Density.${determinacao}.volume`]: result.data.volume
+        });
+        console.log(`✅ Cilindro padrão ${cilindroId} carregado para densidade ${tipo}`);
+      }
+    }
+  }, [cilindroId, setValues, tipo, determinacao]);
+};
+
+// Hook para umidade - detecta automaticamente o tipo de cápsula necessária
+export const useMoistureAutofill = (
+  capsulaId: string,
+  setValues: (values: any) => void,
+  metodo: 'estufa' | 'frigideira', // estufa = cápsulas médias, frigideira = cápsulas grandes
+  campo: string
+) => {
+  const { searchEquipment } = useEquipmentAutofill();
+
+  useEffect(() => {
+    if (capsulaId && capsulaId.length >= 3) {
+      const result = searchEquipment(capsulaId);
+      
+      if (result.found && result.type === 'capsula') {
+        // Verifica se o tipo de cápsula corresponde ao método
+        const capsulaCorreta = (metodo === 'estufa' && result.data.material === 'media') || 
+                              (metodo === 'frigideira' && result.data.material === 'grande');
+                              
+        if (capsulaCorreta) {
+          setValues({
+            [campo]: result.data.peso
+          });
+          console.log(`✅ Cápsula ${metodo === 'estufa' ? 'média' : 'grande'} ${capsulaId} carregada para umidade ${metodo}`);
+        }
+      }
+    }
+  }, [capsulaId, setValues, metodo, campo]);
 };
