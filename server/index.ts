@@ -7,7 +7,7 @@ import { registerPaymentRoutes } from "./payment-routes";
 import { setupVite, serveStatic } from "./vite";
 import MemoryStore from "memorystore";
 import { db } from "./db";
-import { users, organizations, notifications, equipamentos, capsulas, cilindros } from "@shared/schema";
+import { users, organizations, notifications, capsulas, cilindros } from "@shared/schema";
 import { eq, desc, sql } from "drizzle-orm";
 import { initializeAdminUser } from "./init-admin";
 import { storage } from "./storage";

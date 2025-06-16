@@ -273,24 +273,7 @@ export const maxMinDensityTestsRelations = relations(maxMinDensityTests, ({ one 
   })
 }));
 
-// Equipment Management Tables (Legacy - unified table)
-export const equipamentos = pgTable("equipamentos", {
-  id: serial("id").primaryKey(),
-  codigo: varchar("codigo", { length: 50 }).notNull(),
-  tipo: varchar("tipo", { length: 50 }).notNull(), // 'capsula' ou 'cilindro'
-  subtipo: varchar("subtipo", { length: 50 }), // Para cápsulas: 'pequena', 'media', 'grande' | Para cilindros: 'biselado', 'proctor', 'cbr', 'padrao'
-  peso: real("peso"),
-  volume: real("volume"),
-  altura: real("altura"),
-  status: varchar("status", { length: 50 }).notNull().default("ativo"),
-  observacoes: text("observacoes"),
-  userId: integer("user_id").references(() => users.id),
-  organizationId: integer("organization_id").references(() => organizations.id),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow()
-});
-
-// Separate Equipment Tables (Current Implementation)
+// Equipment Tables - Sistema unificado atual
 export const capsulas = pgTable("capsulas", {
   id: serial("id").primaryKey(),
   codigo: varchar("codigo", { length: 50 }).notNull(),
@@ -370,16 +353,12 @@ export const notifications = pgTable("notifications", {
   updatedAt: timestamp("updated_at").defaultNow()
 });
 
-// Equipment relations
-export const equipamentosRelations = relations(equipamentos, ({ one, many }) => ({
-  user: one(users, {
-    fields: [equipamentos.userId],
-    references: [users.id]
-  }),
-  organization: one(organizations, {
-    fields: [equipamentos.organizationId],
-    references: [organizations.id]
-  }),
+// Equipment relations para capsulas e cilindros
+export const capsulasRelations = relations(capsulas, ({ many }) => ({
+  conferencias: many(conferenciaEquipamentos)
+}));
+
+export const cilindrosRelations = relations(cilindros, ({ many }) => ({
   conferencias: many(conferenciaEquipamentos)
 }));
 
