@@ -28,6 +28,7 @@ interface RealDensityData {
   north: string;
   east: string;
   cota: string;
+  elevation: string;
   local: string;
   weatherCondition: string;
   humidity: string;
@@ -111,6 +112,7 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
       north: "",
       east: "",
       cota: "",
+      elevation: "",
       local: "",
       weatherCondition: "SOL FORTE",
       humidity: "",
@@ -198,6 +200,7 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
         north: testData.north || "",
         east: testData.east || "",
         cota: testData.cota || "",
+        elevation: testData.elevation || "",
         local: testData.local || "",
         weatherCondition: testData.weatherCondition || "SOL FORTE",
         humidity: testData.humidity || "",

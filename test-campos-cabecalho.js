@@ -3,7 +3,7 @@
  * Verifica se todos os campos dos cabeçalhos são realmente editáveis
  */
 
-const fs = require('fs');
+import fs from 'fs';
 
 function testHeaderFields() {
   console.log('🧪 TESTE: Campos Editáveis dos Cabeçalhos');
