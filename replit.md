@@ -1046,6 +1046,13 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Sistema completo: 15 equipamentos totais (7 cilindros + 8 cápsulas)
   - Preenchimento automático funcional para todos os tipos de equipamentos
   - Documentação replit.md alinhada com implementação no PostgreSQL
+- June 16, 2025: MAPEAMENTO ESPECÍFICO DE EQUIPAMENTOS POR ENSAIO IMPLEMENTADO
+  - Densidade In-Situ: cilindros biselados (1-2) + cápsulas grandes (7-8)
+  - Densidade Real: cápsulas médias (4-6) exclusivamente
+  - Densidade Máx/Mín: cilindros vazios_minimos (3-4) + cápsulas médias (4-6) para umidade
+  - Hook useEquipmentAutofill corrigido para busca contextual por tipo de ensaio
+  - Sistema validado: cilindro 3 detectado corretamente (420.15g, 125cm³) na densidade máx/mín
+  - Preenchimento automático respeitando especificações técnicas do usuário
 
 ## User Preferences
 

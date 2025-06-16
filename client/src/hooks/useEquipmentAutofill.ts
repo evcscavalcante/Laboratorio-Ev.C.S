@@ -192,7 +192,7 @@ export const useEquipmentAutofill = () => {
   };
 };
 
-// Hook específico para densidade in-situ (usa cilindro de cravação)
+// Hook específico para densidade in-situ (usa cilindro biselado + cápsulas grandes)
 export const useDensityInSituAutofill = (
   cilindroId: string,
   setValues: (values: any) => void
@@ -203,9 +203,15 @@ export const useDensityInSituAutofill = (
     if (cilindroId && cilindroId.length >= 1 && equipmentData) {
       const codigoLimpo = cilindroId.trim().toUpperCase();
       
-      // BUSCAR APENAS NOS CILINDROS (ignorar cápsulas)
+      // BUSCAR CILINDROS BISELADOS (códigos 1-2)
       const cilindro = equipmentData.cilindros?.find(
         cil => cil.codigo.toString().toUpperCase() === codigoLimpo && cil.tipo === 'biselado'
+      );
+      
+      // BUSCAR CÁPSULAS GRANDES (códigos 7-8)
+      const capsula = equipmentData.capsulas?.find(
+        cap => cap.codigo.toString().toUpperCase() === codigoLimpo && 
+               cap.descricao?.toLowerCase().includes('grande')
       );
       
       if (cilindro) {
@@ -214,12 +220,17 @@ export const useDensityInSituAutofill = (
           volume: cilindro.volume
         });
         console.log(`✅ Cilindro biselado ${cilindroId} carregado: ${cilindro.peso}g, ${cilindro.volume}cm³`);
+      } else if (capsula) {
+        setValues({
+          tara: capsula.peso
+        });
+        console.log(`✅ Cápsula grande ${cilindroId} carregada: ${capsula.peso}g`);
       }
     }
-  }, [cilindroId]); // REMOVIDO setValues e equipmentData
+  }, [cilindroId]);
 };
 
-// Hook específico para densidade real (usa cápsulas pequenas para limites físicos)
+// Hook específico para densidade real (usa apenas cápsulas médias - códigos 4-6)
 export const useRealDensityAutofill = (
   capsulaId: string,
   setValues: (values: any) => void,
@@ -231,22 +242,23 @@ export const useRealDensityAutofill = (
     if (capsulaId && capsulaId.length >= 1 && equipmentData) {
       const codigoLimpo = capsulaId.trim().toUpperCase();
       
-      // BUSCAR APENAS NAS CÁPSULAS (ignorar cilindros)
+      // BUSCAR APENAS CÁPSULAS MÉDIAS (códigos 4-6)
       const capsula = equipmentData.capsulas?.find(
-        cap => cap.codigo.toString().toUpperCase() === codigoLimpo
+        cap => cap.codigo.toString().toUpperCase() === codigoLimpo && 
+               cap.descricao.toLowerCase().includes('média')
       );
       
       if (capsula) {
         setValues({
           [`picnometer.${determinacao}.capsula`]: capsula.peso
         });
-        console.log(`✅ Cápsula ${capsulaId} carregada para densidade real: ${capsula.peso}g`);
+        console.log(`✅ Cápsula média ${capsulaId} carregada para densidade real: ${capsula.peso}g`);
       }
     }
-  }, [capsulaId, determinacao]); // REMOVIDO setValues e equipmentData
+  }, [capsulaId, determinacao]);
 };
 
-// Hook específico para densidade máx/mín (usa cilindro padrão/máximo-mínimos)
+// Hook específico para densidade máx/mín (usa cilindros vazios_minimos + cápsulas médias)
 export const useMaxMinDensityAutofill = (
   cilindroId: string,
   setValues: (values: any) => void,
@@ -259,9 +271,15 @@ export const useMaxMinDensityAutofill = (
     if (cilindroId && cilindroId.length >= 1 && equipmentData) {
       const codigoLimpo = cilindroId.trim().toUpperCase();
       
-      // BUSCAR APENAS NOS CILINDROS vazios_minimos (ignorar cápsulas e outros tipos)
+      // BUSCAR CILINDROS VAZIOS_MINIMOS (códigos 3-4)
       const cilindro = equipmentData.cilindros?.find(
         cil => cil.codigo.toString().toUpperCase() === codigoLimpo && cil.tipo === 'vazios_minimos'
+      );
+      
+      // BUSCAR CÁPSULAS MÉDIAS (códigos 4-6) para umidade
+      const capsula = equipmentData.capsulas?.find(
+        cap => cap.codigo.toString().toUpperCase() === codigoLimpo && 
+               cap.descricao?.toLowerCase().includes('média')
       );
       
       if (cilindro) {
@@ -270,9 +288,14 @@ export const useMaxMinDensityAutofill = (
           [`${tipo}Density.${determinacao}.volume`]: cilindro.volume
         });
         console.log(`✅ Cilindro vazios mínimos ${cilindroId} carregado: ${cilindro.peso}g, ${cilindro.volume}cm³`);
+      } else if (capsula) {
+        setValues({
+          [`moisture${determinacao}.capsula`]: capsula.peso
+        });
+        console.log(`✅ Cápsula média ${cilindroId} carregada para umidade: ${capsula.peso}g`);
       }
     }
-  }, [cilindroId, tipo, determinacao]); // REMOVIDO setValues e equipmentData
+  }, [cilindroId, tipo, determinacao]);
 };
 
 // Hook para umidade - REMOVIDO para eliminar loops infinitos
