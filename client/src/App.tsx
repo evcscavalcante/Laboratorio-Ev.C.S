@@ -81,6 +81,9 @@ function Router() {
         <Route path="/densidade-in-situ" component={DensidadeInSituPage} />
         <Route path="/densidade-real" component={DensidadeRealPage} />
         <Route path="/densidade-max-min" component={DensidadeMaxMinPage} />
+        <Route path="/solos/densidade-in-situ" component={DensidadeInSituPage} />
+        <Route path="/solos/densidade-real" component={DensidadeRealPage} />
+        <Route path="/solos/densidade-max-min" component={DensidadeMaxMinPage} />
         <Route path="/balanca-verificacao" component={BalancaVerificacao} />
         <Route path="/equipamentos" component={EquipamentosFixed} />
         <Route path="/ensaios-salvos" component={EnsaiosSalvos} />
