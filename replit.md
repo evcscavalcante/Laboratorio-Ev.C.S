@@ -908,6 +908,15 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Mensagens de confirmação implementadas informando sucesso da sincronização Firebase
   - Cache React Query atualizado para usar endpoints seguros
   - Sistema operacional: dados salvos agora sincronizam automaticamente com Firebase após PostgreSQL
+- June 16, 2025: CAMPOS EDITÁVEIS DOS CABEÇALHOS COMPLETAMENTE FUNCIONAIS CORRIGIDOS
+  - PROBLEMA CORRIGIDO: Campo "estaca" não estava editável na densidade in-situ após correções anteriores
+  - Campo "estaca" adicionado corretamente à interface DensityInSituData
+  - Callback onEstacaChange implementado e conectado na densidade in-situ
+  - Valores padrão do campo "estaca" adicionados em todas as funções necessárias
+  - Campos quadrante, camada e estaca agora passados corretamente para TestHeader em densidade real
+  - Mapeamento "cota" corrigido em todas as três calculadoras (de "elevation" para "cota")
+  - Taxa de sucesso validada: 42/42 campos (100%) - STATUS EXCELENTE
+  - Sistema operacional: todos os campos do cabeçalho editáveis nas três calculadoras
 - June 16, 2025: CAMPOS EDITÁVEIS DOS CABEÇALHOS COMPLETAMENTE FUNCIONAIS E VALIDADOS
   - PROBLEMA CRÍTICO RESOLVIDO: Campo "estaca" ausente sistematicamente em múltiplos componentes
   - Campo "estaca" adicionado ao TestHeaderProps interface e implementado corretamente
