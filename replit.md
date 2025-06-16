@@ -538,6 +538,8 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Rotas /termos-uso e /configuracoes-lgpd funcionais no App.tsx
   - Teste completo LGPD: 5/5 endpoints aprovados (100% de sucesso)
   - Conformidade total com LGPD: transparência e acessibilidade implementadas
+  - Campos LGPD adicionados ao PostgreSQL: terms_accepted, privacy_policy_accepted, data_processing_consent, etc.
+  - Sistema operacional e testado com servidor estável na porta 5000
 - June 15, 2025: Bateria completa de testes executada com 100% de aprovação
   - Testes de regressões: 8/8 validações aprovadas (nenhuma regressão detectada)
   - Testes de observabilidade: 5/5 endpoints funcionando (health, métricas, erros, alertas, dashboard)
