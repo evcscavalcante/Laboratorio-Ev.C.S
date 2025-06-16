@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Bell, User, UserCheck, Clock } from 'lucide-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Badge } from '@/components/ui/badge';
@@ -39,11 +39,21 @@ export function NotificationBell({ userRole }: NotificationBellProps) {
   const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
   const { token } = useAuth();
+  const mountedRef = useRef(true);
+  
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
 
   // Buscar notificações (hooks devem vir antes de qualquer return condicional)
-  const { data: notifications = [], isLoading } = useQuery({
+  const { data: notifications = [], isLoading, error } = useQuery({
     queryKey: ['/api/notifications'],
     queryFn: async () => {
+      if (!mountedRef.current) return [];
+      
       const response = await fetch('/api/notifications', {
         headers: {
           'Content-Type': 'application/json',
@@ -53,12 +63,19 @@ export function NotificationBell({ userRole }: NotificationBellProps) {
       if (!response.ok) throw new Error('Falha ao carregar notificações');
       return response.json();
     },
-    refetchInterval: 30000, // Atualiza a cada 30 segundos
+    refetchInterval: 30000,
+    enabled: !!token && mountedRef.current,
+    retry: (failureCount, error) => {
+      return failureCount < 2 && mountedRef.current;
+    },
+    retryDelay: 1000,
   });
 
   // Marcar como lida
   const markAsReadMutation = useMutation({
     mutationFn: async (notificationId: number) => {
+      if (!mountedRef.current) return;
+      
       const response = await fetch(`/api/notifications/${notificationId}/read`, {
         method: 'PATCH',
         headers: {
@@ -70,13 +87,22 @@ export function NotificationBell({ userRole }: NotificationBellProps) {
       return response.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/notifications'] });
+      if (mountedRef.current) {
+        queryClient.invalidateQueries({ queryKey: ['/api/notifications'] });
+      }
+    },
+    onError: (error) => {
+      if (mountedRef.current) {
+        console.error('Erro ao marcar notificação:', error);
+      }
     },
   });
 
   // Marcar todas como lidas
   const markAllAsReadMutation = useMutation({
     mutationFn: async () => {
+      if (!mountedRef.current) return;
+      
       const response = await fetch('/api/notifications/mark-all-read', {
         method: 'PATCH',
         headers: {
@@ -88,22 +114,31 @@ export function NotificationBell({ userRole }: NotificationBellProps) {
       return response.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/notifications'] });
-      toast({
-        title: "Notificações marcadas",
-        description: "Todas as notificações foram marcadas como lidas.",
-      });
+      if (mountedRef.current) {
+        queryClient.invalidateQueries({ queryKey: ['/api/notifications'] });
+        toast({
+          title: "Notificações marcadas",
+          description: "Todas as notificações foram marcadas como lidas.",
+        });
+      }
+    },
+    onError: (error) => {
+      if (mountedRef.current) {
+        console.error('Erro ao marcar todas as notificações:', error);
+      }
     },
   });
 
   // Promover usuário
   const promoteUserMutation = useMutation({
     mutationFn: async ({ email, newRole }: { email: string; newRole: string }) => {
+      if (!mountedRef.current) return;
+      
       const response = await fetch('/api/admin/update-role', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('firebaseToken')}`,
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({ email, newRole }),
       });
@@ -111,11 +146,23 @@ export function NotificationBell({ userRole }: NotificationBellProps) {
       return response.json();
     },
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ['/api/notifications'] });
-      toast({
-        title: "Usuário promovido",
-        description: `Role alterado para ${variables.newRole} com sucesso.`,
-      });
+      if (mountedRef.current) {
+        queryClient.invalidateQueries({ queryKey: ['/api/notifications'] });
+        toast({
+          title: "Usuário promovido",
+          description: `Role alterado para ${variables.newRole} com sucesso.`,
+        });
+      }
+    },
+    onError: (error) => {
+      if (mountedRef.current) {
+        console.error('Erro ao promover usuário:', error);
+        toast({
+          title: "Erro",
+          description: "Falha ao promover usuário. Tente novamente.",
+          variant: "destructive",
+        });
+      }
     },
   });
 
