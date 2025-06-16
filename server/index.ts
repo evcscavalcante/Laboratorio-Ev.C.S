@@ -732,7 +732,11 @@ async function startServer() {
       }).returning();
 
       console.log(`✅ Nova organização criada: ${name}`);
-      res.status(201).json(newOrganization[0]);
+      if (Array.isArray(newOrganization) && newOrganization.length > 0) {
+        res.status(201).json(newOrganization[0]);
+      } else {
+        res.status(500).json({ message: 'Falha ao retornar dados da organização criada' });
+      }
     } catch (error) {
       console.error('Erro ao criar organização:', error);
       res.status(500).json({ message: 'Falha ao criar organização' });
@@ -803,7 +807,8 @@ async function startServer() {
     async (req: Request, res: Response) => {
     try {
       const user = (req as any).user;
-      let capsulasList, cilindrosList;
+      let capsulasList: any[] = [];
+      let cilindrosList: any[] = [];
 
       if (user.role === 'DEVELOPER') {
         // DEVELOPER vê todos os equipamentos

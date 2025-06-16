@@ -18,6 +18,7 @@ import { useEquipmentAutofill } from "@/hooks/useEquipmentAutofill";
 import { firebaseSync } from "@/lib/firebase-sync";
 
 interface DensityInSituData {
+  id?: number;
   registrationNumber: string;
   date: string;
   time: string;

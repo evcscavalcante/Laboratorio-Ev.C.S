@@ -111,6 +111,7 @@ export const densityInSituTests = pgTable("density_in_situ_tests", {
   realDensityRef: text("real_density_ref"),
   maxMinDensityRef: text("max_min_density_ref"),
   userId: integer("user_id").references(() => users.id),
+  organizationId: integer("organization_id").references(() => organizations.id),
   createdBy: varchar("created_by", { length: 255 }),
   updatedBy: varchar("updated_by", { length: 255 }),
   determinations: json("determinations").$type<{
@@ -168,6 +169,7 @@ export const realDensityTests = pgTable("real_density_tests", {
   quadrant: text("quadrant"),
   layer: text("layer"),
   userId: integer("user_id").references(() => users.id),
+  organizationId: integer("organization_id").references(() => organizations.id),
   createdBy: varchar("created_by", { length: 255 }),
   updatedBy: varchar("updated_by", { length: 255 }),
   moisture: json("moisture").$type<{
@@ -216,6 +218,7 @@ export const maxMinDensityTests = pgTable("max_min_density_tests", {
   quadrant: text("quadrant"),
   layer: text("layer"),
   userId: integer("user_id").references(() => users.id),
+  organizationId: integer("organization_id").references(() => organizations.id),
   createdBy: varchar("created_by", { length: 255 }),
   updatedBy: varchar("updated_by", { length: 255 }),
   maxDensity: json("max_density").$type<{
