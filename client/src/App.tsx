@@ -31,10 +31,16 @@ import SystemStatus from "@/pages/system-status";
 import SystemMonitoring from "@/pages/system-monitoring";
 import EnsaiosSalvos from "@/pages/ensaios-salvos";
 import TermosUso from "@/pages/termos-uso";
+import TermosUsoPublico from "@/pages/termos-uso-publico";
 import ConfiguracoesLGPD from "@/pages/configuracoes-lgpd";
 
 function Router() {
   const { user, loading } = useAuth();
+
+  // Permitir acesso público aos termos de uso
+  if (window.location.pathname === '/termos-uso') {
+    return <TermosUsoPublico />;
+  }
 
   if (loading) {
     return (

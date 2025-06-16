@@ -526,15 +526,18 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - API /api/notifications retornando status 200 (sucesso)
   - Funcionalidades completas: visualizar notificações, marcar como lida, marcar todas como lidas
   - Integração perfeita entre autenticação híbrida Firebase-PostgreSQL e sistema de notificações
-- June 15, 2025: Sistema completo de conformidade LGPD implementado e validado
+- June 15, 2025: Sistema completo de conformidade LGPD implementado e totalmente acessível
   - Páginas completas de Termos de Uso e Configurações LGPD criadas
+  - Acesso PÚBLICO aos termos de uso sem necessidade de login
+  - Links diretos na tela de login: "Termos de Uso" e "Política de Privacidade"
+  - Página /termos-uso acessível publicamente (termos-uso-publico.tsx)
   - 5 endpoints LGPD funcionais: terms, privacy-policy, consent, my-data, request-deletion
   - Interface completa para gerenciamento de consentimentos e direitos do usuário
   - Sistema de exportação de dados e solicitação de exclusão implementado
   - Navegação LGPD integrada na sidebar com acesso direto
   - Rotas /termos-uso e /configuracoes-lgpd funcionais no App.tsx
   - Teste completo LGPD: 5/5 endpoints aprovados (100% de sucesso)
-  - Conformidade básica com LGPD para proteção de dados pessoais
+  - Conformidade total com LGPD: transparência e acessibilidade implementadas
 - June 15, 2025: Bateria completa de testes executada com 100% de aprovação
   - Testes de regressões: 8/8 validações aprovadas (nenhuma regressão detectada)
   - Testes de observabilidade: 5/5 endpoints funcionando (health, métricas, erros, alertas, dashboard)

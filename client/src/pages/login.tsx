@@ -203,7 +203,30 @@ export default function Login() {
             )}
           </div>
 
-          <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+          {/* Links Públicos LGPD */}
+          <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex justify-center space-x-4 text-xs">
+              <a 
+                href="/termos-uso" 
+                className="text-blue-600 hover:text-blue-800 underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Termos de Uso
+              </a>
+              <span className="text-gray-400">•</span>
+              <a 
+                href="/configuracoes-lgpd" 
+                className="text-blue-600 hover:text-blue-800 underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Política de Privacidade
+              </a>
+            </div>
+          </div>
+
+          <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
             <div className="text-xs text-gray-500 text-center space-y-1">
               <p>Firebase: {firebaseStatus}</p>
               <p>PostgreSQL: Conectado</p>
