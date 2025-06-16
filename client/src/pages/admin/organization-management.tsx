@@ -56,8 +56,16 @@ export default function OrganizationManagement() {
   const { data: organizations = [], isLoading: orgsLoading } = useQuery({
     queryKey: ['/api/organizations'],
     queryFn: async () => {
-      const response = await fetch('/api/organizations');
-      return response.json();
+      const response = await apiRequest('GET', '/api/organizations');
+      const data = await response.json();
+      
+      // Garantir que sempre retornamos um array
+      if (Array.isArray(data)) {
+        return data;
+      } else {
+        console.warn('API retornou dados inválidos para organizations:', data);
+        return [];
+      }
     }
   });
 
