@@ -836,6 +836,14 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Todos os endpoints temporários bloqueados com status 410 Gone e logs de segurança
   - Autenticação Firebase obrigatória em todos os endpoints críticos de dados
   - Sistema operacional com logs mostrando apenas requisições autenticadas aos endpoints seguros
+- June 16, 2025: BOTÃO "LIMPAR DADOS" IMPLEMENTADO EM TODOS OS ENSAIOS
+  - Densidade in-situ: adicionado botão "Limpar Dados" que estava faltante para padronização da interface
+  - Função handleClear implementada com reset completo de todos os campos para valores padrão
+  - Limpeza automática do localStorage para remoção do progresso salvo
+  - Notificação toast confirmando limpeza dos dados para feedback do usuário
+  - Interface padronizada: todos os três ensaios (in-situ, real, máx/mín) possuem botões consistentes
+  - Ícone RotateCcw utilizado consistentemente em todos os botões "Limpar Dados"
+  - Sistema operacional na porta 5000 com funcionalidade completa de reset em todos os ensaios
 
 ## User Preferences
 

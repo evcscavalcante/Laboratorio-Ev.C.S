@@ -600,6 +600,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
       balanceId: "",
       ovenId: "",
       realDensityRef: "",
+      maxMinDensityRef: "",
       north: "",
       east: "",
       elevation: "",
