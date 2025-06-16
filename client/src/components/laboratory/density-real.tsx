@@ -147,43 +147,8 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
   // Hook para preenchimento automático dos equipamentos
   const { searchEquipment } = useEquipmentAutofill();
 
-  // Preenchimento automático para cápsulas de umidade (cápsulas pequenas para limites físicos)
-  useEffect(() => {
-    if (data.moisture1.capsule && data.moisture1.capsule.length >= 1) {
-      const result = searchEquipment(data.moisture1.capsule);
-      if (result.found && result.type === 'capsula') {
-        setData(prev => ({
-          ...prev,
-          moisture1: { ...prev.moisture1, tare: result.data.peso }
-        }));
-        console.log(`✅ Cápsula pequena ${data.moisture1.capsule} carregada para densidade real`);
-      }
-    }
-  }, [, searchEquipment]);
-
-  useEffect(() => {
-    if (data.moisture2.capsule && data.moisture2.capsule.length >= 1) {
-      const result = searchEquipment(data.moisture2.capsule);
-      if (result.found && result.type === 'capsula') {
-        setData(prev => ({
-          ...prev,
-          moisture2: { ...prev.moisture2, tare: result.data.peso }
-        }));
-      }
-    }
-  }, [, searchEquipment]);
-
-  useEffect(() => {
-    if (data.moisture3.capsule && data.moisture3.capsule.length >= 1) {
-      const result = searchEquipment(data.moisture3.capsule);
-      if (result.found && result.type === 'capsula') {
-        setData(prev => ({
-          ...prev,
-          moisture3: { ...prev.moisture3, tare: result.data.peso }
-        }));
-      }
-    }
-  }, [, searchEquipment]);
+  // Preenchimento automático removido para evitar loops infinitos
+  // O preenchimento automático será feito através de handlers específicos nos campos
 
   // Atualizar dados quando testData estiver disponível
   useEffect(() => {
