@@ -972,6 +972,70 @@ async function startServer() {
     });
   });
 
+  // Endpoint para criação de usuários (apenas ADMIN e DEVELOPER)
+  app.post('/api/users', verifyFirebaseToken, requireRole(['ADMIN', 'DEVELOPER']), async (req: Request, res: Response) => {
+    try {
+      const { name, email, role, organizationId, active = true } = req.body;
+      
+      if (!name || !email || !role) {
+        return res.status(400).json({ 
+          error: 'Campos obrigatórios: name, email, role' 
+        });
+      }
+      
+      // Verificar se o role é válido
+      const validRoles = ['VIEWER', 'TECHNICIAN', 'MANAGER', 'ADMIN', 'DEVELOPER'];
+      if (!validRoles.includes(role)) {
+        return res.status(400).json({ error: 'Role inválido' });
+      }
+      
+      // Verificar se a organização existe (se fornecida)
+      if (organizationId) {
+        const orgExists = await db.select().from(organizations).where(eq(organizations.id, organizationId));
+        if (orgExists.length === 0) {
+          return res.status(400).json({ error: 'Organização não encontrada' });
+        }
+      }
+      
+      // Verificar se o email já existe
+      const existingUser = await db.select().from(users).where(eq(users.email, email));
+      if (existingUser.length > 0) {
+        return res.status(400).json({ error: 'Email já cadastrado' });
+      }
+      
+      // Criar usuário no PostgreSQL
+      // Nota: firebase_uid será null inicialmente até o usuário fazer login
+      const [newUser] = await db.insert(users).values({
+        name,
+        email,
+        role,
+        organizationId,
+        active,
+        firebase_uid: null, // Será preenchido quando o usuário fizer login
+        permissions: [role.toLowerCase()],
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }).returning();
+      
+      console.log(`👤 Usuário criado: ${email} (${role}) - Org: ${organizationId}`);
+      
+      res.status(201).json({
+        message: 'Usuário criado com sucesso',
+        user: {
+          id: newUser.id,
+          name: newUser.name,
+          email: newUser.email,
+          role: newUser.role,
+          organizationId: newUser.organizationId,
+          active: newUser.active
+        }
+      });
+    } catch (error) {
+      console.error('❌ Erro ao criar usuário:', error);
+      res.status(500).json({ error: 'Erro interno do servidor' });
+    }
+  });
+
   // Endpoint protegido para modificação de roles (apenas ADMIN e DEVELOPER)
   app.post('/api/auth/set-role', verifyFirebaseToken, requireRole(['ADMIN', 'DEVELOPER']), async (req: Request, res: Response) => {
     try {
