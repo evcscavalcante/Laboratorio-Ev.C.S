@@ -45,7 +45,7 @@ export default function UserManagement() {
   const [formData, setFormData] = useState<UserFormData>({
     name: '',
     email: '',
-    role: 'technician',
+    role: 'TECHNICIAN',
     organizationId: null,
     active: true
   });
@@ -123,7 +123,7 @@ export default function UserManagement() {
     setFormData({
       name: '',
       email: '',
-      role: 'technician',
+      role: 'TECHNICIAN',
       organizationId: null,
       active: true
     });
@@ -137,7 +137,7 @@ export default function UserManagement() {
   const handleEditUser = (user: User) => {
     setSelectedUser(user);
     setFormData({
-      name: user.name,
+      name: user.name || '',
       email: user.email,
       role: user.role as UserRole,
       organizationId: user.organizationId,
@@ -296,8 +296,21 @@ export default function UserManagement() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {users.map((user: User) => (
-                <TableRow key={user.id}>
+              {usersLoading ? (
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center py-8">
+                    Carregando usuários...
+                  </TableCell>
+                </TableRow>
+              ) : !Array.isArray(users) || users.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                    Nenhum usuário encontrado
+                  </TableCell>
+                </TableRow>
+              ) : (
+                users.map((user: User) => (
+                  <TableRow key={user.id}>
                   <TableCell className="font-medium">{user.name}</TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>
@@ -330,8 +343,9 @@ export default function UserManagement() {
                       </Button>
                     </div>
                   </TableCell>
-                </TableRow>
-              ))}
+                  </TableRow>
+                ))
+              )}
             </TableBody>
           </Table>
         </CardContent>
