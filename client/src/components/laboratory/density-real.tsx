@@ -582,8 +582,10 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
         onRegistroChange={(value) => updateData("registrationNumber", value)}
         onNorteChange={(value) => updateData("north", value)}
         onEsteChange={(value) => updateData("east", value)}
-        onCamadaChange={(value) => updateData("local", value)}
-        onFvsChange={(value) => updateData("cota", value)}
+        onCotaChange={(value) => updateData("elevation", value)}
+        onQuadranteChange={(value) => updateData("quadrant", value)}
+        onCamadaChange={(value) => updateData("layer", value)}
+        onFvsChange={(value) => updateData("coordinates", value)}
       />
 
       <div className="mb-6">
