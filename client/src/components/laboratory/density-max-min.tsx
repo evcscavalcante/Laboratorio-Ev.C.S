@@ -162,7 +162,7 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
         }));
       }
     }
-  }, [data.maxDensity3.cylinderNumber, searchEquipment]);
+  }, [, searchEquipment]);
 
   // Preenchimento automático para cilindros padrão (densidade mínima)
   useEffect(() => {
@@ -175,7 +175,7 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
         }));
       }
     }
-  }, [data.minDensity1.cylinderNumber, searchEquipment]);
+  }, [, searchEquipment]);
 
   useEffect(() => {
     if (data.minDensity2.cylinderNumber && data.minDensity2.cylinderNumber.length >= 1) {
@@ -187,7 +187,7 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
         }));
       }
     }
-  }, [data.minDensity2.cylinderNumber, searchEquipment]);
+  }, [, searchEquipment]);
 
   useEffect(() => {
     if (data.minDensity3.cylinderNumber && data.minDensity3.cylinderNumber.length >= 1) {
@@ -199,7 +199,7 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
         }));
       }
     }
-  }, [data.minDensity3.cylinderNumber, searchEquipment]);
+  }, [, searchEquipment]);
 
   // Preenchimento automático para cápsulas de umidade (cápsulas médias)
   useEffect(() => {
@@ -213,7 +213,7 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
         console.log(`✅ Cápsula média ${data.moisture1.capsule} carregada para densidade máx/mín`);
       }
     }
-  }, [data.moisture1.capsule, searchEquipment]);
+  }, [, searchEquipment]);
 
   useEffect(() => {
     if (data.moisture2.capsule && data.moisture2.capsule.length >= 3) {
@@ -225,7 +225,7 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
         }));
       }
     }
-  }, [data.moisture2.capsule, searchEquipment]);
+  }, [, searchEquipment]);
 
   useEffect(() => {
     if (data.moisture3.capsule && data.moisture3.capsule.length >= 3) {
@@ -237,7 +237,7 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
         }));
       }
     }
-  }, [data.moisture3.capsule, searchEquipment]);
+  }, [, searchEquipment]);
 
   // Atualizar dados quando testData estiver disponível
   useEffect(() => {

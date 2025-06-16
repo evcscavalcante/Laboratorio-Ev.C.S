@@ -131,7 +131,7 @@ export const useEquipmentAutofill = () => {
 
           if (Object.keys(updates).length > 0) {
             setValues(updates);
-            setLastSearched(codigoLimpo); // Atualizar após sucesso
+            // setLastSearched(codigoLimpo); // Comentado para evitar loop
             console.log(`✅ Dados preenchidos automaticamente para ${codigo}:`, updates);
           }
         }

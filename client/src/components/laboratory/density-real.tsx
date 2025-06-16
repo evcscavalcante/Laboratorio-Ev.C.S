@@ -156,7 +156,7 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
         console.log(`✅ Cápsula pequena ${data.moisture1.capsule} carregada para densidade real`);
       }
     }
-  }, [data.moisture1.capsule, searchEquipment]);
+  }, [, searchEquipment]);
 
   useEffect(() => {
     if (data.moisture2.capsule && data.moisture2.capsule.length >= 1) {
@@ -168,7 +168,7 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
         }));
       }
     }
-  }, [data.moisture2.capsule, searchEquipment]);
+  }, [, searchEquipment]);
 
   useEffect(() => {
     if (data.moisture3.capsule && data.moisture3.capsule.length >= 1) {
@@ -180,7 +180,7 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
         }));
       }
     }
-  }, [data.moisture3.capsule, searchEquipment]);
+  }, [, searchEquipment]);
 
   // Atualizar dados quando testData estiver disponível
   useEffect(() => {

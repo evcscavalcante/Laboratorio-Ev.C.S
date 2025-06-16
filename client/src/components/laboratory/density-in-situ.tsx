@@ -263,7 +263,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
         console.log(`❌ Cilindro biselado ${codigoLimpo} não encontrado`);
       }
     }
-  }, [data.det1.cylinderNumber, equipmentData]);
+  }, [, equipmentData]);
 
   // Preenchimento automático para cilindro determinação 2 (apenas cilindros biselados)
   useEffect(() => {
@@ -285,7 +285,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
         console.log(`✅ Cilindro biselado ${data.det2.cylinderNumber} carregado: ${cilindro.peso}g, ${cilindro.volume}cm³`);
       }
     }
-  }, [data.det2.cylinderNumber, equipmentData]);
+  }, [, equipmentData]);
 
   // Preenchimento automático para cápsulas de umidade (cápsulas médias para estufa)
   useEffect(() => {
