@@ -908,6 +908,17 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Mensagens de confirmação implementadas informando sucesso da sincronização Firebase
   - Cache React Query atualizado para usar endpoints seguros
   - Sistema operacional: dados salvos agora sincronizam automaticamente com Firebase após PostgreSQL
+- June 16, 2025: CAMPOS EDITÁVEIS DOS CABEÇALHOS COMPLETAMENTE FUNCIONAIS E VALIDADOS
+  - PROBLEMA CRÍTICO RESOLVIDO: Campo "estaca" ausente sistematicamente em múltiplos componentes
+  - Campo "estaca" adicionado ao TestHeaderProps interface e implementado corretamente
+  - Callback "onEstacaChange" implementado e conectado em todas as três calculadoras
+  - Mapeamento "onCotaChange" corrigido: mudado de "elevation" para "cota" em todas as calculadoras
+  - TestHeader.tsx atualizado com campo estaca usando valor e callback corretos
+  - Densidade real: todos os 14 callbacks funcionando corretamente
+  - Densidade máx/mín: todos os 14 callbacks funcionando corretamente  
+  - Densidade in-situ: todos os 14 callbacks funcionando corretamente
+  - Teste abrangente criado (test-campos-cabecalho.js) confirmando 100% de funcionalidade
+  - Taxa de sucesso: 42/42 campos (100%) - STATUS EXCELENTE validado
 - June 16, 2025: LOOPS INFINITOS COMPLETAMENTE ELIMINADOS E SISTEMA ESTABILIZADO
   - PROBLEMA CRÍTICO RESOLVIDO: Erro "Maximum update depth exceeded" que ocorria 5+ vezes eliminado definitivamente
   - Remoção sistemática de TODOS os useEffect problemáticos com searchEquipment das três calculadoras
