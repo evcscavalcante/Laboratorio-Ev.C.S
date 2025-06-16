@@ -1040,6 +1040,12 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Cálculos técnicos agora seguem especificação correta conforme normas NBR
   - Teste validado pelo usuário: valor alto proposital (38.726) corrigido para 34.298 com umidade 12.91%
   - Sistema aplica corretamente a correção pela umidade em tempo real
+- June 16, 2025: SISTEMA DE EQUIPAMENTOS COMPLETO CONFORME ESPECIFICAÇÕES TÉCNICAS
+  - Tipos de cilindros implementados: biselado, proctor, cbr, vazios_minimos conforme normas NBR
+  - Cilindros CBR adicionados ao sistema: códigos 6-7 (850.5g-851.2g, 180-180.5cm³)
+  - Sistema completo: 15 equipamentos totais (7 cilindros + 8 cápsulas)
+  - Preenchimento automático funcional para todos os tipos de equipamentos
+  - Documentação replit.md alinhada com implementação no PostgreSQL
 
 ## User Preferences
 
