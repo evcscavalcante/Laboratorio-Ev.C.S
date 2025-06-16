@@ -178,7 +178,7 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
   }, [data.minDensity1.cylinderNumber, searchEquipment]);
 
   useEffect(() => {
-    if (data.minDensity2.cylinderNumber && data.minDensity2.cylinderNumber.length >= 3) {
+    if (data.minDensity2.cylinderNumber && data.minDensity2.cylinderNumber.length >= 1) {
       const result = searchEquipment(data.minDensity2.cylinderNumber);
       if (result.found && result.type === 'cilindro' && result.data.tipo === 'vazios_minimos') {
         setData(prev => ({
@@ -190,7 +190,7 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
   }, [data.minDensity2.cylinderNumber, searchEquipment]);
 
   useEffect(() => {
-    if (data.minDensity3.cylinderNumber && data.minDensity3.cylinderNumber.length >= 3) {
+    if (data.minDensity3.cylinderNumber && data.minDensity3.cylinderNumber.length >= 1) {
       const result = searchEquipment(data.minDensity3.cylinderNumber);
       if (result.found && result.type === 'cilindro' && result.data.tipo === 'vazios_minimos') {
         setData(prev => ({
