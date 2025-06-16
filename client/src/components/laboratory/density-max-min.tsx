@@ -297,11 +297,46 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
   });
 
   // Salvamento automático sempre que os dados mudarem
+  // Carregamento inicial do progresso salvo
+  useEffect(() => {
+    const loadSavedProgress = () => {
+      try {
+        const savedData = localStorage.getItem('density-max-min-progress');
+        if (savedData && mode === 'new') {
+          const parsedData = JSON.parse(savedData);
+          console.log('🔄 Restaurando progresso salvo do ensaio de densidade máx/mín');
+          setData(parsedData);
+        }
+      } catch (error) {
+        console.error('Erro ao carregar progresso salvo:', error);
+      }
+    };
+
+    loadSavedProgress();
+  }, [mode]);
+
   useEffect(() => {
     const saveProgress = () => {
       try {
-        localStorage.setItem('density-max-min-progress', JSON.stringify(data));
-        console.log('💾 Progresso do ensaio de densidade máx/mín salvo automaticamente');
+        // Só salva se houver dados significativos
+        const hasSignificantData = data.registrationNumber || 
+                                  data.operator || 
+                                  data.material || 
+                                  data.origin ||
+                                  data.moisture1.capsule ||
+                                  data.moisture2.capsule ||
+                                  data.moisture3.capsule ||
+                                  data.maxDensity1.cylinderNumber ||
+                                  data.maxDensity2.cylinderNumber ||
+                                  data.maxDensity3.cylinderNumber ||
+                                  data.minDensity1.cylinderNumber ||
+                                  data.minDensity2.cylinderNumber ||
+                                  data.minDensity3.cylinderNumber;
+
+        if (hasSignificantData) {
+          localStorage.setItem('density-max-min-progress', JSON.stringify(data));
+          console.log('💾 Progresso do ensaio de densidade máx/mín salvo automaticamente');
+        }
       } catch (error) {
         console.error('Erro ao salvar progresso:', error);
       }
@@ -781,6 +816,8 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
         onEsteChange={(value) => updateData("east", value)}
         onHoraChange={(value) => updateData("time", value)}
         onQuadranteChange={(value) => updateData("quadrant", value)}
+        onCamadaChange={(value) => updateData("layer", value)}
+        onFvsChange={(value) => updateData("coordinates", value)}
       />
 
       <div className="mb-6">
@@ -788,15 +825,12 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
         <p className="text-gray-600">Determinação dos índices de vazios máximo e mínimo</p>
       </div>
 
-      {/* Status */}
-
-
-      {/* General Information */}
+      {/* Moisture Content */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center">
             <Info className="mr-2 text-blue-600" size={20} />
-            Informações Gerais
+            Teor de Umidade (3 Determinações)
           </CardTitle>
         </CardHeader>
         <CardContent>

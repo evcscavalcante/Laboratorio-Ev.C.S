@@ -233,12 +233,43 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
     results: { difference: 0, average: 0, status: "AGUARDANDO" as "AGUARDANDO" | "APROVADO" | "REPROVADO" }
   });
 
+  // Carregamento inicial do progresso salvo
+  useEffect(() => {
+    const loadSavedProgress = () => {
+      try {
+        const savedData = localStorage.getItem('density-real-progress');
+        if (savedData && mode === 'new') {
+          const parsedData = JSON.parse(savedData);
+          console.log('🔄 Restaurando progresso salvo do ensaio de densidade real');
+          setData(parsedData);
+        }
+      } catch (error) {
+        console.error('Erro ao carregar progresso salvo:', error);
+      }
+    };
+
+    loadSavedProgress();
+  }, [mode]);
+
   // Salvamento automático sempre que os dados mudarem
   useEffect(() => {
     const saveProgress = () => {
       try {
-        localStorage.setItem('density-real-progress', JSON.stringify(data));
-        console.log('💾 Progresso do ensaio de densidade real salvo automaticamente');
+        // Só salva se houver dados significativos
+        const hasSignificantData = data.registrationNumber || 
+                                  data.operator || 
+                                  data.material || 
+                                  data.origin ||
+                                  data.moisture1.capsule ||
+                                  data.moisture2.capsule ||
+                                  data.moisture3.capsule ||
+                                  data.picnometer1.massaPicnometro > 0 ||
+                                  data.picnometer2.massaPicnometro > 0;
+
+        if (hasSignificantData) {
+          localStorage.setItem('density-real-progress', JSON.stringify(data));
+          console.log('💾 Progresso do ensaio de densidade real salvo automaticamente');
+        }
       } catch (error) {
         console.error('Erro ao salvar progresso:', error);
       }
@@ -551,75 +582,14 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
         onRegistroChange={(value) => updateData("registrationNumber", value)}
         onNorteChange={(value) => updateData("north", value)}
         onEsteChange={(value) => updateData("east", value)}
+        onCamadaChange={(value) => updateData("local", value)}
+        onFvsChange={(value) => updateData("cota", value)}
       />
 
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-2">Densidade Real dos Grãos</h2>
         <p className="text-gray-600">Determinação da densidade real por picnometria</p>
       </div>
-
-      {/* Status */}
-
-
-      {/* General Information */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center">
-            <Info className="mr-2 text-blue-600" size={20} />
-            Informações Gerais
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div>
-              <Label htmlFor="registrationNumber">Número do Registro</Label>
-              <Input
-                id="registrationNumber"
-                className="calculator-input"
-                value={data.registrationNumber}
-                onChange={(e) => updateData("registrationNumber", e.target.value)}
-                placeholder="Ex: DR-001/2024"
-              />
-            </div>
-            <div>
-              <Label htmlFor="date">Data</Label>
-              <Input
-                id="date"
-                type="date"
-                value={data.date}
-                onChange={(e) => updateData("date", e.target.value)}
-              />
-            </div>
-            <div>
-              <Label htmlFor="operator">Operador</Label>
-              <Input
-                id="operator"
-                value={data.operator}
-                onChange={(e) => updateData("operator", e.target.value)}
-                placeholder="Nome do operador"
-              />
-            </div>
-            <div>
-              <Label htmlFor="material">Material</Label>
-              <Input
-                id="material"
-                value={data.material}
-                onChange={(e) => updateData("material", e.target.value)}
-                placeholder="Tipo de material"
-              />
-            </div>
-            <div>
-              <Label htmlFor="origin">Origem</Label>
-              <Input
-                id="origin"
-                value={data.origin}
-                onChange={(e) => updateData("origin", e.target.value)}
-                placeholder="Local de origem"
-              />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
 
       {/* Moisture Content */}
       <Card>
