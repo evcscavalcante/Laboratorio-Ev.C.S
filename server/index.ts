@@ -818,43 +818,29 @@ async function startServer() {
         console.log(`🔐 ${user.role} org${user.organizationId}: acesso isolado - ${user.email}`);
       }
       
-      // Combinar e padronizar formato
-      const equipamentos = [
-        ...capsulasList.map(cap => ({
+      // Formato correto para o hook useEquipmentAutofill
+      const equipamentosFormatados = {
+        capsulas: capsulasList.map(cap => ({
           id: cap.id,
           codigo: cap.codigo,
-          tipo: 'capsula',
-          descricao: cap.descricao,
           peso: cap.peso,
           material: cap.material,
-          fabricante: cap.fabricante,
-          status: cap.status,
-          localizacao: cap.localizacao,
-          observacoes: cap.observacoes,
-          createdAt: cap.created_at,
-          updatedAt: cap.updated_at
+          descricao: cap.descricao
         })),
-        ...cilindrosList.map(cil => ({
+        cilindros: cilindrosList.map(cil => ({
           id: cil.id,
           codigo: cil.codigo,
-          tipo: 'cilindro',
-          descricao: cil.descricao,
           peso: cil.peso,
           volume: cil.volume,
           altura: cil.altura,
           diametro: cil.diametro,
-          material: cil.material,
-          fabricante: cil.fabricante,
-          status: cil.status,
-          localizacao: cil.localizacao,
-          observacoes: cil.observacoes,
-          createdAt: cil.created_at,
-          updatedAt: cil.updated_at
+          tipo: cil.tipo,
+          descricao: cil.descricao
         }))
-      ];
+      };
       
-      console.log(`📦 Equipamentos encontrados (${user.role}): ${equipamentos.length} (${capsulasList.length} cápsulas, ${cilindrosList.length} cilindros)`);
-      res.json(equipamentos);
+      console.log(`📦 Equipamentos encontrados (${user.role}): ${capsulasList.length + cilindrosList.length} (${capsulasList.length} cápsulas, ${cilindrosList.length} cilindros)`);
+      res.json(equipamentosFormatados);
     } catch (error) {
       console.error('Error fetching equipamentos:', error);
       res.status(500).json({ message: 'Failed to fetch equipamentos' });
