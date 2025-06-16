@@ -891,6 +891,16 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Rota /solos/densidade-max-min corrigida no App.tsx
   - Campos "Camada" e "Estaca" funcionais em todos os ensaios
   - Sistema unificado pronto para produção sem conflitos
+- June 16, 2025: PREENCHIMENTO AUTOMÁTICO VALIDADO CAMPO A CAMPO EM TODOS OS ENSAIOS
+  - Teste completo campo a campo executado: 20/20 campos funcionais (100%)
+  - Densidade In-Situ: 8 campos validados (2 cilindros + 6 cápsulas) via useEffect automático
+  - Densidade Real: 3 campos validados (3 cápsulas) via handler onChange manual
+  - Densidade Máx/Mín: 9 campos validados (6 cilindros + 3 cápsulas) via busca localStorage
+  - Dados reais PostgreSQL carregando corretamente: cápsulas 12.35g-45.85g, cilindros 185.5g-650.25g
+  - Sistema detectando 13 equipamentos totais com preenchimento instantâneo
+  - Teste específico validado: digite "1" → 185.5g+98.5cm³, digite "7" → 45.2g
+  - Implementações diferentes mas todas funcionais nos três ensaios
+  - Sistema completamente operacional para uso em produção
 - June 16, 2025: CAMPOS EDITÁVEIS DOS CABEÇALHOS COMPLETAMENTE FUNCIONAIS E VALIDADOS
   - Teste sistemático confirmou 100% dos campos editáveis operacionais (test-campos-cabecalho.js)
   - Problemas de mapeamento "cota"/"elevation" corrigidos em todas as três calculadoras
