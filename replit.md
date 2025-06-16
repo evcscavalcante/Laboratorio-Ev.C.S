@@ -844,6 +844,15 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Interface padronizada: todos os três ensaios (in-situ, real, máx/mín) possuem botões consistentes
   - Ícone RotateCcw utilizado consistentemente em todos os botões "Limpar Dados"
   - Sistema operacional na porta 5000 com funcionalidade completa de reset em todos os ensaios
+- June 16, 2025: PROBLEMA CRÍTICO DE ENTRADA DE DADOS CORRIGIDO COMPLETAMENTE
+  - Problema identificado: apenas densidade in-situ aceitava dados nos campos Quadrante, Camada e Estaca
+  - Causa identificada: callbacks do TestHeader mapeados incorretamente nos outros dois ensaios
+  - Densidade Real corrigida: onCotaChange mapeado de "elevation" para "cota"
+  - Densidade Máx/Mín corrigida: onCotaChange mapeado de "elevation" para "cota"
+  - Densidade In-Situ corrigida: onCotaChange mapeado de "elevation" para "cota"
+  - Todos os três ensaios agora aceitam entrada de dados nos campos Quadrante, Camada e Estaca
+  - Sistema de entrada de dados totalmente padronizado e funcional em todas as calculadoras
+  - Interface de laboratório operacional com entrada de dados consistente
 
 ## User Preferences
 

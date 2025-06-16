@@ -814,7 +814,7 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
         onRegistroChange={(value) => updateData("registrationNumber", value)}
         onNorteChange={(value) => updateData("north", value)}
         onEsteChange={(value) => updateData("east", value)}
-        onCotaChange={(value) => updateData("elevation", value)}
+        onCotaChange={(value) => updateData("cota", value)}
         onHoraChange={(value) => updateData("time", value)}
         onQuadranteChange={(value) => updateData("quadrant", value)}
         onCamadaChange={(value) => updateData("layer", value)}

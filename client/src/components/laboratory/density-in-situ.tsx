@@ -677,7 +677,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
         onVerificadorChange={(value) => updateData("verifier", value)}
         onNorteChange={(value) => updateData("north", value)}
         onEsteChange={(value) => updateData("east", value)}
-        onCotaChange={(value) => updateData("elevation", value)}
+        onCotaChange={(value) => updateData("cota", value)}
         onQuadranteChange={(value) => updateData("quadrant", value)}
         onCamadaChange={(value) => updateData("layer", value)}
         onFvsChange={(value) => updateData("fvs", value)}

@@ -1,0 +1,28 @@
+8
+useEquipmentAutofill.ts:63 Warning: Maximum update depth exceeded. This can happen when a component calls setState inside useEffect, but useEffect either doesn't have a dependency array, or one of the dependencies changes on every render.
+    at DensityReal (https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/src/components/laboratory/density-real.tsx?t=1750084076323:32:39)
+    at div
+    at DensidadeRealPage (https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/src/pages/solos/densidade-real.tsx:23:22)
+    at Route (https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.repli…/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=d97851ae:323:16)
+    at Switch (https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.repli…/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=d97851ae:379:17)
+    at div
+    at main
+    at div
+    at div
+    at MainLayout (https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/src/components/layout/main-layout.tsx:23:38)
+    at Router (https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/src/App.tsx?v=oq6yc7wwmVGJpxrDfgbT3:55:29)
+    at DataSyncProvider (https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/src/contexts/data-sync-context.tsx:29:36)
+    at AuthProvider (https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/src/hooks/useAuth.tsx:52:32)
+    at QueryClientProvider (https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.repli…rkspace/node_modules/.vite/deps/@tanstack_react-query.js?v=d97851ae:2805:3)
+    at App
+
+﻿
+
+Modify and save CSS changes to your workspace with Gemini
+You can now ask Gemini to modify your CSS and, with a connected workspace folder, automatically save changes back to source files.
+
+Annotate performance findings with Gemini
+With a click of a button, ask Gemini to generate annotations about events in the performance trace.
+
+Ask Gemini about performance insights
+Several performance insights now have an 'Ask AI' button, so you can start a chat with Gemini about them.
