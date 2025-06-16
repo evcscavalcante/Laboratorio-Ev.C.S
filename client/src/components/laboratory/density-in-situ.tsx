@@ -584,6 +584,47 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
     saveTestMutation.mutate(testData);
   };
 
+  const handleClear = () => {
+    setData({
+      registrationNumber: "",
+      date: new Date().toISOString().split('T')[0],
+      time: new Date().toTimeString().slice(0, 5),
+      operator: "",
+      technicalResponsible: "",
+      verifier: "",
+      material: "",
+      origin: "",
+      north: "",
+      east: "",
+      elevation: "",
+      coordinates: "",
+      quadrant: "",
+      layer: "",
+      realDensityRef: "",
+      fvs: "",
+      weather: "sol",
+      resampled: false,
+      balanceId: "",
+      ovenId: "",
+      moistureTop1: { capsule: "", wetTare: 0, dryTare: 0, tare: 0 },
+      moistureTop2: { capsule: "", wetTare: 0, dryTare: 0, tare: 0 },
+      moistureTop3: { capsule: "", wetTare: 0, dryTare: 0, tare: 0 },
+      moistureBase1: { capsule: "", wetTare: 0, dryTare: 0, tare: 0 },
+      moistureBase2: { capsule: "", wetTare: 0, dryTare: 0, tare: 0 },
+      moistureBase3: { capsule: "", wetTare: 0, dryTare: 0, tare: 0 },
+      densityTop1: { cylinderNumber: "", wetSoilCylinder: 0, drySoilCylinder: 0, cylinder: 0, volume: 0 },
+      densityTop2: { cylinderNumber: "", wetSoilCylinder: 0, drySoilCylinder: 0, cylinder: 0, volume: 0 },
+      densityBase1: { cylinderNumber: "", wetSoilCylinder: 0, drySoilCylinder: 0, cylinder: 0, volume: 0 },
+      densityBase2: { cylinderNumber: "", wetSoilCylinder: 0, drySoilCylinder: 0, cylinder: 0, volume: 0 }
+    });
+    localStorage.removeItem('density-in-situ-progress');
+    toast({
+      title: "Dados Limpos",
+      description: "Todos os campos foram resetados para os valores padrão.",
+      duration: 3000,
+    });
+  };
+
   return (
     <div className="laboratory-page space-y-6">
       {/* Cabeçalho Profissional do Ensaio */}
@@ -1349,6 +1390,14 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
             >
               <FileText className="mr-2" size={16} />
               {isGeneratingPDF ? "Gerando PDF..." : "Gerar PDF"}
+            </Button>
+            <Button 
+              onClick={handleClear}
+              variant="outline"
+              className="flex-1 min-w-[200px]"
+            >
+              <RotateCcw className="mr-2" size={16} />
+              Limpar Dados
             </Button>
           </div>
         </CardContent>
