@@ -123,17 +123,26 @@ export const useEquipmentAutofill = () => {
   };
 };
 
-// Hook específico para densidade in-situ
+// Hook específico para densidade in-situ (usa cilindro de cravação)
 export const useDensityInSituAutofill = (
   cilindroId: string,
   setValues: (values: any) => void
 ) => {
-  const { useAutofillEffect } = useEquipmentAutofill();
+  const { searchEquipment } = useEquipmentAutofill();
 
-  useAutofillEffect(cilindroId, setValues, {
-    peso: 'pesoCilindro',
-    volume: 'volumeCilindro'
-  });
+  useEffect(() => {
+    if (cilindroId && cilindroId.length >= 3) {
+      const result = searchEquipment(cilindroId);
+      
+      if (result.found && result.type === 'cilindro' && result.data.tipo === 'biselado') {
+        setValues({
+          molde: result.data.peso,
+          volume: result.data.volume
+        });
+        console.log(`✅ Cilindro de cravação ${cilindroId} carregado automaticamente`);
+      }
+    }
+  }, [cilindroId, setValues]);
 };
 
 // Hook específico para densidade real (cápsulas)
