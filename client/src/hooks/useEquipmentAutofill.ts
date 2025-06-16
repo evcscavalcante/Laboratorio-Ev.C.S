@@ -131,21 +131,26 @@ export const useDensityInSituAutofill = (
   cilindroId: string,
   setValues: (values: any) => void
 ) => {
-  const { searchEquipment } = useEquipmentAutofill();
+  const { equipmentData } = useEquipmentAutofill();
 
   useEffect(() => {
-    if (cilindroId && cilindroId.length >= 1) {
-      const result = searchEquipment(cilindroId);
+    if (cilindroId && cilindroId.length >= 1 && equipmentData) {
+      const codigoLimpo = cilindroId.trim().toUpperCase();
       
-      if (result.found && result.type === 'cilindro' && result.data.tipo === 'biselado') {
+      // BUSCAR APENAS NOS CILINDROS (ignorar cápsulas)
+      const cilindro = equipmentData.cilindros?.find(
+        cil => cil.codigo.toString().toUpperCase() === codigoLimpo && cil.tipo === 'biselado'
+      );
+      
+      if (cilindro) {
         setValues({
-          molde: result.data.peso,
-          volume: result.data.volume
+          molde: cilindro.peso,
+          volume: cilindro.volume
         });
-        console.log(`✅ Cilindro de cravação ${cilindroId} carregado automaticamente`);
+        console.log(`✅ Cilindro biselado ${cilindroId} carregado: ${cilindro.peso}g, ${cilindro.volume}cm³`);
       }
     }
-  }, [cilindroId, setValues]);
+  }, [cilindroId, setValues, equipmentData]);
 };
 
 // Hook específico para densidade real (usa cápsulas pequenas para limites físicos)
@@ -154,20 +159,25 @@ export const useRealDensityAutofill = (
   setValues: (values: any) => void,
   determinacao: 'det1' | 'det2' | 'det3'
 ) => {
-  const { searchEquipment } = useEquipmentAutofill();
+  const { equipmentData } = useEquipmentAutofill();
 
   useEffect(() => {
-    if (capsulaId && capsulaId.length >= 1) {
-      const result = searchEquipment(capsulaId);
+    if (capsulaId && capsulaId.length >= 1 && equipmentData) {
+      const codigoLimpo = capsulaId.trim().toUpperCase();
       
-      if (result.found && result.type === 'capsula') {
+      // BUSCAR APENAS NAS CÁPSULAS (ignorar cilindros)
+      const capsula = equipmentData.capsulas?.find(
+        cap => cap.codigo.toString().toUpperCase() === codigoLimpo
+      );
+      
+      if (capsula) {
         setValues({
-          [`picnometer.${determinacao}.capsula`]: result.data.peso
+          [`picnometer.${determinacao}.capsula`]: capsula.peso
         });
-        console.log(`✅ Cápsula pequena ${capsulaId} carregada para densidade real`);
+        console.log(`✅ Cápsula ${capsulaId} carregada para densidade real: ${capsula.peso}g`);
       }
     }
-  }, [capsulaId, setValues, determinacao]);
+  }, [capsulaId, setValues, determinacao, equipmentData]);
 };
 
 // Hook específico para densidade máx/mín (usa cilindro padrão/máximo-mínimos)
@@ -177,21 +187,26 @@ export const useMaxMinDensityAutofill = (
   tipo: 'max' | 'min',
   determinacao: 'det1' | 'det2' | 'det3'
 ) => {
-  const { searchEquipment } = useEquipmentAutofill();
+  const { equipmentData } = useEquipmentAutofill();
 
   useEffect(() => {
-    if (cilindroId && cilindroId.length >= 1) {
-      const result = searchEquipment(cilindroId);
+    if (cilindroId && cilindroId.length >= 1 && equipmentData) {
+      const codigoLimpo = cilindroId.trim().toUpperCase();
       
-      if (result.found && result.type === 'cilindro' && result.data.tipo === 'vazios_minimos') {
+      // BUSCAR APENAS NOS CILINDROS vazios_minimos (ignorar cápsulas e outros tipos)
+      const cilindro = equipmentData.cilindros?.find(
+        cil => cil.codigo.toString().toUpperCase() === codigoLimpo && cil.tipo === 'vazios_minimos'
+      );
+      
+      if (cilindro) {
         setValues({
-          [`${tipo}Density.${determinacao}.molde`]: result.data.peso,
-          [`${tipo}Density.${determinacao}.volume`]: result.data.volume
+          [`${tipo}Density.${determinacao}.molde`]: cilindro.peso,
+          [`${tipo}Density.${determinacao}.volume`]: cilindro.volume
         });
-        console.log(`✅ Cilindro padrão ${cilindroId} carregado para densidade ${tipo}`);
+        console.log(`✅ Cilindro vazios mínimos ${cilindroId} carregado: ${cilindro.peso}g, ${cilindro.volume}cm³`);
       }
     }
-  }, [cilindroId, setValues, tipo, determinacao]);
+  }, [cilindroId, setValues, tipo, determinacao, equipmentData]);
 };
 
 // Hook para umidade - detecta automaticamente o tipo de cápsula necessária

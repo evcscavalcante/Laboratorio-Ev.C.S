@@ -178,41 +178,52 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
   // Hook para preenchimento automático dos equipamentos
   const { searchEquipment } = useEquipmentAutofill();
 
-  // Preenchimento automático para cilindro determinação 1
+  // Import dos hooks específicos
+  const { equipmentData } = useEquipmentAutofill();
+
+  // Preenchimento automático para cilindro determinação 1 (apenas cilindros biselados)
   useEffect(() => {
-    if (data.det1.cylinderNumber && data.det1.cylinderNumber.length >= 1) {
-      const result = searchEquipment(data.det1.cylinderNumber);
-      if (result.found && result.type === 'cilindro' && result.data.tipo === 'biselado') {
+    if (data.det1.cylinderNumber && data.det1.cylinderNumber.length >= 1 && equipmentData) {
+      const codigoLimpo = data.det1.cylinderNumber.trim().toUpperCase();
+      const cilindro = equipmentData.cilindros?.find(
+        cil => cil.codigo.toString().toUpperCase() === codigoLimpo && cil.tipo === 'biselado'
+      );
+      
+      if (cilindro) {
         setData(prev => ({
           ...prev,
           det1: {
             ...prev.det1,
-            molde: result.data.peso,
-            volume: result.data.volume
+            molde: cilindro.peso,
+            volume: cilindro.volume
           }
         }));
-        console.log(`✅ Cilindro de cravação ${data.det1.cylinderNumber} carregado automaticamente`);
+        console.log(`✅ Cilindro biselado ${data.det1.cylinderNumber} carregado: ${cilindro.peso}g, ${cilindro.volume}cm³`);
       }
     }
-  }, [data.det1.cylinderNumber, searchEquipment]);
+  }, [data.det1.cylinderNumber, equipmentData]);
 
-  // Preenchimento automático para cilindro determinação 2
+  // Preenchimento automático para cilindro determinação 2 (apenas cilindros biselados)
   useEffect(() => {
-    if (data.det2.cylinderNumber && data.det2.cylinderNumber.length >= 1) {
-      const result = searchEquipment(data.det2.cylinderNumber);
-      if (result.found && result.type === 'cilindro' && result.data.tipo === 'biselado') {
+    if (data.det2.cylinderNumber && data.det2.cylinderNumber.length >= 1 && equipmentData) {
+      const codigoLimpo = data.det2.cylinderNumber.trim().toUpperCase();
+      const cilindro = equipmentData.cilindros?.find(
+        cil => cil.codigo.toString().toUpperCase() === codigoLimpo && cil.tipo === 'biselado'
+      );
+      
+      if (cilindro) {
         setData(prev => ({
           ...prev,
           det2: {
             ...prev.det2,
-            molde: result.data.peso,
-            volume: result.data.volume
+            molde: cilindro.peso,
+            volume: cilindro.volume
           }
         }));
-        console.log(`✅ Cilindro de cravação ${data.det2.cylinderNumber} carregado automaticamente`);
+        console.log(`✅ Cilindro biselado ${data.det2.cylinderNumber} carregado: ${cilindro.peso}g, ${cilindro.volume}cm³`);
       }
     }
-  }, [data.det2.cylinderNumber, searchEquipment]);
+  }, [data.det2.cylinderNumber, equipmentData]);
 
   // Preenchimento automático para cápsulas de umidade (cápsulas médias para estufa)
   useEffect(() => {
