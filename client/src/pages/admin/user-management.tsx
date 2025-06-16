@@ -245,7 +245,7 @@ export default function UserManagement() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="0">Sem organização</SelectItem>
-                    {organizations.map((org: Organization) => (
+                    {Array.isArray(organizations) && organizations.map((org: Organization) => (
                       <SelectItem key={org.id} value={org.id.toString()}>{org.name}</SelectItem>
                     ))}
                   </SelectContent>

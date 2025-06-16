@@ -7,7 +7,7 @@ import { registerPaymentRoutes } from "./payment-routes";
 import { setupVite, serveStatic } from "./vite";
 import MemoryStore from "memorystore";
 import { db } from "./db";
-import { subscriptionPlans, users, notifications, equipamentos, capsulas, cilindros } from "@shared/schema";
+import { subscriptionPlans, users, organizations, notifications, equipamentos, capsulas, cilindros } from "@shared/schema";
 import { eq, desc } from "drizzle-orm";
 import { initializeAdminUser } from "./init-admin";
 import { storage } from "./storage";
@@ -623,6 +623,29 @@ async function startServer() {
     } catch (error) {
       console.error('Error deleting max/min density test:', error);
       res.status(500).json({ message: 'Failed to delete test' });
+    }
+  });
+
+  // Organizations API endpoints
+  app.get('/api/organizations', async (req: Request, res: Response) => {
+    try {
+      const organizationsList = await db.select().from(organizations);
+      console.log(`📊 Organizações encontradas: ${organizationsList.length}`);
+      res.json(organizationsList);
+    } catch (error) {
+      console.error('Erro ao buscar organizações:', error);
+      res.status(500).json({ message: 'Falha ao buscar organizações' });
+    }
+  });
+
+  app.get('/api/users', async (req: Request, res: Response) => {
+    try {
+      const usersList = await db.select().from(users);
+      console.log(`👥 Usuários encontrados: ${usersList.length}`);
+      res.json(usersList);
+    } catch (error) {
+      console.error('Erro ao buscar usuários:', error);
+      res.status(500).json({ message: 'Falha ao buscar usuários' });
     }
   });
 
