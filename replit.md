@@ -909,6 +909,13 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - searchEquipment atualizado com parâmetro tipoPreferido para evitar conflitos
   - Campos de cilindros buscam cilindros primeiro, campos de cápsulas buscam cápsulas primeiro
   - Sistema agora funciona corretamente: digite → preenche, apague → limpa automaticamente
+- June 16, 2025: LIMPEZA AUTOMÁTICA EXPANDIDA PARA TODAS AS CALCULADORAS
+  - Densidade Real: 3 campos de cápsulas com limpeza automática via handlers
+  - Densidade Máx/Mín: 9 campos (6 cilindros + 3 cápsulas) com limpeza automática via handlers
+  - Total: 20/20 campos com limpeza automática implementada (100%)
+  - Teste completo validou funcionalidade em todas as três calculadoras
+  - Sistema unificado: digite código → preenchimento instantâneo, apague → limpeza automática para 0
+  - Performance otimizada: trigger com 1 dígito, busca inteligente por tipo, sem conflitos
 - June 16, 2025: CAMPOS EDITÁVEIS DOS CABEÇALHOS COMPLETAMENTE FUNCIONAIS E VALIDADOS
   - Teste sistemático confirmou 100% dos campos editáveis operacionais (test-campos-cabecalho.js)
   - Problemas de mapeamento "cota"/"elevation" corrigidos em todas as três calculadoras

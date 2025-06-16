@@ -283,7 +283,7 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
     // Buscar equipamento usando hook correto (trigger com 1+ caracteres)
     let pesoCapsula = null;
     if (value && value.length >= 1) {
-      const result = searchEquipment(value);
+      const result = searchEquipment(value, 'capsula');
       if (result.found && result.type === 'capsula') {
         pesoCapsula = result.data.peso;
         console.log(`✅ Cápsula encontrada: ${value} - ${pesoCapsula}g`);
@@ -296,7 +296,7 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
         moisture1: {
           ...prev.moisture1,
           capsule: value,
-          tare: pesoCapsula || prev.moisture1.tare
+          tare: pesoCapsula || (value ? prev.moisture1.tare : 0)
         }
       }));
     } else if (field === 'moisture2') {
@@ -305,7 +305,7 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
         moisture2: {
           ...prev.moisture2,
           capsule: value,
-          tare: pesoCapsula || prev.moisture2.tare
+          tare: pesoCapsula || (value ? prev.moisture2.tare : 0)
         }
       }));
     } else if (field === 'moisture3') {
@@ -314,7 +314,7 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
         moisture3: {
           ...prev.moisture3,
           capsule: value,
-          tare: pesoCapsula || prev.moisture3.tare
+          tare: pesoCapsula || (value ? prev.moisture3.tare : 0)
         }
       }));
     }

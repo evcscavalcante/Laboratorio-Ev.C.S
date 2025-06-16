@@ -348,7 +348,7 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
       [field]: {
         ...prev[field],
         capsule: value,
-        tare: pesoCapsula || prev[field].tare
+        tare: pesoCapsula || (value ? prev[field].tare : 0)
       }
     }));
 
@@ -370,8 +370,8 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
         maxDensity1: {
           ...prev.maxDensity1,
           cylinderNumber: value,
-          molde: dadosCilindro ? dadosCilindro.peso : prev.maxDensity1.molde,
-          volume: dadosCilindro ? dadosCilindro.volume : prev.maxDensity1.volume
+          molde: dadosCilindro ? dadosCilindro.peso : (value ? prev.maxDensity1.molde : 0),
+          volume: dadosCilindro ? dadosCilindro.volume : (value ? prev.maxDensity1.volume : 0)
         }
       }));
     } else if (field === 'maxDensity2') {
@@ -380,8 +380,8 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
         maxDensity2: {
           ...prev.maxDensity2,
           cylinderNumber: value,
-          molde: dadosCilindro ? dadosCilindro.peso : prev.maxDensity2.molde,
-          volume: dadosCilindro ? dadosCilindro.volume : prev.maxDensity2.volume
+          molde: dadosCilindro ? dadosCilindro.peso : (value ? prev.maxDensity2.molde : 0),
+          volume: dadosCilindro ? dadosCilindro.volume : (value ? prev.maxDensity2.volume : 0)
         }
       }));
     } else if (field === 'maxDensity3') {
@@ -390,8 +390,8 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
         maxDensity3: {
           ...prev.maxDensity3,
           cylinderNumber: value,
-          molde: dadosCilindro ? dadosCilindro.peso : prev.maxDensity3.molde,
-          volume: dadosCilindro ? dadosCilindro.volume : prev.maxDensity3.volume
+          molde: dadosCilindro ? dadosCilindro.peso : (value ? prev.maxDensity3.molde : 0),
+          volume: dadosCilindro ? dadosCilindro.volume : (value ? prev.maxDensity3.volume : 0)
         }
       }));
     } else if (field === 'minDensity1') {
@@ -400,8 +400,8 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
         minDensity1: {
           ...prev.minDensity1,
           cylinderNumber: value,
-          molde: dadosCilindro ? dadosCilindro.peso : prev.minDensity1.molde,
-          volume: dadosCilindro ? dadosCilindro.volume : prev.minDensity1.volume
+          molde: dadosCilindro ? dadosCilindro.peso : (value ? prev.minDensity1.molde : 0),
+          volume: dadosCilindro ? dadosCilindro.volume : (value ? prev.minDensity1.volume : 0)
         }
       }));
     } else if (field === 'minDensity2') {
@@ -410,8 +410,8 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
         minDensity2: {
           ...prev.minDensity2,
           cylinderNumber: value,
-          molde: dadosCilindro ? dadosCilindro.peso : prev.minDensity2.molde,
-          volume: dadosCilindro ? dadosCilindro.volume : prev.minDensity2.volume
+          molde: dadosCilindro ? dadosCilindro.peso : (value ? prev.minDensity2.molde : 0),
+          volume: dadosCilindro ? dadosCilindro.volume : (value ? prev.minDensity2.volume : 0)
         }
       }));
     } else if (field === 'minDensity3') {
@@ -420,8 +420,8 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
         minDensity3: {
           ...prev.minDensity3,
           cylinderNumber: value,
-          molde: dadosCilindro ? dadosCilindro.peso : prev.minDensity3.molde,
-          volume: dadosCilindro ? dadosCilindro.volume : prev.minDensity3.volume
+          molde: dadosCilindro ? dadosCilindro.peso : (value ? prev.minDensity3.molde : 0),
+          volume: dadosCilindro ? dadosCilindro.volume : (value ? prev.minDensity3.volume : 0)
         }
       }));
     }
