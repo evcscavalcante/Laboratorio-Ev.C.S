@@ -749,6 +749,19 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Script de teste completo criado (test-user-creation.js) validando funcionalidade
   - Pontuação de aprovação: 80/100 - SISTEMA APROVADO PARA CRIAÇÃO DE USUÁRIOS
   - Fluxo completo: Admin/Developer cria usuário → usuário faz login → dados sincronizados automaticamente
+- June 16, 2025: MANUAL DO USUÁRIO COMPLETAMENTE ATUALIZADO E CORRIGIDO
+  - Manual do usuário reformulado com informações 100% corretas do sistema atual
+  - Nomenclaturas técnicas oficiais: NBR 9813:2021, NBR 17212:2025, NBR 12004/12051:2021
+  - Funcionalidades atualizadas: Dashboard → Calculadoras, Sidebar → Ensaios Salvos
+  - Sistema de isolamento organizacional documentado adequadamente
+  - Hierarquia de roles corrigida: VIEWER → TECHNICIAN → MANAGER → ADMIN (sem DEVELOPER)
+  - Seção LGPD adicionada: conformidade completa, acesso público aos termos, direitos do usuário
+  - Gerenciamento de ensaios e equipamentos documentado com funcionalidades reais
+  - Problemas comuns atualizados: isolamento organizacional, criação de usuários, PDF generation
+  - Permissões por nível hierárquico detalhadas: cada role com responsabilidades específicas
+  - Melhores práticas atualizadas por função: técnicos vs gestores
+  - Status visual dos ensaios documentado: critérios APROVADO/REPROVADO por tipo
+  - Manual agora reflete exatamente o sistema em produção sem informações desatualizadas
 
 ## User Preferences
 
