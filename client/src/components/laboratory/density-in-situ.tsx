@@ -594,28 +594,36 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
       verifier: "",
       material: "",
       origin: "",
-      north: "",
-      east: "",
-      elevation: "",
       coordinates: "",
       quadrant: "",
       layer: "",
+      balanceId: "",
+      ovenId: "",
       realDensityRef: "",
+      north: "",
+      east: "",
+      elevation: "",
       fvs: "",
       weather: "sol",
       resampled: false,
-      balanceId: "",
-      ovenId: "",
+      det1: {
+        cylinderNumber: "",
+        moldeSolo: 0,
+        molde: 0,
+        volume: 0
+      },
+      det2: {
+        cylinderNumber: "",
+        moldeSolo: 0,
+        molde: 0,
+        volume: 0
+      },
       moistureTop1: { capsule: "", wetTare: 0, dryTare: 0, tare: 0 },
       moistureTop2: { capsule: "", wetTare: 0, dryTare: 0, tare: 0 },
       moistureTop3: { capsule: "", wetTare: 0, dryTare: 0, tare: 0 },
       moistureBase1: { capsule: "", wetTare: 0, dryTare: 0, tare: 0 },
       moistureBase2: { capsule: "", wetTare: 0, dryTare: 0, tare: 0 },
-      moistureBase3: { capsule: "", wetTare: 0, dryTare: 0, tare: 0 },
-      densityTop1: { cylinderNumber: "", wetSoilCylinder: 0, drySoilCylinder: 0, cylinder: 0, volume: 0 },
-      densityTop2: { cylinderNumber: "", wetSoilCylinder: 0, drySoilCylinder: 0, cylinder: 0, volume: 0 },
-      densityBase1: { cylinderNumber: "", wetSoilCylinder: 0, drySoilCylinder: 0, cylinder: 0, volume: 0 },
-      densityBase2: { cylinderNumber: "", wetSoilCylinder: 0, drySoilCylinder: 0, cylinder: 0, volume: 0 }
+      moistureBase3: { capsule: "", wetTare: 0, dryTare: 0, tare: 0 }
     });
     localStorage.removeItem('density-in-situ-progress');
     toast({
