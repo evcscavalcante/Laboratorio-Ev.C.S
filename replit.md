@@ -793,6 +793,13 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Banco PostgreSQL reestruturado com 13 equipamentos: 5 cilindros + 8 cápsulas
   - Sistema validado: dados corretos carregando automaticamente por número
   - Workflow de laboratório otimizado: digitação mais rápida e intuitiva
+- June 16, 2025: PROBLEMA CRÍTICO DE PREENCHIMENTO AUTOMÁTICO CORRIGIDO COMPLETAMENTE
+  - Bug identificado: hooks ainda exigiam 3+ caracteres apesar da implementação de numeração 1-8
+  - Correção aplicada em 5 hooks: useAutofillEffect, useDensityInSituAutofill, useRealDensityAutofill, useMaxMinDensityAutofill, useMoistureAutofill
+  - Todos os triggers atualizados para length >= 1 em vez de length >= 3
+  - Sistema agora funciona instantaneamente: digite "1" e o peso/volume aparecem imediatamente
+  - Validação confirmada: nenhum trigger de 3 dígitos restante no código
+  - Preenchimento automático 100% operacional com numeração simplificada 1-8
 
 ## User Preferences
 
