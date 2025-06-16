@@ -37,17 +37,20 @@ class FirebaseSync {
       }
 
       const userId = this.auth.currentUser.uid;
-      const docRef = doc(db, 'laboratory_data', data.id);
+      // Garantir que o ID seja uma string válida
+      const docId = String(data.id).replace(/[^a-zA-Z0-9_-]/g, '_');
+      const docRef = doc(db, 'laboratory_data', docId);
       
       const syncData = {
         ...data,
+        id: docId,
         userId,
         updatedAt: new Date().toISOString(),
         syncedAt: Timestamp.now()
       };
 
       await setDoc(docRef, syncData, { merge: true });
-      console.log(`✅ Dados sincronizados no Firebase: ${data.id}`);
+      console.log(`✅ Dados sincronizados no Firebase: ${docId}`);
       return true;
     } catch (error) {
       console.error('❌ Erro ao sincronizar com Firebase:', error);
@@ -72,7 +75,7 @@ class FirebaseSync {
 
   async syncEnsaio(ensaioData: any, type: string): Promise<boolean> {
     const syncData: SyncData = {
-      id: ensaioData.id || `${type}_${Date.now()}`,
+      id: String(ensaioData.id || `${type}_${Date.now()}`),
       type: 'ensaio',
       subtype: type,
       data: ensaioData,
@@ -86,12 +89,12 @@ class FirebaseSync {
 
   async syncEquipamento(equipData: any): Promise<boolean> {
     const syncData: SyncData = {
-      id: equipData.id || `eq_${Date.now()}`,
+      id: String(equipData.id || `eq_${Date.now()}`),
       type: 'equipamento',
-      subtype: equipData.tipo,
+      subtype: equipData.tipo || 'unknown',
       data: equipData,
       userId: this.auth.currentUser?.uid || '',
-      createdAt: equipData.createdAt || new Date().toISOString(),
+      createdAt: equipData.created_at || equipData.createdAt || new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
 
