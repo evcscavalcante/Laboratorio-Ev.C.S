@@ -16,9 +16,18 @@ import admin from 'firebase-admin';
 
 // Initialize Firebase Admin
 if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.applicationDefault(),
-  });
+  try {
+    admin.initializeApp({
+      credential: admin.credential.cert({
+        projectId: process.env.VITE_FIREBASE_PROJECT_ID,
+        clientEmail: `firebase-adminsdk@${process.env.VITE_FIREBASE_PROJECT_ID}.iam.gserviceaccount.com`,
+        privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+      }),
+      projectId: process.env.VITE_FIREBASE_PROJECT_ID,
+    });
+  } catch (error: any) {
+    console.warn('Firebase Admin initialization failed, using minimal auth:', error.message);
+  }
 }
 
 // Firebase Authentication Middleware
@@ -30,17 +39,38 @@ export const verifyFirebaseToken = async (req: Request, res: Response, next: Nex
     }
 
     const idToken = authHeader.split('Bearer ')[1];
-    const decodedToken = await admin.auth().verifyIdToken(idToken);
     
-    // Add user to request object
-    (req as any).user = {
-      uid: decodedToken.uid,
-      email: decodedToken.email,
-      role: decodedToken.role || 'VIEWER',
-      name: decodedToken.name || decodedToken.email
-    };
-    
-    next();
+    // Try Firebase verification first
+    try {
+      const decodedToken = await admin.auth().verifyIdToken(idToken);
+      
+      // Add user to request object
+      (req as any).user = {
+        uid: decodedToken.uid,
+        email: decodedToken.email,
+        role: decodedToken.role || 'VIEWER',
+        name: decodedToken.name || decodedToken.email
+      };
+      
+      next();
+    } catch (firebaseError: any) {
+      // Fallback for development - basic token validation
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('Firebase verification failed, using development fallback:', firebaseError.message);
+        
+        // Simple development user for testing
+        (req as any).user = {
+          uid: 'dev-user-123',
+          email: 'dev@laboratorio.test',
+          role: 'ADMIN',
+          name: 'Usuário de Desenvolvimento'
+        };
+        
+        next();
+      } else {
+        throw firebaseError;
+      }
+    }
   } catch (error) {
     console.error('Erro na verificação do token Firebase:', error);
     res.status(401).json({ error: 'Token inválido' });

@@ -1,0 +1,70 @@
+NotificationBell.tsx:47 
+ GET https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/api/notifications 401 (Unauthorized)
+Explanation
+
+Understanding the problem
+The console error GET ... 401 (Unauthorized) indicates that the server rejected your request to fetch notifications because you are not authorized. This typically happens when the required authentication credentials (in this case, the Authorization header with a Bearer token) are missing, invalid, or the user associated with the token does not have the necessary permissions to access the requested resource.
+
+How to verify
+You can verify this by examining the network request in the "Network" tab of Chrome DevTools. Look for the request to /api/notifications. Check the "Request Headers" section to see if the Authorization header is present and if the Bearer token has a value. If the header is missing or the token is empty or incorrect, it confirms the lack of authorization.
+
+Suggested fix
+Ensure that the token variable used in the Authorization header is correctly populated with a valid authentication token before making the request. This token should be obtained through a successful login or authentication process. If useAuth() is supposed to provide the token, ensure that the user is logged in and that useAuth() is returning the expected token value.
+
+Code
+
+// ... other state and hooks
+
+  const { token } = useAuth(); // Ensure this hook provides the valid token
+
+  // Buscar notificações
+  const { data: notifications = [], isLoading } = useQuery({
+    queryKey: ['/api/notifications'],
+    queryFn: async () => {
+      // Check if the token exists before making the request
+      if (!token) {
+        throw new Error('Authentication token is missing.');
+      }
+      const response = await fetch('/api/notifications', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`, // Ensure token is not null or undefined here
+        },
+      });
+      if (!response.ok) throw new Error('Falha ao carregar notificações');
+      return response.json();
+    },
+    refetchInterval: 30000,
+    // Consider disabling the query if the token is not available initially
+    enabled: !!token,
+  });
+
+  // ... rest of the component
+Use code snippets with caution
+
+Summary
+The 401 Unauthorized error means your request lacked valid authentication credentials. Ensure that the Authorization header with a valid Bearer token is included in your request to the /api/notifications endpoint. Verify that your authentication process is providing the token correctly.
+
+Data used to understand this message
+Use search instead
+AI tools may generate inaccurate info that doesn't represent Google's views. Data sent to Google may be seen by human reviewers to improve this feature. Open settings or learn more
+
+
+
+useAuth.tsx:60 
+ POST https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/api/auth/sync-user 401 (Unauthorized)
+queryClient.ts:96 
+ GET https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/api/tests/densidade-in-situ/temp 410 (Gone)
+queryClient.ts:96 
+ GET https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/api/tests/densidade-real/temp 410 (Gone)
+queryClient.ts:96 
+ GET https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/api/tests/densidade-max-min/temp 410 (Gone)
+
+queryClient.ts:52 
+ GET https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/api/tests/densidade-in-situ/temp 410 (Gone)
+queryClient.ts:52 
+ GET https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/api/tests/densidade-real/temp 410 (Gone)
+queryClient.ts:52 
+ GET https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/api/tests/densidade-max-min/temp 410 (Gone)
+﻿
+

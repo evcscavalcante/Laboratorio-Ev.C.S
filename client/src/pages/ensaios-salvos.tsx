@@ -51,19 +51,22 @@ const EnsaiosSalvos: React.FC = () => {
   // Buscar ensaios de densidade in-situ
   const { data: densityInSituTests = [] } = useQuery<SavedTest[]>({
     queryKey: ['/api/tests/density-in-situ'],
-    enabled: true
+    enabled: true,
+    retry: false
   });
 
   // Buscar ensaios de densidade real
   const { data: densityRealTests = [] } = useQuery<SavedTest[]>({
     queryKey: ['/api/tests/real-density'],
-    enabled: true
+    enabled: true,
+    retry: false
   });
 
   // Buscar ensaios de densidade máx/mín
   const { data: densityMaxMinTests = [] } = useQuery<SavedTest[]>({
     queryKey: ['/api/tests/max-min-density'],
-    enabled: true
+    enabled: true,
+    retry: false
   });
 
   // Combinar todos os ensaios com tipagem correta
