@@ -3,6 +3,7 @@ import {
   collection, 
   doc, 
   setDoc, 
+  addDoc,
   getDoc, 
   getDocs, 
   query, 
@@ -29,7 +30,7 @@ export interface SyncData {
 class FirebaseSync {
   private auth = getAuth();
 
-  async syncToFirestore(data: SyncData): Promise<boolean> {
+  async syncToFirestore(data: SyncData, isNew: boolean = false): Promise<boolean> {
     try {
       if (!this.auth.currentUser) {
         console.log('⚠️ Usuário não autenticado - saltando sync Firebase');
@@ -37,21 +38,28 @@ class FirebaseSync {
       }
 
       const userId = this.auth.currentUser.uid;
-      // Garantir que o ID seja uma string válida
-      const docId = String(data.id).replace(/[^a-zA-Z0-9_-]/g, '_');
-      const docRef = doc(db, 'laboratory_data', docId);
       
       const syncData = {
         ...data,
-        id: docId,
         userId,
         updatedAt: new Date().toISOString(),
         syncedAt: Timestamp.now()
       };
 
-      await setDoc(docRef, syncData, { merge: true });
-      console.log(`✅ Dados sincronizados no Firebase: ${docId}`);
-      return true;
+      if (isNew) {
+        // Para novos documentos, usar addDoc para garantir ID único
+        const docRef = await addDoc(collection(db, 'laboratory_data'), syncData);
+        console.log(`✅ Novo documento criado no Firebase: ${docRef.id}`);
+        return true;
+      } else {
+        // Para atualizações, usar setDoc com ID específico
+        const docId = String(data.id).replace(/[^a-zA-Z0-9_-]/g, '_');
+        const docRef = doc(db, 'laboratory_data', docId);
+        
+        await setDoc(docRef, { ...syncData, id: docId }, { merge: true });
+        console.log(`✅ Documento atualizado no Firebase: ${docId}`);
+        return true;
+      }
     } catch (error) {
       console.error('❌ Erro ao sincronizar com Firebase:', error);
       return false;
@@ -98,7 +106,9 @@ class FirebaseSync {
       updatedAt: new Date().toISOString()
     };
 
-    return await this.syncToFirestore(syncData);
+    // Para equipamentos novos (sem ID fixo), criar documento único
+    const isNew = !equipData.id || equipData.id.toString().startsWith('eq_');
+    return await this.syncToFirestore(syncData, isNew);
   }
 
   async syncOrganization(orgData: any): Promise<boolean> {
