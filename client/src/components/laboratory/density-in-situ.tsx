@@ -241,7 +241,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
   }, [data.moistureTop2.capsule, searchEquipment]);
 
   useEffect(() => {
-    if (data.moistureTop3.capsule && data.moistureTop3.capsule.length >= 3) {
+    if (data.moistureTop3.capsule && data.moistureTop3.capsule.length >= 1) {
       const result = searchEquipment(data.moistureTop3.capsule);
       if (result.found && result.type === 'capsula') {
         setData(prev => ({
@@ -253,7 +253,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
   }, [data.moistureTop3.capsule, searchEquipment]);
 
   useEffect(() => {
-    if (data.moistureBase1.capsule && data.moistureBase1.capsule.length >= 3) {
+    if (data.moistureBase1.capsule && data.moistureBase1.capsule.length >= 1) {
       const result = searchEquipment(data.moistureBase1.capsule);
       if (result.found && result.type === 'capsula') {
         setData(prev => ({
@@ -265,7 +265,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
   }, [data.moistureBase1.capsule, searchEquipment]);
 
   useEffect(() => {
-    if (data.moistureBase2.capsule && data.moistureBase2.capsule.length >= 3) {
+    if (data.moistureBase2.capsule && data.moistureBase2.capsule.length >= 1) {
       const result = searchEquipment(data.moistureBase2.capsule);
       if (result.found && result.type === 'capsula') {
         setData(prev => ({
@@ -277,7 +277,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
   }, [data.moistureBase2.capsule, searchEquipment]);
 
   useEffect(() => {
-    if (data.moistureBase3.capsule && data.moistureBase3.capsule.length >= 3) {
+    if (data.moistureBase3.capsule && data.moistureBase3.capsule.length >= 1) {
       const result = searchEquipment(data.moistureBase3.capsule);
       if (result.found && result.type === 'capsula') {
         setData(prev => ({

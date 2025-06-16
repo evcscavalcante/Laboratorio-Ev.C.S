@@ -128,7 +128,7 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
 
   // Preenchimento automático para cilindros padrão (densidade máxima)
   useEffect(() => {
-    if (data.maxDensity1.cylinderNumber && data.maxDensity1.cylinderNumber.length >= 3) {
+    if (data.maxDensity1.cylinderNumber && data.maxDensity1.cylinderNumber.length >= 1) {
       const result = searchEquipment(data.maxDensity1.cylinderNumber);
       if (result.found && result.type === 'cilindro' && result.data.tipo === 'vazios_minimos') {
         setData(prev => ({
@@ -141,7 +141,7 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
   }, [data.maxDensity1.cylinderNumber, searchEquipment]);
 
   useEffect(() => {
-    if (data.maxDensity2.cylinderNumber && data.maxDensity2.cylinderNumber.length >= 3) {
+    if (data.maxDensity2.cylinderNumber && data.maxDensity2.cylinderNumber.length >= 1) {
       const result = searchEquipment(data.maxDensity2.cylinderNumber);
       if (result.found && result.type === 'cilindro' && result.data.tipo === 'vazios_minimos') {
         setData(prev => ({
@@ -153,7 +153,7 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
   }, [data.maxDensity2.cylinderNumber, searchEquipment]);
 
   useEffect(() => {
-    if (data.maxDensity3.cylinderNumber && data.maxDensity3.cylinderNumber.length >= 3) {
+    if (data.maxDensity3.cylinderNumber && data.maxDensity3.cylinderNumber.length >= 1) {
       const result = searchEquipment(data.maxDensity3.cylinderNumber);
       if (result.found && result.type === 'cilindro' && result.data.tipo === 'vazios_minimos') {
         setData(prev => ({
@@ -166,7 +166,7 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
 
   // Preenchimento automático para cilindros padrão (densidade mínima)
   useEffect(() => {
-    if (data.minDensity1.cylinderNumber && data.minDensity1.cylinderNumber.length >= 3) {
+    if (data.minDensity1.cylinderNumber && data.minDensity1.cylinderNumber.length >= 1) {
       const result = searchEquipment(data.minDensity1.cylinderNumber);
       if (result.found && result.type === 'cilindro' && result.data.tipo === 'vazios_minimos') {
         setData(prev => ({
