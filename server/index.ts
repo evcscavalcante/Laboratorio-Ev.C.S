@@ -62,8 +62,8 @@ export const verifyFirebaseToken = async (req: Request, res: Response, next: Nex
         (req as any).user = {
           uid: 'dev-user-123',
           email: 'dev@laboratorio.test',
-          role: 'ADMIN',
-          name: 'Usuário de Desenvolvimento'
+          role: 'DEVELOPER',
+          name: 'Desenvolvedor do Sistema'
         };
         
         next();
