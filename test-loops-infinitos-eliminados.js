@@ -3,7 +3,7 @@
  * Verifica se todas as calculadoras estão livres dos problemas de "Maximum update depth exceeded"
  */
 
-const fs = require('fs');
+import fs from 'fs';
 
 function testarLoopsInfinitos() {
   console.log('🔍 TESTE: Verificando eliminação completa de loops infinitos...\n');

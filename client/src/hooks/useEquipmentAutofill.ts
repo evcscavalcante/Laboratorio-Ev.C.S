@@ -230,31 +230,9 @@ export const useMaxMinDensityAutofill = (
   }, [cilindroId, tipo, determinacao]); // REMOVIDO setValues e equipmentData
 };
 
-// Hook para umidade - detecta automaticamente o tipo de cápsula necessária
-export const useMoistureAutofill = (
-  capsulaId: string,
-  setValues: (values: any) => void,
-  metodo: 'estufa' | 'frigideira', // estufa = cápsulas médias, frigideira = cápsulas grandes
-  campo: string
-) => {
-  const { searchEquipment } = useEquipmentAutofill();
-
-  useEffect(() => {
-    if (capsulaId && capsulaId.length >= 1) {
-      const result = searchEquipment(capsulaId);
-      
-      if (result.found && result.type === 'capsula') {
-        // Verifica se o tipo de cápsula corresponde ao método
-        const capsulaCorreta = (metodo === 'estufa' && result.data.material === 'media') || 
-                              (metodo === 'frigideira' && result.data.material === 'grande');
-                              
-        if (capsulaCorreta) {
-          setValues({
-            [campo]: result.data.peso
-          });
-          console.log(`✅ Cápsula ${metodo === 'estufa' ? 'média' : 'grande'} ${capsulaId} carregada para umidade ${metodo}`);
-        }
-      }
-    }
-  }, [capsulaId, metodo, campo]); // REMOVIDO setValues
+// Hook para umidade - REMOVIDO para eliminar loops infinitos
+// O preenchimento automático será implementado via onChange handlers específicos
+export const useMoistureAutofill = () => {
+  // Hook removido para evitar loops infinitos com searchEquipment
+  return null;
 };
