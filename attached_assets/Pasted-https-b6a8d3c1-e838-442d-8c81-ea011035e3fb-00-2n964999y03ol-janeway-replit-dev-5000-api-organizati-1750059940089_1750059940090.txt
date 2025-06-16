@@ -1,0 +1,45 @@
+https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/api/organizations/user-counts 404 (Not Found)
+Explanation
+
+Understanding the problem
+The console error GET ... 404 (Not Found) indicates that the browser tried to fetch a resource from the specified URL, but the server responded with a 404 status code. This means the server could not find a resource at that specific path. In this case, the URL causing the error is /api/organizations/user-counts.
+
+The provided code uses useQuery from React Query to fetch data. The second useQuery hook is attempting to fetch data from the /api/organizations/user-counts endpoint, and the server is reporting that this endpoint does not exist.
+
+How to verify
+You can verify this by:
+
+Attempting to access https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/api/organizations/user-counts directly in your browser or using a tool like curl. You should receive a 404 response.
+Checking your server-side code to confirm if an endpoint for /api/organizations/user-counts is defined and correctly implemented to handle GET requests.
+Suggested fix
+The fix is to ensure that the server-side application has an endpoint defined at /api/organizations/user-counts that can handle GET requests and return the expected data (user counts per organization).
+
+If you intended to fetch user counts, you need to implement the corresponding API endpoint on your backend. If the endpoint exists but is misspelled, correct the path in your useQuery hook:
+
+Code
+
+// Fetch users count per organization
+  const { data: userCounts = {} } = useQuery({
+    queryKey: ['/api/organizations/user-counts'],
+    queryFn: async () => {
+      // Ensure this URL matches the correct endpoint on your backend
+      const response = await fetch('/api/organizations/user-counts');
+      return response.json();
+    }
+  });
+Use code snippets with caution
+
+If the endpoint does not exist and you don't intend to fetch user counts at this time, remove the second useQuery block.
+
+Summary
+The 404 Not Found error means the server could not find the resource at the requested URL /api/organizations/user-counts. To fix this, you need to implement the server-side endpoint for this path or correct the path in your frontend code if it's misspelled.
+
+Data used to understand this message
+Use search instead
+AI tools may generate inaccurate info that doesn't represent Google's views. Data sent to Google may be seen by human reviewers to improve this feature. Open settings or learn more
+
+
+
+queryClient.ts:52 
+ POST https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/api/organizations 404 (Not Found)
+﻿

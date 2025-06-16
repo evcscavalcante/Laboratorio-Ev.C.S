@@ -8,7 +8,7 @@ import { setupVite, serveStatic } from "./vite";
 import MemoryStore from "memorystore";
 import { db } from "./db";
 import { subscriptionPlans, users, organizations, notifications, equipamentos, capsulas, cilindros } from "@shared/schema";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, sql } from "drizzle-orm";
 import { initializeAdminUser } from "./init-admin";
 import { storage } from "./storage";
 import { observability } from "./observability-minimal";
@@ -638,6 +638,53 @@ async function startServer() {
     }
   });
 
+  // Get user counts per organization
+  app.get('/api/organizations/user-counts', async (req: Request, res: Response) => {
+    try {
+      // Buscar todos os usuários e agrupar por organização
+      const allUsers = await db.select().from(users);
+      const userCounts = allUsers.reduce((acc: any, user) => {
+        const orgId = user.organizationId || 'null';
+        acc[orgId] = (acc[orgId] || 0) + 1;
+        return acc;
+      }, {});
+      
+      // Converter para formato array
+      const result = Object.entries(userCounts).map(([organizationId, count]) => ({
+        organizationId: organizationId === 'null' ? null : parseInt(organizationId),
+        count
+      }));
+      
+      console.log(`📊 Contagem de usuários por organização: ${result.length} organizações`);
+      res.json(result);
+    } catch (error) {
+      console.error('Erro ao buscar contagem de usuários:', error);
+      res.status(500).json({ message: 'Falha ao buscar contagem de usuários' });
+    }
+  });
+
+  // Create new organization
+  app.post('/api/organizations', verifyFirebaseToken, requireRole(['ADMIN', 'DEVELOPER']), async (req: Request, res: Response) => {
+    try {
+      const { name, description } = req.body;
+      
+      if (!name) {
+        return res.status(400).json({ message: 'Nome da organização é obrigatório' });
+      }
+
+      const newOrganization = await db.insert(organizations).values({
+        name,
+        description: description || null
+      }).returning();
+
+      console.log(`✅ Nova organização criada: ${name}`);
+      res.status(201).json(newOrganization[0]);
+    } catch (error) {
+      console.error('Erro ao criar organização:', error);
+      res.status(500).json({ message: 'Falha ao criar organização' });
+    }
+  });
+
   app.get('/api/users', async (req: Request, res: Response) => {
     try {
       const usersList = await db.select().from(users);
@@ -1020,17 +1067,31 @@ async function startServer() {
     });
   });
 
-  // 404 handler for undefined routes
-  app.use('*', (req: Request, res: Response, next: NextFunction) => {
-    // Skip static files and valid API routes
-    if (req.originalUrl.startsWith('/api/') && !req.originalUrl.includes('static')) {
-      return res.status(404).json({ 
-        error: 'Endpoint não encontrado',
-        path: req.originalUrl,
-        method: req.method
-      });
+  // Setup Vite AFTER all API routes are defined
+  try {
+    if (process.env.NODE_ENV === "development") {
+      console.log('Tentando configurar Vite...');
+      await setupVite(app, server);
+      console.log('Vite configurado com sucesso');
+    } else {
+      serveStatic(app);
     }
-    next();
+  } catch (error) {
+    console.error('Erro ao configurar Vite, continuando sem ele:', error);
+    // Servir arquivos estáticos como fallback
+    app.use(express.static('dist'));
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(process.cwd(), 'dist', 'index.html'));
+    });
+  }
+
+  // 404 handler for undefined API routes (AFTER Vite setup)
+  app.use('/api/*', (req: Request, res: Response, next: NextFunction) => {
+    return res.status(404).json({ 
+      error: 'Endpoint não encontrado',
+      path: req.originalUrl,
+      method: req.method
+    });
   });
 
   // Error handling middleware with sanitized responses
@@ -1050,24 +1111,6 @@ async function startServer() {
     
     res.status(500).json(errorResponse);
   });
-
-  // Setup Vite AFTER all API routes are defined
-  try {
-    if (process.env.NODE_ENV === "development") {
-      console.log('Tentando configurar Vite...');
-      await setupVite(app, server);
-      console.log('Vite configurado com sucesso');
-    } else {
-      serveStatic(app);
-    }
-  } catch (error) {
-    console.error('Erro ao configurar Vite, continuando sem ele:', error);
-    // Servir arquivos estáticos como fallback
-    app.use(express.static('dist'));
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(process.cwd(), 'dist', 'index.html'));
-    });
-  }
 
 
 
