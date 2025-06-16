@@ -861,6 +861,14 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - setLastSearched movido para após sucesso no preenchimento automático
   - Teste automatizado validou correção: busca única sem loops de chamadas
   - Sistema de preenchimento automático agora funciona instantaneamente sem travamentos
+- June 16, 2025: CAMPO HORA COMPLETAMENTE FUNCIONAL EM TODOS OS ENSAIOS
+  - Problema identificado: densidade real não possuía campo "hora" funcional
+  - Interface RealDensityData corrigida: adicionado campo time: string obrigatório
+  - TestHeader atualizado: campo hora={data.time} implementado na densidade real
+  - Callback onHoraChange implementado: mapeado para updateData("time", value)
+  - Valores iniciais corrigidos: campo time incluído em loadSavedData, useEffect e handleClear
+  - Teste completo executado: 100% dos campos de hora funcionando nos três ensaios
+  - Sistema operacional: entrada de hora funcional em densidade in-situ, real e máx/mín
 
 ## User Preferences
 

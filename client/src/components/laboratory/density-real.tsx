@@ -18,6 +18,7 @@ import { useEquipmentAutofill } from "@/hooks/useEquipmentAutofill";
 interface RealDensityData {
   registrationNumber: string;
   date: string;
+  time: string;
   operator: string;
   technicalResponsible: string;
   verifier: string;
@@ -100,6 +101,7 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
     return {
       registrationNumber: "",
       date: new Date().toISOString().split('T')[0],
+      time: "",
       operator: "",
       technicalResponsible: "",
       verifier: "",
@@ -186,6 +188,7 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
       setData({
         registrationNumber: testData.registrationNumber || "",
         date: testData.date || new Date().toISOString().split('T')[0],
+        time: testData.time || "",
         operator: testData.operator || "",
         technicalResponsible: testData.technicalResponsible || "",
         verifier: testData.verifier || "",
@@ -504,6 +507,7 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
     setData({
       registrationNumber: "",
       date: new Date().toISOString().split('T')[0],
+      time: "",
       operator: "",
       technicalResponsible: "",
       verifier: "",
@@ -550,6 +554,7 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
         responsavelCalculo={data.technicalResponsible}
         verificador={data.verifier}
         data={data.date}
+        hora={data.time}
         norte={data.north}
         este={data.east}
         cota={data.cota}
@@ -577,6 +582,7 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
         onResponsavelCalculoChange={(value) => updateData("technicalResponsible", value)}
         onVerificadorChange={(value) => updateData("verifier", value)}
         onDataChange={(value) => updateData("date", value)}
+        onHoraChange={(value) => updateData("time", value)}
         onMaterialChange={(value) => updateData("material", value)}
         onOrigemChange={(value) => updateData("origin", value)}
         onRegistroChange={(value) => updateData("registrationNumber", value)}
