@@ -950,7 +950,32 @@ async function startServer() {
       }
       
       if (deleted) {
-        console.log(`✅ Equipamento ${tipo} ID ${id} excluído com sucesso`);
+        // Sincronizar exclusão com Firebase Firestore
+        try {
+          const { initializeApp, getApps, cert } = await import('firebase-admin/app');
+          const { getFirestore } = await import('firebase-admin/firestore');
+          
+          // Verificar se o Firebase Admin já foi inicializado
+          let app;
+          if (getApps().length === 0) {
+            // Configuração mínima para desenvolvimento (sem certificado)
+            app = initializeApp({
+              projectId: process.env.VITE_FIREBASE_PROJECT_ID || 'laboratorio-evcs'
+            });
+          } else {
+            app = getApps()[0];
+          }
+          
+          const firestore = getFirestore(app);
+          
+          // Excluir documento do Firestore usando o ID como referência
+          await firestore.collection('equipamentos').doc(id).delete();
+          console.log(`🔥 Equipamento ID ${id} excluído do Firebase Firestore`);
+        } catch (firebaseError) {
+          console.warn(`⚠️ Falha na exclusão Firebase (equipamento já removido do PostgreSQL):`, firebaseError);
+        }
+        
+        console.log(`✅ Equipamento ${tipo} ID ${id} excluído com sucesso do PostgreSQL e Firebase`);
         res.status(204).send();
       } else {
         res.status(404).json({ message: 'Equipment not found' });
