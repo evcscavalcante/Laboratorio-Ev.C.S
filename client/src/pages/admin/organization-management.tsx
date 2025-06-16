@@ -13,6 +13,7 @@ import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
 import { Plus, Edit, Trash2, Building, Users, Mail, Phone, MapPin } from 'lucide-react';
 import type { Organization } from '@shared/schema';
+import { firebaseSync } from '@/lib/firebase-sync';
 
 interface OrganizationFormData {
   name: string;
@@ -101,11 +102,23 @@ export default function OrganizationManagement() {
       const response = await apiRequest('POST', '/api/organizations', orgData);
       return response.json();
     },
-    onSuccess: () => {
+    onSuccess: async (result) => {
+      // Sincronizar com Firebase Firestore
+      const firebaseSuccess = await firebaseSync.syncOrganization({
+        ...formData,
+        id: result.id
+      });
+
       queryClient.invalidateQueries({ queryKey: ['/api/organizations'] });
       setIsCreateDialogOpen(false);
       resetForm();
-      toast({ title: 'Organização criada com sucesso!' });
+      
+      toast({ 
+        title: 'Organização criada com sucesso!',
+        description: firebaseSuccess 
+          ? 'Dados salvos no PostgreSQL e sincronizados com Firebase.'
+          : 'Dados salvos no PostgreSQL. Sincronização Firebase falhou.'
+      });
     },
     onError: (error) => {
       toast({ title: 'Erro ao criar organização', description: error.message, variant: 'destructive' });

@@ -10,6 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Search, Plus, Package, Wrench, Edit, Trash2 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { firebaseSync } from '@/lib/firebase-sync';
 
 interface Equipamento {
   id: string | number;
@@ -227,13 +228,18 @@ export default function EquipamentosFixed() {
       });
 
       if (response.ok) {
+        // Sincronizar com Firebase Firestore
+        const firebaseSuccess = await firebaseSync.syncEquipamento(equipamentoSelecionado);
+        
         await carregarEquipamentos();
         setDialogOpen(false);
         setEquipamentoSelecionado(null);
         
         toast({
           title: editando ? "Equipamento atualizado" : "Equipamento criado",
-          description: `${equipamentoSelecionado.codigo} foi ${editando ? 'atualizado' : 'criado'} com sucesso.`,
+          description: firebaseSuccess 
+            ? `${equipamentoSelecionado.codigo} salvo no PostgreSQL e sincronizado com Firebase.`
+            : `${equipamentoSelecionado.codigo} salvo no PostgreSQL. Sincronização Firebase falhou.`,
         });
       } else {
         throw new Error(`Falha ao ${editando ? 'salvar' : 'criar'} equipamento`);
