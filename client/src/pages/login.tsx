@@ -12,6 +12,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 export default function Login() {
   const [email, setEmail] = useState('evcsousa@yahoo.com.br');
   const [password, setPassword] = useState('123456');
+  const [name, setName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [firebaseStatus, setFirebaseStatus] = useState('');
@@ -46,6 +47,16 @@ export default function Login() {
       toast({
         title: "Campos obrigatórios",
         description: "Preencha email e senha.",
+        variant: "destructive",
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    if (isSignUp && !name.trim()) {
+      toast({
+        title: "Nome obrigatório",
+        description: "Preencha seu nome completo para criar a conta.",
         variant: "destructive",
       });
       setIsLoading(false);
@@ -137,6 +148,20 @@ export default function Login() {
           )}
           
           <form onSubmit={handleSubmit} className="space-y-4">
+            {isSignUp && (
+              <div className="space-y-2">
+                <Label htmlFor="name">Nome Completo</Label>
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="Seu nome completo"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                  disabled={isLoading}
+                />
+              </div>
+            )}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
