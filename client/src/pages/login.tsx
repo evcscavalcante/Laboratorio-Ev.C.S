@@ -4,15 +4,17 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { signIn, signUp } from '@/lib/firebase';
 import { Loader2, LogIn, UserPlus, AlertTriangle } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
 export default function Login() {
-  const [email, setEmail] = useState('evcsousa@yahoo.com.br');
-  const [password, setPassword] = useState('123456');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [lgpdConsent, setLgpdConsent] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [firebaseStatus, setFirebaseStatus] = useState('');
@@ -53,10 +55,63 @@ export default function Login() {
       return;
     }
 
+    // Validação de política de senhas mais rigorosa
+    if (isSignUp && password.length < 8) {
+      toast({
+        title: "Senha muito curta",
+        description: "A senha deve ter pelo menos 8 caracteres.",
+        variant: "destructive",
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    if (isSignUp) {
+      const hasUpperCase = /[A-Z]/.test(password);
+      const hasLowerCase = /[a-z]/.test(password);
+      const hasNumbers = /\d/.test(password);
+      const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+      
+      if (!hasUpperCase || !hasLowerCase || !hasNumbers || !hasSpecialChar) {
+        toast({
+          title: "Senha muito fraca",
+          description: "A senha deve conter: maiúscula, minúscula, número e símbolo.",
+          variant: "destructive",
+        });
+        setIsLoading(false);
+        return;
+      }
+    }
+
     if (isSignUp && !name.trim()) {
       toast({
         title: "Nome obrigatório",
         description: "Preencha seu nome completo para criar a conta.",
+        variant: "destructive",
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    // Sanitizar nome contra XSS
+    if (isSignUp && name.trim()) {
+      const sanitizedName = name.trim().replace(/<[^>]*>/g, '').replace(/[<>'"&]/g, '');
+      if (sanitizedName !== name.trim()) {
+        toast({
+          title: "Nome inválido",
+          description: "O nome não pode conter caracteres especiais ou HTML.",
+          variant: "destructive",
+        });
+        setIsLoading(false);
+        return;
+      }
+    }
+
+    // Validação de consentimento LGPD
+    if (isSignUp && !lgpdConsent) {
+      toast({
+        title: "Consentimento obrigatório",
+        description: "É necessário aceitar os termos de uso e política de privacidade.",
         variant: "destructive",
       });
       setIsLoading(false);
@@ -179,18 +234,51 @@ export default function Login() {
               <Input
                 id="password"
                 type="password"
-                placeholder="••••••••"
+                placeholder={isSignUp ? "Mín. 8 chars, maiúscula, número, símbolo" : "••••••••"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 disabled={isLoading}
-                minLength={6}
+                minLength={isSignUp ? 8 : 6}
               />
             </div>
+            {isSignUp && (
+              <div className="space-y-3">
+                <div className="flex items-start space-x-2">
+                  <Checkbox
+                    id="lgpd-consent"
+                    checked={lgpdConsent}
+                    onCheckedChange={(checked) => setLgpdConsent(checked as boolean)}
+                    disabled={isLoading}
+                  />
+                  <Label htmlFor="lgpd-consent" className="text-xs leading-4">
+                    Aceito os{' '}
+                    <a 
+                      href="/termos-uso" 
+                      className="text-blue-600 hover:text-blue-800 underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Termos de Uso
+                    </a>
+                    {' '}e a{' '}
+                    <a 
+                      href="/configuracoes-lgpd" 
+                      className="text-blue-600 hover:text-blue-800 underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Política de Privacidade
+                    </a>
+                    , incluindo o processamento dos meus dados pessoais conforme LGPD.
+                  </Label>
+                </div>
+              </div>
+            )}
             <Button
               type="submit"
               className="w-full"
-              disabled={isLoading || !email || !password}
+              disabled={isLoading || !email || !password || (isSignUp && (!name || !lgpdConsent))}
             >
               {isLoading ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
