@@ -870,7 +870,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                     <Input
                       type="text"
                       value={data.moistureTop1.capsule}
-                      onChange={(e) => updateData("moistureTop1", { ...data.moistureTop1, capsule: e.target.value })}
+                      onChange={(e) => handleCapsuleChange('moistureTop1', e.target.value)}
                       placeholder="Ex: CAP-001"
                     />
                   </TableCell>
@@ -878,7 +878,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                     <Input
                       type="text"
                       value={data.moistureTop2.capsule}
-                      onChange={(e) => updateData("moistureTop2", { ...data.moistureTop2, capsule: e.target.value })}
+                      onChange={(e) => handleCapsuleChange('moistureTop2', e.target.value)}
                       placeholder="Ex: CAP-002"
                     />
                   </TableCell>
@@ -886,7 +886,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                     <Input
                       type="text"
                       value={data.moistureTop3.capsule}
-                      onChange={(e) => updateData("moistureTop3", { ...data.moistureTop3, capsule: e.target.value })}
+                      onChange={(e) => handleCapsuleChange('moistureTop3', e.target.value)}
                       placeholder="Ex: CAP-003"
                     />
                   </TableCell>
@@ -1050,7 +1050,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                     <Input
                       type="text"
                       value={data.moistureBase1.capsule}
-                      onChange={(e) => updateData("moistureBase1", { ...data.moistureBase1, capsule: e.target.value })}
+                      onChange={(e) => handleCapsuleChange('moistureBase1', e.target.value)}
                       placeholder="Ex: CAP-B01"
                     />
                   </TableCell>
@@ -1058,7 +1058,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                     <Input
                       type="text"
                       value={data.moistureBase2.capsule}
-                      onChange={(e) => updateData("moistureBase2", { ...data.moistureBase2, capsule: e.target.value })}
+                      onChange={(e) => handleCapsuleChange('moistureBase2', e.target.value)}
                       placeholder="Ex: CAP-B02"
                     />
                   </TableCell>
@@ -1066,7 +1066,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
                     <Input
                       type="text"
                       value={data.moistureBase3.capsule}
-                      onChange={(e) => updateData("moistureBase3", { ...data.moistureBase3, capsule: e.target.value })}
+                      onChange={(e) => handleCapsuleChange('moistureBase3', e.target.value)}
                       placeholder="Ex: CAP-B03"
                     />
                   </TableCell>
