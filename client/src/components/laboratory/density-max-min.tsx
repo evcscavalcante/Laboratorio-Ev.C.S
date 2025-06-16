@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { localDataManager } from "@/lib/local-storage";
 import TestHeader from "@/components/test-header";
 import { useEquipmentAutofill } from "@/hooks/useEquipmentAutofill";
+import { firebaseSync } from "@/lib/firebase-sync";
 
 interface MaxMinDensityData {
   registrationNumber: string;
@@ -532,15 +533,23 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
 
   const saveTestMutation = useMutation({
     mutationFn: async (testData: any) => {
-      return apiRequest("POST", "/api/tests/densidade-max-min/temp", testData);
+      return apiRequest("POST", "/api/tests/max-min-density", testData);
     },
-    onSuccess: (result) => {
+    onSuccess: async (result) => {
+      // Sincronizar com Firebase Firestore
+      const firebaseSuccess = await firebaseSync.syncEnsaio({
+        ...data,
+        results: calculations.results
+      }, 'densidade-max-min');
+
       toast({ 
         title: "✅ Ensaio Salvo com Sucesso!",
-        description: "Ensaio de densidade máx/mín salvo no banco PostgreSQL.",
+        description: firebaseSuccess 
+          ? "Ensaio salvo no PostgreSQL e sincronizado com Firebase."
+          : "Ensaio salvo no PostgreSQL. Sincronização Firebase falhou.",
         duration: 5000,
       });
-      queryClient.invalidateQueries({ queryKey: ["/api/tests/densidade-max-min/temp"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/tests/max-min-density"] });
       localStorage.removeItem('density-max-min-progress');
       console.log('🗑️ Progresso do ensaio de densidade máx/mín limpo após salvamento');
     },
