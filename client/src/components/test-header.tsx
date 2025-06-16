@@ -21,6 +21,7 @@ interface TestHeaderProps {
   local?: string;
   quadrante?: string;
   camada?: string;
+  estaca?: string;
   fvs?: string;
   nomeAmostra?: string;
   regSalum?: string;
@@ -60,6 +61,7 @@ export default function TestHeader({
   este = '',
   quadrante = '',
   camada = '',
+  estaca = '',
   fvs = '',
   onOperadorChange,
   onResponsavelCalculoChange,
@@ -74,6 +76,7 @@ export default function TestHeader({
   onCotaChange,
   onQuadranteChange,
   onCamadaChange,
+  onEstacaChange,
   onFvsChange
 }: TestHeaderProps) {
 
@@ -247,8 +250,8 @@ export default function TestHeader({
             <div className="p-2">
               <input 
                 type="text" 
-                value={fvs}
-                onChange={(e) => onFvsChange?.(e.target.value)}
+                value={estaca}
+                onChange={(e) => onEstacaChange?.(e.target.value)}
                 className="w-full bg-transparent border-none outline-none"
                 placeholder="-"
               />

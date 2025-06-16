@@ -109,6 +109,7 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
       coordinates: "",
       quadrant: "",
       layer: "",
+      estaca: "",
       balanceId: "",
       ovenId: "",
       compactionMethod: "",
@@ -152,6 +153,7 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
         coordinates: testData.coordinates || "",
         quadrant: testData.quadrant || "",
         layer: testData.layer || "",
+        estaca: testData.estaca || "",
         balanceId: testData.balanceId || "",
         ovenId: testData.ovenId || "",
         compactionMethod: testData.compactionMethod || "",
@@ -660,6 +662,7 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
       coordinates: "",
       quadrant: "",
       layer: "",
+      estaca: "",
       balanceId: "",
       ovenId: "",
       compactionMethod: "",
@@ -722,6 +725,7 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
         onHoraChange={(value) => updateData("time", value)}
         onQuadranteChange={(value) => updateData("quadrant", value)}
         onCamadaChange={(value) => updateData("layer", value)}
+        onEstacaChange={(value) => updateData("estaca", value)}
         onFvsChange={(value) => updateData("coordinates", value)}
       />
 
