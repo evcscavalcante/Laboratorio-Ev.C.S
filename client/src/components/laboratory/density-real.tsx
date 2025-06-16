@@ -346,7 +346,7 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
 
   const saveTestMutation = useMutation({
     mutationFn: async (testData: any) => {
-      return apiRequest("POST", "/api/tests/densidade-real/temp", testData);
+      return apiRequest("POST", "/api/tests/real-density", testData);
     },
     onSuccess: async (result) => {
       const response = result.json ? result.json() : result;
@@ -354,11 +354,7 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
       // Sincronizar com Firebase Firestore
       const firebaseSuccess = await firebaseSync.syncEnsaio({
         ...data,
-        results: {
-          difference: realDensityDifference,
-          average: averageRealDensity,
-          status: status
-        }
+        results: calculations.results
       }, 'densidade-real');
 
       toast({ 
@@ -369,7 +365,7 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
         duration: 5000,
       });
       
-      queryClient.invalidateQueries({ queryKey: ["/api/tests/densidade-real/temp"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/tests/real-density"] });
       localStorage.removeItem('density-real-progress');
       console.log('🗑️ Progresso do ensaio de densidade real limpo após salvamento');
       

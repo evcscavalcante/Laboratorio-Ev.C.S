@@ -99,14 +99,23 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
       console.log("📡 Resposta da API:", response);
       return response;
     },
-    onSuccess: (result) => {
+    onSuccess: async (result) => {
       console.log("✅ Ensaio salvo com sucesso:", result);
+      
+      // Sincronizar com Firebase Firestore
+      const firebaseSuccess = await firebaseSync.syncEnsaio({
+        ...data,
+        results: calculations.results
+      }, 'densidade-in-situ');
+
       toast({
         title: "✅ Ensaio Salvo com Sucesso!",
-        description: "Ensaio de densidade in-situ salvo no banco PostgreSQL.",
+        description: firebaseSuccess 
+          ? "Ensaio salvo no PostgreSQL e sincronizado com Firebase."
+          : "Ensaio salvo no PostgreSQL. Sincronização Firebase falhou.",
         duration: 5000,
       });
-      queryClient.invalidateQueries({ queryKey: ["/api/ensaios/densidade-in-situ/temp"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/tests/density-in-situ"] });
       localStorage.removeItem('density-in-situ-progress');
     },
     onError: (error: any) => {
