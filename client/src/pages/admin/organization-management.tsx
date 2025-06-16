@@ -131,11 +131,23 @@ export default function OrganizationManagement() {
       const response = await apiRequest('PATCH', `/api/organizations/${id}`, orgData);
       return response.json();
     },
-    onSuccess: () => {
+    onSuccess: async (result, { id }) => {
+      // Sincronizar com Firebase Firestore
+      const firebaseSuccess = await firebaseSync.syncOrganization({
+        ...formData,
+        id: id
+      });
+
       queryClient.invalidateQueries({ queryKey: ['/api/organizations'] });
       setIsEditDialogOpen(false);
       resetForm();
-      toast({ title: 'Organização atualizada com sucesso!' });
+      
+      toast({ 
+        title: 'Organização atualizada com sucesso!',
+        description: firebaseSuccess 
+          ? 'Dados salvos no PostgreSQL e sincronizados com Firebase.'
+          : 'Dados salvos no PostgreSQL. Sincronização Firebase falhou.'
+      });
     },
     onError: (error) => {
       toast({ title: 'Erro ao atualizar organização', description: error.message, variant: 'destructive' });

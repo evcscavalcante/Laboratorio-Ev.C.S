@@ -98,6 +98,21 @@ class FirebaseSync {
     return await this.syncToFirestore(syncData);
   }
 
+  async syncOrganization(orgData: any): Promise<boolean> {
+    const syncData: SyncData = {
+      id: orgData.id || `org_${Date.now()}`,
+      type: 'organizacao' as any,
+      subtype: 'organization',
+      data: orgData,
+      userId: this.auth.currentUser?.uid || '',
+      organizationId: orgData.id?.toString(),
+      createdAt: orgData.createdAt || new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    return await this.syncToFirestore(syncData);
+  }
+
   watchUserData(callback: (data: SyncData[]) => void): () => void {
     if (!this.auth.currentUser) {
       return () => {};
