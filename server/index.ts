@@ -1149,6 +1149,8 @@ async function startServer() {
     });
   });
 
+
+
   // Setup Vite AFTER all API routes are defined
   try {
     if (process.env.NODE_ENV === "development") {

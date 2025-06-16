@@ -213,5 +213,10 @@
     "method": "POST",
     "url": "/api/lgpd/request-deletion",
     "detected": "2025-06-16T08:07:19.999Z"
+  },
+  {
+    "method": "GET",
+    "url": "/api/sistema/status",
+    "detected": "2025-06-16T08:11:33.822Z"
   }
 ]
