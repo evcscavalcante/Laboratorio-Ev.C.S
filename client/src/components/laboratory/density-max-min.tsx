@@ -122,6 +122,122 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
   };
 
   const [data, setData] = useState<MaxMinDensityData>(loadSavedData);
+  
+  // Hook para preenchimento automático dos equipamentos
+  const { searchEquipment } = useEquipmentAutofill();
+
+  // Preenchimento automático para cilindros padrão (densidade máxima)
+  useEffect(() => {
+    if (data.maxDensity1.cylinderNumber && data.maxDensity1.cylinderNumber.length >= 3) {
+      const result = searchEquipment(data.maxDensity1.cylinderNumber);
+      if (result.found && result.type === 'cilindro' && result.data.tipo === 'vazios_minimos') {
+        setData(prev => ({
+          ...prev,
+          maxDensity1: { ...prev.maxDensity1, molde: result.data.peso, volume: result.data.volume }
+        }));
+        console.log(`✅ Cilindro padrão ${data.maxDensity1.cylinderNumber} carregado para densidade máxima`);
+      }
+    }
+  }, [data.maxDensity1.cylinderNumber, searchEquipment]);
+
+  useEffect(() => {
+    if (data.maxDensity2.cylinderNumber && data.maxDensity2.cylinderNumber.length >= 3) {
+      const result = searchEquipment(data.maxDensity2.cylinderNumber);
+      if (result.found && result.type === 'cilindro' && result.data.tipo === 'vazios_minimos') {
+        setData(prev => ({
+          ...prev,
+          maxDensity2: { ...prev.maxDensity2, molde: result.data.peso, volume: result.data.volume }
+        }));
+      }
+    }
+  }, [data.maxDensity2.cylinderNumber, searchEquipment]);
+
+  useEffect(() => {
+    if (data.maxDensity3.cylinderNumber && data.maxDensity3.cylinderNumber.length >= 3) {
+      const result = searchEquipment(data.maxDensity3.cylinderNumber);
+      if (result.found && result.type === 'cilindro' && result.data.tipo === 'vazios_minimos') {
+        setData(prev => ({
+          ...prev,
+          maxDensity3: { ...prev.maxDensity3, molde: result.data.peso, volume: result.data.volume }
+        }));
+      }
+    }
+  }, [data.maxDensity3.cylinderNumber, searchEquipment]);
+
+  // Preenchimento automático para cilindros padrão (densidade mínima)
+  useEffect(() => {
+    if (data.minDensity1.cylinderNumber && data.minDensity1.cylinderNumber.length >= 3) {
+      const result = searchEquipment(data.minDensity1.cylinderNumber);
+      if (result.found && result.type === 'cilindro' && result.data.tipo === 'vazios_minimos') {
+        setData(prev => ({
+          ...prev,
+          minDensity1: { ...prev.minDensity1, molde: result.data.peso, volume: result.data.volume }
+        }));
+      }
+    }
+  }, [data.minDensity1.cylinderNumber, searchEquipment]);
+
+  useEffect(() => {
+    if (data.minDensity2.cylinderNumber && data.minDensity2.cylinderNumber.length >= 3) {
+      const result = searchEquipment(data.minDensity2.cylinderNumber);
+      if (result.found && result.type === 'cilindro' && result.data.tipo === 'vazios_minimos') {
+        setData(prev => ({
+          ...prev,
+          minDensity2: { ...prev.minDensity2, molde: result.data.peso, volume: result.data.volume }
+        }));
+      }
+    }
+  }, [data.minDensity2.cylinderNumber, searchEquipment]);
+
+  useEffect(() => {
+    if (data.minDensity3.cylinderNumber && data.minDensity3.cylinderNumber.length >= 3) {
+      const result = searchEquipment(data.minDensity3.cylinderNumber);
+      if (result.found && result.type === 'cilindro' && result.data.tipo === 'vazios_minimos') {
+        setData(prev => ({
+          ...prev,
+          minDensity3: { ...prev.minDensity3, molde: result.data.peso, volume: result.data.volume }
+        }));
+      }
+    }
+  }, [data.minDensity3.cylinderNumber, searchEquipment]);
+
+  // Preenchimento automático para cápsulas de umidade (cápsulas médias)
+  useEffect(() => {
+    if (data.moisture1.capsule && data.moisture1.capsule.length >= 3) {
+      const result = searchEquipment(data.moisture1.capsule);
+      if (result.found && result.type === 'capsula') {
+        setData(prev => ({
+          ...prev,
+          moisture1: { ...prev.moisture1, tare: result.data.peso }
+        }));
+        console.log(`✅ Cápsula média ${data.moisture1.capsule} carregada para densidade máx/mín`);
+      }
+    }
+  }, [data.moisture1.capsule, searchEquipment]);
+
+  useEffect(() => {
+    if (data.moisture2.capsule && data.moisture2.capsule.length >= 3) {
+      const result = searchEquipment(data.moisture2.capsule);
+      if (result.found && result.type === 'capsula') {
+        setData(prev => ({
+          ...prev,
+          moisture2: { ...prev.moisture2, tare: result.data.peso }
+        }));
+      }
+    }
+  }, [data.moisture2.capsule, searchEquipment]);
+
+  useEffect(() => {
+    if (data.moisture3.capsule && data.moisture3.capsule.length >= 3) {
+      const result = searchEquipment(data.moisture3.capsule);
+      if (result.found && result.type === 'capsula') {
+        setData(prev => ({
+          ...prev,
+          moisture3: { ...prev.moisture3, tare: result.data.peso }
+        }));
+      }
+    }
+  }, [data.moisture3.capsule, searchEquipment]);
 
   // Atualizar dados quando testData estiver disponível
   useEffect(() => {
