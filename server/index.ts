@@ -420,8 +420,8 @@ async function startServer() {
     }
   });
 
-  // Payment configuration
-  app.get('/api/payment/config', (req: Request, res: Response) => {
+  // Payment configuration (protected)
+  app.get('/api/payment/config', verifyFirebaseToken, (req: Request, res: Response) => {
     res.json({
       providers: ['pagseguro', 'mercadopago'],
       currency: 'BRL',
@@ -997,10 +997,35 @@ async function startServer() {
     });
   });
 
-  // Error handling middleware
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    console.error('Server error:', err);
-    res.status(500).json({ message: "Internal server error" });
+  // 404 handler for undefined routes
+  app.use('*', (req: Request, res: Response, next: NextFunction) => {
+    // Skip static files and valid API routes
+    if (req.originalUrl.startsWith('/api/') && !req.originalUrl.includes('static')) {
+      return res.status(404).json({ 
+        error: 'Endpoint não encontrado',
+        path: req.originalUrl,
+        method: req.method
+      });
+    }
+    next();
+  });
+
+  // Error handling middleware with sanitized responses
+  app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
+    console.error('Server error:', {
+      message: err.message,
+      path: req.originalUrl,
+      method: req.method,
+      ip: req.ip,
+      timestamp: new Date().toISOString()
+    });
+    
+    // Never expose stack traces in production
+    const errorResponse = process.env.NODE_ENV === 'development' 
+      ? { error: 'Erro interno do servidor', details: err.message }
+      : { error: 'Erro interno do servidor' };
+    
+    res.status(500).json(errorResponse);
   });
 
   // Setup Vite AFTER all API routes are defined
