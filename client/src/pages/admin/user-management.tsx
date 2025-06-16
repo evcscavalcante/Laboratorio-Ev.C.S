@@ -59,7 +59,7 @@ export default function UserManagement() {
   const { data: users = [], isLoading: usersLoading } = useQuery({
     queryKey: ['/api/users'],
     queryFn: async () => {
-      const response = await fetch('/api/users');
+      const response = await apiRequest('GET', '/api/users');
       return response.json();
     }
   });
@@ -68,7 +68,7 @@ export default function UserManagement() {
   const { data: organizations = [] } = useQuery({
     queryKey: ['/api/organizations'],
     queryFn: async () => {
-      const response = await fetch('/api/organizations');
+      const response = await apiRequest('GET', '/api/organizations');
       return response.json();
     }
   });
