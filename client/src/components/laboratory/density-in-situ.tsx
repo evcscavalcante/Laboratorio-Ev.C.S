@@ -183,11 +183,22 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
 
   // Preenchimento automático para cilindro determinação 1 (apenas cilindros biselados)
   useEffect(() => {
+    console.log('🔍 DEBUG Det1:', {
+      cylinderNumber: data.det1.cylinderNumber,
+      length: data.det1.cylinderNumber?.length,
+      equipmentData: equipmentData ? 'carregado' : 'não carregado',
+      cilindros: equipmentData?.cilindros?.length
+    });
+    
     if (data.det1.cylinderNumber && data.det1.cylinderNumber.length >= 1 && equipmentData) {
       const codigoLimpo = data.det1.cylinderNumber.trim().toUpperCase();
+      console.log('🔍 Buscando cilindro:', codigoLimpo);
+      
       const cilindro = equipmentData.cilindros?.find(
         cil => cil.codigo.toString().toUpperCase() === codigoLimpo && cil.tipo === 'biselado'
       );
+      
+      console.log('🔍 Cilindro encontrado:', cilindro);
       
       if (cilindro) {
         setData(prev => ({
@@ -199,6 +210,8 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
           }
         }));
         console.log(`✅ Cilindro biselado ${data.det1.cylinderNumber} carregado: ${cilindro.peso}g, ${cilindro.volume}cm³`);
+      } else {
+        console.log(`❌ Cilindro biselado ${codigoLimpo} não encontrado`);
       }
     }
   }, [data.det1.cylinderNumber, equipmentData]);

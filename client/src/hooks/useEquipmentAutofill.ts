@@ -31,11 +31,26 @@ export const useEquipmentAutofill = () => {
   const [lastSearched, setLastSearched] = useState<string>('');
 
   // Buscar todos os equipamentos
-  const { data: equipmentData, isLoading } = useQuery<EquipmentData>({
+  const { data: equipmentData, isLoading, error } = useQuery<EquipmentData>({
     queryKey: ['/api/equipamentos'],
     enabled: true,
     staleTime: 5 * 60 * 1000, // Cache por 5 minutos
   });
+
+  // Debug dos dados carregados
+  useEffect(() => {
+    console.log('🔍 HOOK DEBUG - useEquipmentAutofill:', {
+      isLoading,
+      hasError: !!error,
+      error: error?.message,
+      equipmentData: equipmentData ? {
+        capsulas: equipmentData.capsulas?.length || 0,
+        cilindros: equipmentData.cilindros?.length || 0,
+        primeiraCapsule: equipmentData.capsulas?.[0],
+        primeiroCilindro: equipmentData.cilindros?.[0]
+      } : 'não carregado'
+    });
+  }, [equipmentData, isLoading, error]);
 
   const searchEquipment = (codigo: string): AutofillResult => {
     if (!equipmentData || !codigo || codigo.length < 1) {
