@@ -250,7 +250,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
         console.log(`✅ Cápsula média ${data.moistureTop1.capsule} carregada para umidade`);
       }
     }
-  }, [data.moistureTop1.capsule, searchEquipment]);
+  }, [data.moistureTop1.capsule]); // REMOVIDO searchEquipment para evitar loop
 
   useEffect(() => {
     if (data.moistureTop2.capsule && data.moistureTop2.capsule.length >= 1) {
@@ -262,7 +262,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
         }));
       }
     }
-  }, [data.moistureTop2.capsule, searchEquipment]);
+  }, [data.moistureTop2.capsule]);
 
   useEffect(() => {
     if (data.moistureTop3.capsule && data.moistureTop3.capsule.length >= 1) {
@@ -274,7 +274,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
         }));
       }
     }
-  }, [data.moistureTop3.capsule, searchEquipment]);
+  }, [data.moistureTop3.capsule]);
 
   useEffect(() => {
     if (data.moistureBase1.capsule && data.moistureBase1.capsule.length >= 1) {
@@ -286,7 +286,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
         }));
       }
     }
-  }, [data.moistureBase1.capsule, searchEquipment]);
+  }, [data.moistureBase1.capsule]);
 
   useEffect(() => {
     if (data.moistureBase2.capsule && data.moistureBase2.capsule.length >= 1) {
@@ -298,7 +298,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
         }));
       }
     }
-  }, [data.moistureBase2.capsule, searchEquipment]);
+  }, [data.moistureBase2.capsule]);
 
   useEffect(() => {
     if (data.moistureBase3.capsule && data.moistureBase3.capsule.length >= 1) {
@@ -310,7 +310,7 @@ export default function DensityInSitu({ testId, mode = 'new' }: DensityInSituPro
         }));
       }
     }
-  }, [data.moistureBase3.capsule, searchEquipment]);
+  }, [data.moistureBase3.capsule]);
 
   // Salvamento automático
   useEffect(() => {

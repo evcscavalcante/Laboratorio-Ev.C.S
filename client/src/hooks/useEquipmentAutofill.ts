@@ -130,7 +130,7 @@ export const useEquipmentAutofill = () => {
           }
         }
       }
-    }, [codigo, setValues, fieldMapping]);
+    }, [codigo]); // REMOVIDO setValues e fieldMapping para evitar loop infinito
   };
 
   return {
