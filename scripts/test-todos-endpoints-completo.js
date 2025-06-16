@@ -152,6 +152,13 @@ class TestadorEndpointsCompleto {
         const authResponse = await this.makeRequest(endpoint.method, endpoint.url, true);
         if (authResponse.status === 200) {
           testResult.securityIssues.push('Autenticação funcionando corretamente');
+        } else if (authResponse.status === 500) {
+          testResult.status = 'CRITICAL_VULNERABILITY';
+          testResult.securityIssues.push(`Erro 500 (falha interna do servidor) - possível problema de banco de dados`);
+          this.results.critical++;
+        } else if (authResponse.status >= 400) {
+          testResult.status = 'WARNING';
+          testResult.securityIssues.push(`Erro ${authResponse.status} com autenticação válida`);
         }
       }
 

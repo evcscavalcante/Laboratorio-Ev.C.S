@@ -669,26 +669,9 @@ async function startServer() {
         const userOrg = await db.select().from(organizations)
           .where(eq(organizations.id, user?.organizationId || 0));
         
-        if (userOrg.length > 0) {
-          // Se é headquarters, pode ver filiais
-          if (userOrg[0].organizationType === 'headquarters') {
-            organizationsList = await db.select().from(organizations)
-              .where(
-                eq(organizations.id, user.organizationId) // Sua própria organização
-              );
-            
-            // Adicionar filiais
-            const affiliates = await db.select().from(organizations)
-              .where(eq(organizations.parentOrganizationId, user.organizationId));
-            
-            organizationsList = [...organizationsList, ...affiliates];
-          } else {
-            // Organizações independentes/filiais só veem a própria
-            organizationsList = userOrg;
-          }
-        } else {
-          organizationsList = [];
-        }
+        // Por enquanto, usuários veem apenas sua própria organização
+        // Sistema hierárquico será implementado quando colunas estiverem prontas
+        organizationsList = userOrg;
       }
 
       console.log(`📊 Organizações acessíveis para ${user?.role}: ${organizationsList.length}`);
