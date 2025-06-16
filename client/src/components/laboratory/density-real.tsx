@@ -117,6 +117,9 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
       east: "",
       cota: "",
       elevation: "",
+      quadrant: "",
+      layer: "",
+      estaca: "",
       local: "",
       weatherCondition: "SOL FORTE",
       humidity: "",
@@ -170,6 +173,9 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
         east: testData.east || "",
         cota: testData.cota || "",
         elevation: testData.elevation || "",
+        quadrant: testData.quadrant || "",
+        layer: testData.layer || "",
+        estaca: testData.estaca || "",
         local: testData.local || "",
         weatherCondition: testData.weatherCondition || "SOL FORTE",
         humidity: testData.humidity || "",
@@ -517,6 +523,9 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
       east: "",
       cota: "",
       elevation: "",
+      quadrant: "",
+      layer: "",
+      estaca: "",
       local: "",
       weatherCondition: "SOL FORTE",
       humidity: "",
@@ -592,6 +601,7 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
         onCotaChange={(value) => updateData("elevation", value)}
         onQuadranteChange={(value) => updateData("quadrant", value)}
         onCamadaChange={(value) => updateData("layer", value)}
+        onEstacaChange={(value) => updateData("estaca", value)}
         onFvsChange={(value) => updateData("local", value)}
       />
 

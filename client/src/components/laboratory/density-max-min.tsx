@@ -31,6 +31,7 @@ interface MaxMinDensityData {
   coordinates: string;
   quadrant: string;
   layer: string;
+  estaca: string;
   balanceId: string;
   ovenId: string;
   compactionMethod: string;

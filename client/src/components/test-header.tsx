@@ -42,6 +42,7 @@ interface TestHeaderProps {
   onCotaChange?: (value: string) => void;
   onQuadranteChange?: (value: string) => void;
   onCamadaChange?: (value: string) => void;
+  onEstacaChange?: (value: string) => void;
   onFvsChange?: (value: string) => void;
 }
 
