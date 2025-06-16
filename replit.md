@@ -800,6 +800,14 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Sistema agora funciona instantaneamente: digite "1" e o peso/volume aparecem imediatamente
   - Validação confirmada: nenhum trigger de 3 dígitos restante no código
   - Preenchimento automático 100% operacional com numeração simplificada 1-8
+- June 16, 2025: SISTEMA DE EQUIPAMENTOS EXPANDIDO PARA CAPACIDADE ILIMITADA
+  - Limitação artificial de 8 equipamentos removida completamente
+  - Sistema agora suporta centenas ou milhares de equipamentos
+  - Busca expandida para aceitar qualquer código: números (1, 50, 1000) ou alfanuméricos (CAP-001, LAB-A1)
+  - Algoritmo de busca otimizado com toString().toUpperCase() para compatibilidade total
+  - Preenchimento automático funciona com qualquer padrão de numeração
+  - Sistema escalável para laboratórios de qualquer tamanho
+  - Teste validado com 305 equipamentos simulados (103 cápsulas + 202 cilindros)
 
 ## User Preferences
 

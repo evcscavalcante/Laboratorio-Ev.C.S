@@ -42,14 +42,14 @@ export const useEquipmentAutofill = () => {
       return { found: false, type: null, data: null };
     }
 
-    // Limpar entrada - aceitar apenas números
-    const numeroLimpo = codigo.trim();
+    // Limpar entrada - aceitar números, letras e hífen para códigos complexos
+    const codigoLimpo = codigo.trim().toUpperCase();
     
-    setLastSearched(numeroLimpo);
+    setLastSearched(codigoLimpo);
 
-    // Buscar nas cápsulas (números 1-8)
+    // Buscar nas cápsulas (aceita qualquer código: 1, 2, 100, CAP-001, etc.)
     const capsula = equipmentData.capsulas?.find(
-      cap => cap.codigo === numeroLimpo
+      cap => cap.codigo.toString().toUpperCase() === codigoLimpo
     );
 
     if (capsula) {
@@ -65,9 +65,9 @@ export const useEquipmentAutofill = () => {
       };
     }
 
-    // Buscar nos cilindros (números 1-5)
+    // Buscar nos cilindros (aceita qualquer código: 1, 2, 500, CIL-001, etc.)
     const cilindro = equipmentData.cilindros?.find(
-      cil => cil.codigo === numeroLimpo
+      cil => cil.codigo.toString().toUpperCase() === codigoLimpo
     );
 
     if (cilindro) {
