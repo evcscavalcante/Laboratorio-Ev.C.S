@@ -28,6 +28,7 @@ import ManualAdmin from "@/pages/help/manual-admin";
 import TestAccess from "@/pages/test-access";
 import UserCreation from "@/pages/admin/user-creation";
 import SystemStatus from "@/pages/system-status";
+import DashboardAdmin from "@/pages/admin/dashboard-admin";
 import SystemMonitoring from "@/pages/system-monitoring";
 import EnsaiosSalvos from "@/pages/ensaios-salvos";
 import TermosUso from "@/pages/termos-uso";
