@@ -580,7 +580,7 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
         hora={data.time}
         norte={data.north}
         este={data.east}
-        cota={data.cota}
+        cota={data.elevation}
         local={data.local}
         material={data.material}
         origem={data.origin}
@@ -611,7 +611,7 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
         onRegistroChange={(value) => updateData("registrationNumber", value)}
         onNorteChange={(value) => updateData("north", value)}
         onEsteChange={(value) => updateData("east", value)}
-        onCotaChange={(value) => updateData("cota", value)}
+        onCotaChange={(value) => updateData("elevation", value)}
         onQuadranteChange={(value) => updateData("quadrant", value)}
         onCamadaChange={(value) => updateData("layer", value)}
         onFvsChange={(value) => updateData("local", value)}

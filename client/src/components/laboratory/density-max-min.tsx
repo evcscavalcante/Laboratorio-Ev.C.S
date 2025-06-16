@@ -792,7 +792,7 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
         data={data.date}
         norte={data.north}
         este={data.east}
-        cota={data.cota}
+        cota={data.elevation}
         quadrante={data.quadrant}
         material={data.material}
         origem={data.origin}
@@ -823,7 +823,7 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
         onRegistroChange={(value) => updateData("registrationNumber", value)}
         onNorteChange={(value) => updateData("north", value)}
         onEsteChange={(value) => updateData("east", value)}
-        onCotaChange={(value) => updateData("cota", value)}
+        onCotaChange={(value) => updateData("elevation", value)}
         onHoraChange={(value) => updateData("time", value)}
         onQuadranteChange={(value) => updateData("quadrant", value)}
         onCamadaChange={(value) => updateData("layer", value)}
