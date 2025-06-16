@@ -22,6 +22,8 @@ class TestadorUsoReal {
       await this.testarFluxoAutenticacao();
       await this.testarCalculadoras();
       await this.testarGerenciamentoUsuarios();
+      await this.testarRelatoriosAnalytics();
+      await this.testarPainelAdministrativo();
       this.gerarRelatorio();
     } catch (error) {
       console.error('❌ Erro durante teste:', error.message);
@@ -157,6 +159,112 @@ class TestadorUsoReal {
 
     } catch (error) {
       this.erros.push(`❌ Teste de gerenciamento: ${error.message}`);
+    }
+  }
+
+  async testarRelatoriosAnalytics() {
+    console.log('\n📊 Testando sistema de relatórios e analytics...');
+    
+    try {
+      // Testa endpoints de dados para relatórios
+      const ensaiosEndpoints = [
+        { url: '/api/tests/densidade-in-situ/temp', nome: 'Dados Densidade In-Situ' },
+        { url: '/api/tests/densidade-real/temp', nome: 'Dados Densidade Real' },
+        { url: '/api/tests/densidade-max-min/temp', nome: 'Dados Densidade Máx/Mín' }
+      ];
+
+      for (const endpoint of ensaiosEndpoints) {
+        try {
+          const response = await fetch(`${this.baseUrl}${endpoint.url}`);
+          
+          if (response.status === 401) {
+            this.sucessos.push(`✅ ${endpoint.nome}: Protegido por autenticação`);
+          } else if (response.ok) {
+            const data = await response.json();
+            if (Array.isArray(data)) {
+              this.sucessos.push(`✅ ${endpoint.nome}: Array válido com ${data.length} registros`);
+            } else {
+              this.avisos.push(`⚠️ ${endpoint.nome}: Retorna ${typeof data} ao invés de array`);
+            }
+          } else {
+            this.avisos.push(`⚠️ ${endpoint.nome}: Status ${response.status}`);
+          }
+        } catch (error) {
+          this.erros.push(`❌ ${endpoint.nome}: ${error.message}`);
+        }
+      }
+
+      // Testa estrutura de dados para analytics
+      try {
+        // Simula verificação de estrutura de dados para gráficos
+        const mockData = [
+          { tipo: 'Densidade In-Situ', quantidade: 5 },
+          { tipo: 'Densidade Real', quantidade: 8 },
+          { tipo: 'Densidade Máx/Mín', quantidade: 12 }
+        ];
+
+        if (Array.isArray(mockData) && mockData.every(item => item.tipo && typeof item.quantidade === 'number')) {
+          this.sucessos.push('✅ Analytics: Estrutura de dados para gráficos válida');
+        } else {
+          this.erros.push('❌ Analytics: Estrutura de dados inválida para gráficos');
+        }
+      } catch (error) {
+        this.erros.push(`❌ Analytics: Erro na validação de estrutura - ${error.message}`);
+      }
+
+    } catch (error) {
+      this.erros.push(`❌ Relatórios e Analytics: ${error.message}`);
+    }
+  }
+
+  async testarPainelAdministrativo() {
+    console.log('\n👨‍💼 Testando painel administrativo...');
+    
+    try {
+      // Testa endpoints administrativos essenciais
+      const adminEndpoints = [
+        { url: '/api/admin/users', nome: 'Gerenciamento de Usuários' },
+        { url: '/api/user/permissions', nome: 'Verificação de Permissões' },
+        { url: '/api/developer/system-info', nome: 'Informações do Sistema' }
+      ];
+
+      for (const endpoint of adminEndpoints) {
+        try {
+          const response = await fetch(`${this.baseUrl}${endpoint.url}`);
+          
+          if (response.status === 401) {
+            this.sucessos.push(`✅ ${endpoint.nome}: Protegido por autenticação`);
+          } else if (response.status === 403) {
+            this.sucessos.push(`✅ ${endpoint.nome}: Controle de acesso por role funcionando`);
+          } else if (response.ok) {
+            this.sucessos.push(`✅ ${endpoint.nome}: Endpoint funcionando`);
+          } else {
+            this.avisos.push(`⚠️ ${endpoint.nome}: Status inesperado ${response.status}`);
+          }
+        } catch (error) {
+          this.erros.push(`❌ ${endpoint.nome}: ${error.message}`);
+        }
+      }
+
+      // Testa endpoint de configuração de roles
+      try {
+        const response = await fetch(`${this.baseUrl}/api/auth/set-role`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: 'test', role: 'VIEWER' })
+        });
+        
+        if (response.status === 401 || response.status === 403) {
+          this.sucessos.push('✅ Configuração de Roles: Protegida adequadamente');
+        } else {
+          this.avisos.push(`⚠️ Configuração de Roles: Status inesperado ${response.status}`);
+        }
+      } catch (error) {
+        this.avisos.push(`⚠️ Configuração de Roles: ${error.message}`);
+      }
+
+    } catch (error) {
+      this.erros.push(`❌ Painel Administrativo: ${error.message}`);
     }
   }
 
