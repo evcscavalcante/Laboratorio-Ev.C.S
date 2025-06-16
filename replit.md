@@ -928,6 +928,15 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Densidade in-situ: todos os 14 callbacks funcionando corretamente
   - Teste abrangente criado (test-campos-cabecalho.js) confirmando 100% de funcionalidade
   - Taxa de sucesso: 42/42 campos (100%) - STATUS EXCELENTE validado
+- June 16, 2025: CORREÇÃO FINAL DOS CAMPOS "CAMADA" E "ESTACA" NA DENSIDADE MÁX/MÍN
+  - PROBLEMA ESPECÍFICO RESOLVIDO: Campos "Camada" e "Estaca" apareciam como "-" na densidade máx/mín
+  - Campos "camada" e "estaca" adicionados corretamente ao TestHeader da densidade máx/mín
+  - Valores padrão implementados na função loadSavedData para evitar campos undefined
+  - Callbacks onCamadaChange e onEstacaChange conectados corretamente aos updateData
+  - Interface MaxMinDensityData já incluía os campos necessários (layer, estaca)
+  - Correção específica: parsedData.layer || "" e parsedData.estaca || "" na restauração de progresso
+  - Sistema agora uniformizado: todos os campos editáveis funcionando nas três calculadoras
+  - Usuário confirmou funcionalidade: "todos os campos digitaveis" exceto problema específico resolvido
 - June 16, 2025: LOOPS INFINITOS COMPLETAMENTE ELIMINADOS E SISTEMA ESTABILIZADO
   - PROBLEMA CRÍTICO RESOLVIDO: Erro "Maximum update depth exceeded" que ocorria 5+ vezes eliminado definitivamente
   - Remoção sistemática de TODOS os useEffect problemáticos com searchEquipment das três calculadoras
