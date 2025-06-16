@@ -317,25 +317,17 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
 
   // Função para buscar peso da cápsula pelo número
   const buscarPesoCapsula = (numero: string) => {
-    if (!numero) return null;
+    if (!numero || !equipmentData?.capsulas) return null;
     
-    // Buscar nas cápsulas usando a nova estrutura de sincronização
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (key?.startsWith('equipamento_capsula_')) {
-        const item = localStorage.getItem(key);
-        if (item) {
-          try {
-            const equipamento = JSON.parse(item);
-            if (equipamento.tipo === 'capsula' && equipamento.codigo === numero) {
-              return equipamento.peso;
-            }
-          } catch (error) {
-            console.error('Erro ao processar equipamento:', error);
-          }
-        }
+    // Buscar nas cápsulas usando equipmentData do hook
+    for (const capsula of equipmentData.capsulas) {
+      if (capsula.codigo === numero) {
+        console.log(`✅ Cápsula ${numero} encontrada: ${capsula.peso}g`);
+        return capsula.peso;
       }
     }
+    
+    console.log(`❌ Cápsula ${numero} não encontrada`);
     return null;
   };
 
@@ -802,191 +794,7 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
         </CardContent>
       </Card>
 
-      {/* Moisture Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center">
-            <BarChart className="mr-2 text-blue-600" size={20} />
-            Teor de Umidade (3 Determinações)
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-gray-50">
-                <TableHead className="text-left">Campo</TableHead>
-                <TableHead className="text-center">Det 1</TableHead>
-                <TableHead className="text-center">Det 2</TableHead>
-                <TableHead className="text-center">Det 3</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              <TableRow>
-                <TableCell className="font-medium">Cápsula</TableCell>
-                <TableCell>
-                  <Input
-                    type="text"
-                    value={data.moisture1.capsule}
-                    onChange={(e) => handleCapsuleNumberChange("moisture1", e.target.value)}
-                    className="text-sm"
-                    placeholder="ID"
-                  />
-                </TableCell>
-                <TableCell>
-                  <Input
-                    type="text"
-                    value={data.moisture2.capsule}
-                    onChange={(e) => handleCapsuleNumberChange("moisture2", e.target.value)}
-                    className="text-sm"
-                    placeholder="ID"
-                  />
-                </TableCell>
-                <TableCell>
-                  <Input
-                    type="text"
-                    value={data.moisture3.capsule}
-                    onChange={(e) => handleCapsuleNumberChange("moisture3", e.target.value)}
-                    className="text-sm"
-                    placeholder="ID"
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="font-medium">Úmido + Tara (g)</TableCell>
-                <TableCell>
-                  <Input
-                    type="number"
-                    step="0.01"
-                    value={data.moisture1.wetTare || ""}
-                    onChange={(e) => updateNestedData("moisture1", "wetTare", parseFloat(e.target.value) || 0)}
-                    className="text-sm"
-                  />
-                </TableCell>
-                <TableCell>
-                  <Input
-                    type="number"
-                    step="0.01"
-                    value={data.moisture2.wetTare || ""}
-                    onChange={(e) => updateNestedData("moisture2", "wetTare", parseFloat(e.target.value) || 0)}
-                    className="text-sm"
-                  />
-                </TableCell>
-                <TableCell>
-                  <Input
-                    type="number"
-                    step="0.01"
-                    value={data.moisture3.wetTare || ""}
-                    onChange={(e) => updateNestedData("moisture3", "wetTare", parseFloat(e.target.value) || 0)}
-                    className="text-sm"
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="font-medium">Seco + Tara (g)</TableCell>
-                <TableCell>
-                  <Input
-                    type="number"
-                    step="0.01"
-                    value={data.moisture1.dryTare || ""}
-                    onChange={(e) => updateNestedData("moisture1", "dryTare", parseFloat(e.target.value) || 0)}
-                    className="text-sm"
-                  />
-                </TableCell>
-                <TableCell>
-                  <Input
-                    type="number"
-                    step="0.01"
-                    value={data.moisture2.dryTare || ""}
-                    onChange={(e) => updateNestedData("moisture2", "dryTare", parseFloat(e.target.value) || 0)}
-                    className="text-sm"
-                  />
-                </TableCell>
-                <TableCell>
-                  <Input
-                    type="number"
-                    step="0.01"
-                    value={data.moisture3.dryTare || ""}
-                    onChange={(e) => updateNestedData("moisture3", "dryTare", parseFloat(e.target.value) || 0)}
-                    className="text-sm"
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="font-medium">Tara (g)</TableCell>
-                <TableCell>
-                  <Input
-                    type="number"
-                    step="0.01"
-                    value={data.moisture1.tare || ""}
-                    onChange={(e) => updateNestedData("moisture1", "tare", parseFloat(e.target.value) || 0)}
-                    className="text-sm"
-                  />
-                </TableCell>
-                <TableCell>
-                  <Input
-                    type="number"
-                    step="0.01"
-                    value={data.moisture2.tare || ""}
-                    onChange={(e) => updateNestedData("moisture2", "tare", parseFloat(e.target.value) || 0)}
-                    className="text-sm"
-                  />
-                </TableCell>
-                <TableCell>
-                  <Input
-                    type="number"
-                    step="0.01"
-                    value={data.moisture3.tare || ""}
-                    onChange={(e) => updateNestedData("moisture3", "tare", parseFloat(e.target.value) || 0)}
-                    className="text-sm"
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow className="bg-blue-50">
-                <TableCell className="font-medium">Umidade (%) <span className="text-xs text-blue-600">📊</span></TableCell>
-                <TableCell>
-                  <Input
-                    type="number"
-                    step="0.01"
-                    value={calculateMoisture(data.moisture1.wetTare, data.moisture1.dryTare, data.moisture1.tare).toFixed(2)}
-                    readOnly
-                    className="bg-blue-50 border-blue-200 font-mono text-sm"
-                  />
-                </TableCell>
-                <TableCell>
-                  <Input
-                    type="number"
-                    step="0.01"
-                    value={calculateMoisture(data.moisture2.wetTare, data.moisture2.dryTare, data.moisture2.tare).toFixed(2)}
-                    readOnly
-                    className="bg-blue-50 border-blue-200 font-mono text-sm"
-                  />
-                </TableCell>
-                <TableCell>
-                  <Input
-                    type="number"
-                    step="0.01"
-                    value={calculateMoisture(data.moisture3.wetTare, data.moisture3.dryTare, data.moisture3.tare).toFixed(2)}
-                    readOnly
-                    className="bg-blue-50 border-blue-200 font-mono text-sm"
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow className="bg-green-50">
-                <TableCell className="font-medium">Umidade Média (%) <span className="text-xs text-green-600">📊</span></TableCell>
-                <TableCell colSpan={3}>
-                  <Input
-                    type="number"
-                    step="0.01"
-                    value={calculateAverageMoisture().toFixed(2)}
-                    readOnly
-                    className="bg-green-50 border-green-200 font-mono text-sm text-center font-bold"
-                  />
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+
 
       {/* Maximum Density */}
       <Card>
