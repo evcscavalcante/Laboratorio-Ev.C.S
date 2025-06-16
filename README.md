@@ -11,6 +11,7 @@ Sistema completo de gerenciamento de laboratório geotécnico com calculadoras e
 - **🛡️ Sistema de Segurança**: Rate limiting, validação Zod, proteção contra SQL injection
 - **🔄 Testes Automatizados**: Suíte completa para prevenir regressões
 - **📱 Interface Responsiva**: Design mobile-first com componentes acessíveis
+- **📋 Conformidade LGPD**: Sistema completo de proteção de dados pessoais
 
 ## Tecnologias
 
@@ -249,6 +250,76 @@ npm run validate       # Validação completa
 - **Validação**: Schemas Zod para todos os endpoints
 - **CORS**: Configurado para domínios específicos
 - **Logs**: Sistema estruturado com IP tracking
+
+## Conformidade LGPD
+
+### Acesso Público aos Termos
+
+- **Página de Login**: Links diretos para "Termos de Uso" e "Política de Privacidade"
+- **Rota Pública**: `/termos-uso` acessível sem autenticação
+- **Interface Completa**: Visualização profissional com scroll areas organizadas
+
+### Endpoints LGPD (100% Funcionais)
+
+```bash
+# Verificar termos de uso
+curl http://localhost:5000/api/lgpd/terms
+
+# Verificar política de privacidade
+curl http://localhost:5000/api/lgpd/privacy-policy
+
+# Registrar consentimento (requer autenticação)
+curl -X POST http://localhost:5000/api/lgpd/consent \
+  -H "Authorization: Bearer <firebase-token>" \
+  -H "Content-Type: application/json" \
+  -d '{"terms": true, "dataProcessing": true}'
+
+# Exportar dados do usuário
+curl http://localhost:5000/api/lgpd/my-data \
+  -H "Authorization: Bearer <firebase-token>"
+
+# Solicitar exclusão de dados
+curl -X POST http://localhost:5000/api/lgpd/request-deletion \
+  -H "Authorization: Bearer <firebase-token>"
+```
+
+### Funcionalidades Implementadas
+
+- **Consentimentos**: Sistema de switches interativos para diferentes tipos de tratamento
+- **Exportação de Dados**: Download completo em formato JSON
+- **Solicitação de Exclusão**: Processo controlado com prazo de 30 dias
+- **Histórico**: Registro temporal de todas as ações de consentimento
+- **Transparência**: Especificação clara de dados coletados e finalidades
+
+### Campos LGPD no Banco
+
+```sql
+-- Campos adicionados à tabela users
+terms_accepted BOOLEAN DEFAULT false,
+terms_accepted_at TIMESTAMP,
+privacy_policy_accepted BOOLEAN DEFAULT false,
+privacy_policy_accepted_at TIMESTAMP,
+data_processing_consent BOOLEAN DEFAULT false,
+data_processing_consent_at TIMESTAMP,
+marketing_consent BOOLEAN DEFAULT false,
+marketing_consent_at TIMESTAMP,
+data_retention_consent BOOLEAN DEFAULT false,
+data_retention_consent_at TIMESTAMP,
+data_export_requested BOOLEAN DEFAULT false,
+data_export_requested_at TIMESTAMP,
+data_delete_requested BOOLEAN DEFAULT false,
+data_delete_requested_at TIMESTAMP,
+data_delete_executed_at TIMESTAMP
+```
+
+### Testes LGPD
+
+```bash
+# Executar teste completo da implementação LGPD
+node scripts/test-lgpd-complete.js
+
+# Resultado esperado: 5/5 endpoints aprovados (100%)
+```
 
 ## Performance
 

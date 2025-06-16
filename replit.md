@@ -53,6 +53,14 @@ The system implements a hybrid authentication approach:
 - **PostgreSQL user management** for role-based permissions and organization data
 - **Session storage** for maintaining authentication state
 
+### LGPD Compliance System
+Complete data protection compliance implementation following Brazilian LGPD requirements:
+- **Public Access**: Terms of use accessible without authentication at `/termos-uso`
+- **Consent Management**: Interactive system for different data processing types
+- **Data Rights**: Export and deletion request functionality
+- **Transparency**: Clear specification of data collection and processing purposes
+- **Database Fields**: Complete LGPD tracking with timestamps for all consent actions
+
 ## Key Components
 
 ### Laboratory Test Modules
