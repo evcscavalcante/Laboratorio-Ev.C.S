@@ -320,10 +320,10 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
     if (!numero || !searchEquipment) return null;
     
     // Buscar usando o hook searchEquipment
-    const equipamento = searchEquipment(numero, 'capsula');
-    if (equipamento && equipamento.peso) {
-      console.log(`✅ Cápsula ${numero} encontrada: ${equipamento.peso}g`);
-      return equipamento.peso;
+    const resultado = searchEquipment(numero, 'capsula');
+    if (resultado.found && resultado.data && resultado.data.peso) {
+      console.log(`✅ Cápsula ${numero} encontrada: ${resultado.data.peso}g`);
+      return resultado.data.peso;
     }
     
     console.log(`❌ Cápsula ${numero} não encontrada`);
@@ -733,65 +733,6 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
         <h2 className="text-2xl font-bold text-gray-900 mb-2">Densidade Máxima e Mínima</h2>
         <p className="text-gray-600">Determinação dos índices de vazios máximo e mínimo</p>
       </div>
-
-      {/* Moisture Content */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center">
-            <Info className="mr-2 text-blue-600" size={20} />
-            Teor de Umidade (3 Determinações)
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div>
-              <Label htmlFor="registrationNumber">Número do Registro</Label>
-              <Input
-                id="registrationNumber"
-                value={data.registrationNumber}
-                onChange={(e) => updateData("registrationNumber", e.target.value)}
-                placeholder="Ex: DM-001/2024"
-              />
-            </div>
-            <div>
-              <Label htmlFor="date">Data</Label>
-              <Input
-                id="date"
-                type="date"
-                value={data.date}
-                onChange={(e) => updateData("date", e.target.value)}
-              />
-            </div>
-            <div>
-              <Label htmlFor="operator">Operador</Label>
-              <Input
-                id="operator"
-                value={data.operator}
-                onChange={(e) => updateData("operator", e.target.value)}
-                placeholder="Nome do operador"
-              />
-            </div>
-            <div>
-              <Label htmlFor="material">Material</Label>
-              <Input
-                id="material"
-                value={data.material}
-                onChange={(e) => updateData("material", e.target.value)}
-                placeholder="Tipo de material"
-              />
-            </div>
-            <div>
-              <Label htmlFor="origin">Origem</Label>
-              <Input
-                id="origin"
-                value={data.origin}
-                onChange={(e) => updateData("origin", e.target.value)}
-                placeholder="Local de origem"
-              />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
 
       {/* Moisture Table */}
       <Card>

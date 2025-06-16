@@ -1015,6 +1015,15 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Organizações: método syncOrganization implementado com integração completa
   - Configuração Firebase completa: firebase.ts, firebase.json, .firebaserc todos presentes
   - Sistema pronto para produção com sincronização Firebase completa sem substituições indevidas
+- June 16, 2025: TABELA DE UMIDADE TÉCNICA IMPLEMENTADA CORRETAMENTE NA DENSIDADE MÁX/MÍN
+  - PROBLEMA RESOLVIDO: Usuário indicou que tabela de umidade com dados técnicos deve existir
+  - Tabela "Teor de Umidade (3 Determinações)" restaurada com campos técnicos específicos
+  - Campos implementados: Cápsula, Úmido + Tara (g), Seco + Tara (g), Tara (g), Umidade (%), Umidade Média (%)
+  - Preenchimento automático funcional nos campos de cápsula (trigger 1 dígito)
+  - Cálculos automáticos de umidade por determinação e média geral
+  - Erro TypeScript corrigido: searchEquipment retorna AutofillResult, acessar via resultado.data.peso
+  - Interface otimizada: informações de identificação no cabeçalho, dados técnicos na tabela
+  - Sistema operacional com tabela de umidade completa e preenchimento automático funcionando
 
 ## User Preferences
 
