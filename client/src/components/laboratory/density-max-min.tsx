@@ -27,6 +27,7 @@ interface MaxMinDensityData {
   north: string;
   east: string;
   cota: string;
+  elevation: string;
   coordinates: string;
   quadrant: string;
   layer: string;
@@ -103,6 +104,7 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
       north: "",
       east: "",
       cota: "",
+      elevation: "",
       coordinates: "",
       quadrant: "",
       layer: "",
@@ -255,6 +257,7 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
         north: testData.north || "",
         east: testData.east || "",
         cota: testData.cota || "",
+        elevation: testData.elevation || "",
         coordinates: testData.coordinates || "",
         quadrant: testData.quadrant || "",
         layer: testData.layer || "",
@@ -762,6 +765,7 @@ export default function DensityMaxMin({ testId, mode = 'new' }: DensityMaxMinPro
       north: "",
       east: "",
       cota: "",
+      elevation: "",
       coordinates: "",
       quadrant: "",
       layer: "",

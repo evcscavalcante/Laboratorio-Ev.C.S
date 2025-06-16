@@ -542,6 +542,7 @@ export default function DensityReal({ testId, mode = 'new' }: DensityRealProps) 
       north: "",
       east: "",
       cota: "",
+      elevation: "",
       local: "",
       weatherCondition: "SOL FORTE",
       humidity: "",
