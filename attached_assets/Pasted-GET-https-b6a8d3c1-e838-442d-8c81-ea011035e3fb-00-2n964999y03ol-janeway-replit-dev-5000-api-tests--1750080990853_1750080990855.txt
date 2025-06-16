@@ -1,0 +1,30 @@
+GET https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/api/tests/densidade-in-situ/temp 410 (Gone)
+Explanation
+
+Understanding the problem
+The console message GET ... 410 (Gone) indicates that the server responded to your GET request with a 410 Gone HTTP status code. This means the resource you were trying to access at the specified URL (https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/api/tests/densidade-in-situ/temp) is no longer available on the server and this condition is likely permanent. This is different from a 404 Not Found error, which implies the resource might be available again in the future [1, 2, 4].
+
+The stack trace shows that the request originated from the loadDashboardData function in dashboard-simplified.tsx, which in turn called the apiRequest function in queryClient.ts.
+
+How to verify
+You can verify this by attempting to access the URL https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/api/tests/densidade-in-situ/temp directly in your browser or using a tool like curl. You should receive a 410 Gone response.
+
+Suggested fix
+Since the 410 Gone status indicates the resource is permanently unavailable, you should remove the code that attempts to fetch this resource.
+
+Identify where in your loadDashboardData or related functions the call to /api/tests/densidade-in-situ/temp is being made and remove or update it to point to a valid resource.
+
+Based on the provided code snippet, the issue is likely within the fetch call in the apiRequest function, but the specific URL is determined by the url parameter passed to it. You need to find the call to apiRequest that is attempting to fetch https://b6a8d3c1-e838-442d-8c81-ea011035e3fb-00-2n964999y03ol.janeway.replit.dev:5000/api/tests/densidade-in-situ/temp and either remove it or change the URL.
+
+Summary
+The 410 Gone error signifies that the requested resource has been permanently removed from the server. To fix this, identify the code that is trying to access the unavailable resource and remove or update it to point to a valid endpoint.
+
+Sources and related content
+Data used to understand this message
+Use search instead
+AI tools may generate inaccurate info that doesn't represent Google's views. Data sent to Google may be seen by human reviewers to improve this feature. Open settings or learn more
+
+
+
+﻿
+

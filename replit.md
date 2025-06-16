@@ -820,6 +820,15 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - Teste final validado (test-preenchimento-final.js): 7/7 equipamentos encontrados (100%)
   - Sistema operacional com logs detalhados no console do navegador para debugging
   - Capacidade ilimitada: suporta qualquer quantidade de equipamentos com numeração flexível
+- June 16, 2025: LOOP INFINITO NO PREENCHIMENTO AUTOMÁTICO CORRIGIDO DEFINITIVAMENTE
+  - Problema crítico identificado: useEffect com searchEquipment nas dependências causava re-execuções infinitas
+  - Números cresciam descontroladamente (até 12.000+) devido ao loop de atualizações
+  - Correção aplicada: removido searchEquipment das dependências de todos os useEffect em density-in-situ.tsx
+  - Mantidas apenas dependências específicas dos campos (ex: data.moistureTop1.capsule)
+  - Dashboard corrigido para usar endpoints seguros: /api/tests/density-in-situ, /api/tests/real-density, /api/tests/max-min-density
+  - Endpoints temporários permanecem bloqueados (erro 410) forçando uso de autenticação adequada
+  - Sistema de verificação de regressões confirmou: 21/21 verificações aprovadas (100%)
+  - Preenchimento automático agora funciona corretamente: digite "1" e dados aparecem instantaneamente sem repetições
 
 ## User Preferences
 

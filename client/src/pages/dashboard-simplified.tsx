@@ -41,9 +41,9 @@ export default function Dashboard() {
     setLoading(true);
     try {
       const [densityInSituResponse, realDensityResponse, maxMinDensityResponse] = await Promise.all([
-        apiRequest('GET', '/api/tests/densidade-in-situ/temp').then(res => res.json()).catch(() => []),
-        apiRequest('GET', '/api/tests/densidade-real/temp').then(res => res.json()).catch(() => []),
-        apiRequest('GET', '/api/tests/densidade-max-min/temp').then(res => res.json()).catch(() => [])
+        apiRequest('GET', '/api/tests/density-in-situ').then(res => res.json()).catch(() => []),
+        apiRequest('GET', '/api/tests/real-density').then(res => res.json()).catch(() => []),
+        apiRequest('GET', '/api/tests/max-min-density').then(res => res.json()).catch(() => [])
       ]);
 
       const allTests = [
