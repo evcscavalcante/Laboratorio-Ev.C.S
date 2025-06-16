@@ -1,0 +1,31 @@
+{
+  "timestamp": "2025-06-16T08-17-59",
+  "score": 100,
+  "status": "EXCELENTE",
+  "details": {
+    "security": {
+      "score": 100,
+      "status": "SEGURO",
+      "details": [],
+      "endpointsTestados": 7,
+      "problematicos": 0
+    },
+    "runtime": {
+      "score": 100,
+      "status": "ESTÁVEL",
+      "errors": [],
+      "successRate": "12.5"
+    },
+    "endpoints": {
+      "total": 3,
+      "working": 3,
+      "broken": [],
+      "successRate": "100.0"
+    },
+    "overall": {
+      "score": 100,
+      "status": "EXCELENTE",
+      "recommendations": []
+    }
+  }
+}

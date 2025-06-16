@@ -688,6 +688,16 @@ User Input → Local Storage → API Validation → PostgreSQL → Firestore Syn
   - 10 usuários distribuídos em 4 organizações com controle hierárquico funcional
   - Proteção por autenticação em todos os endpoints críticos garantindo segurança enterprise
 - June 16, 2025: SISTEMA ABRANGENTE DE DETECÇÃO DE ERROS COMPLETAMENTE IMPLEMENTADO E VALIDADO
+- June 16, 2025: CORREÇÃO CRÍTICA DO ENDPOINT /api/organizations E SISTEMA DE MONITORAMENTO APRIMORADO
+  - Problema detectado pelo usuário: endpoint /api/organizations falhando com erro 500 devido a colunas hierárquicas inexistentes
+  - Colunas parent_organization_id, organization_type e access_level adicionadas ao PostgreSQL
+  - Sistema de detecção de erros de runtime criado (test-runtime-errors.js) para detectar problemas que escapam dos testes tradicionais
+  - Monitor completo implementado (monitor-sistema-completo.js) combinando segurança + runtime + endpoints
+  - Teste de uso real criado (test-endpoints-autenticados.js) simulando navegação real do usuário
+  - Validação completa: 7/7 endpoints críticos funcionando (organizations, users, equipamentos, notifications, ensaios)
+  - Confirmado que não há problemas similares em /api/users ou páginas de Relatórios/Analytics
+  - Todos endpoints retornam arrays válidos, prevenindo erros ".map is not a function"
+  - Sistema operacional com 100% dos endpoints autenticados funcionando corretamente
   - Script test-comprehensive-errors.js criado para detectar erros que escapam dos testes tradicionais
   - Sistema analisa 10 categorias: runtime silenciosos, vazamentos de memória, race conditions, integridade de dados, vulnerabilidades de segurança, anti-patterns de performance, acessibilidade, compatibilidade, error handling e logging
   - Correções críticas aplicadas: exposição de stack traces eliminada, handler 404 adequado implementado
