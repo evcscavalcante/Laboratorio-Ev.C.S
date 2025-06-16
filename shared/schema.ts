@@ -577,12 +577,24 @@ export const consentManagement = pgTable("consent_management", {
   updatedAt: timestamp("updated_at").defaultNow()
 });
 
-// Create insert schemas for LGPD tables
+export const userActionLogs = pgTable("user_action_logs", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id),
+  action: varchar("action", { length: 255 }).notNull(),
+  actionDetails: text("action_details"),
+  ipAddress: varchar("ip_address", { length: 45 }),
+  userAgent: text("user_agent"),
+  createdAt: timestamp("created_at").defaultNow()
+});
+
+// Create insert schemas for audit and LGPD tables
+export const insertUserActionLogSchema = createInsertSchema(userActionLogs);
 export const insertLgpdAuditLogSchema = createInsertSchema(lgpdAuditLogs);
 export const insertDataProcessingRecordSchema = createInsertSchema(dataProcessingRecords);
 export const insertConsentManagementSchema = createInsertSchema(consentManagement);
 
 // Types for LGPD tables
+export type UserActionLog = typeof userActionLogs.$inferSelect;
 export type LgpdAuditLog = typeof lgpdAuditLogs.$inferSelect;
 export type DataProcessingRecord = typeof dataProcessingRecords.$inferSelect;
 export type ConsentManagement = typeof consentManagement.$inferSelect;
@@ -590,3 +602,4 @@ export type ConsentManagement = typeof consentManagement.$inferSelect;
 export type InsertLgpdAuditLog = z.infer<typeof insertLgpdAuditLogSchema>;
 export type InsertDataProcessingRecord = z.infer<typeof insertDataProcessingRecordSchema>;
 export type InsertConsentManagement = z.infer<typeof insertConsentManagementSchema>;
+export type InsertUserActionLog = z.infer<typeof insertUserActionLogSchema>;
